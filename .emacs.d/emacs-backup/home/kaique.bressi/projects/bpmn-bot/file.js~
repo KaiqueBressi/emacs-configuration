@@ -1,0 +1,9 @@
+import Modeler from 'bpmn-js/lib/Modeler';
+
+// create a modeler
+var modeler = new Modeler({ container: '#canvas' });
+
+// import diagram
+modeler.importXML(bpmnXML, function(err) {
+  // ...
+});

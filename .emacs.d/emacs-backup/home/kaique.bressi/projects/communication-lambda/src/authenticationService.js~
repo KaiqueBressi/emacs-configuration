@@ -1,0 +1,45 @@
+const axios = require("axios");
+
+function createAuthInstance() {
+  return axios.create({
+    baseURL: process.env.AUTHENTICATION_URL,
+    timeout: 3000,
+    headers: { "Accept-Version": "v1" }
+  });
+}
+
+function createAuthenticatedJourney(token) {
+  return axios.create({
+    baseURL: process.env.JOURNEY_URL,
+    timeout: 3000,
+    headers: {
+      "Accept-Version": "v1",
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + token
+    }
+  });
+}
+
+async function authenticate(callback) {
+  const username = process.env.AUTHENTICATION_USERNAME;
+  const password = process.env.AUTHENTICATION_PASSWORD;
+
+  const instance = createAuthInstance();
+
+  await instance
+    .post("/api/internal_clients/tokens", {
+      grant_type: "password",
+      username: username,
+      password: password
+    })
+    .then(async response => {
+      const journey = createAuthenticatedJourney(response.data.access_token);
+
+      await callback(journey);
+    })
+    .catch(error => {
+      console.log("deu merda", error);
+    });
+}
+
+module.exports = authenticate;

@@ -1,0 +1,20 @@
+{{#styleguide/styleguide-component}}
+  <style>
+   :host {
+     background-color: #f1f2f3;
+     margin-top: -1rem;
+     margin-bottom: 1rem;
+   }
+  </style>
+
+  <div class="container">
+    <div class="doc-container">
+      <div>
+        <h2 class="bold">{{fullName}}</h2>
+        <div>CPF: {{cpf}}</div>
+
+        {{styleguide/header-tabs tabMenuName=tabMenuName}}
+      </div>
+    </div>
+  </div>
+{{/styleguide/styleguide-component}}

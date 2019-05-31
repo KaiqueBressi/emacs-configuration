@@ -1,0 +1,27 @@
+package home_refi.test_contexts;
+
+import java.util.Map;
+import org.camunda.bpm.engine.runtime.ProcessInstance;
+import org.camunda.bpm.engine.test.Deployment;
+import org.camunda.bpm.engine.test.ProcessEngineRule;
+import org.junit.Rule;
+import org.junit.Test;
+import static org.camunda.bpm.engine.test.assertions.ProcessEngineTests.assertThat;
+import home_refi.tests.FluxoHomeTestUtils;
+
+@Deployment(resources = {"./home_refi/FluxoHome.bpmn", "./home_refi/DecisoesFluxoHome.dmn"})
+public class OfflineTest {
+  @Rule
+  public ProcessEngineRule processEngineRule = new ProcessEngineRule();
+
+  private FluxoHomeTestUtils utils = new FluxoHomeTestUtils();
+
+  @Test
+  public void OperacaoDeParceirosOfflineComecaEmProcessamentoOffline() {
+    Map<String, Object> variables = utils.offlineVariables();
+
+    ProcessInstance processInstance = utils.startProcess(variables);
+
+    assertThat(processInstance).isWaitingAt("ProcessamentoOffline");
+  }
+}

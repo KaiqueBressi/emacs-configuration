@@ -1,0 +1,18 @@
+require 'rails_helper'
+
+describe 'Portfolio Activities resource', :integration, type: :request do
+  describe 'GET api/v1/portfolio/workflows/:workflow_key/operations/:loan_operation_id/activities' do
+    it 'returns an list of activities with its respective status' do
+      loan_operation_id = SecureRandom.uuid
+      operation_assignment_history = FactoryBot.create(:portfolio_operation_assignment_history,
+                                                       workflow_key: 'process-key',
+                                                       loan_operation_id: loan_operation_id)
+      FactoryBot.create(:portfolio_activity,
+                        operation_assignment_history: operation_assignment_history,
+                        consultant_id: nil,
+                        completed_at: nil)
+
+      get("/api/v1/portfolio/workflows/process_key/operations/#{loan_operation_id}/activities")
+    end
+  end
+end

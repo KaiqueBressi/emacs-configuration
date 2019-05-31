@@ -1,0 +1,20 @@
+module Schedulings
+  class CreateSchedulingUseCase
+    def perform(due_time:, comment:, consultant_id:, operation_id:)
+      Portfolio::Scheduling.create(
+        due_time: due_time,
+        comment: comment,
+        consultant_id: consultant_id,
+        operation: find_operation(operation_id)
+      )
+    end
+
+    private
+
+    def find_operation(operation_id)
+      Portfolio::Operation.where(id: operation_id).first.tap do |operation|
+        raise Errors::OperationNotFound unless operation
+      end
+    end
+  end
+end

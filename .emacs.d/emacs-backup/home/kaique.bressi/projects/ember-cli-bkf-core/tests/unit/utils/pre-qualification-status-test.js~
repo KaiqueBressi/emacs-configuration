@@ -1,0 +1,17 @@
+import { expect } from "chai";
+import { describe, beforeEach, context, it } from "mocha";
+import { setupTest } from "ember-mocha";
+import Ember from "ember";
+import td from "testdouble";
+
+describe("Utils: pre-qualification-status", () => {
+  setupTest("util:pre-qualification-status", { integration: true });
+  let store;
+  const MAX_RETRIES = 5;
+
+  beforeEach(function() {
+    store = Ember.getOwner(this).lookup("service:store");
+  });
+
+  it("retries the PQ until it returns a non-empty array", async function() {});
+});

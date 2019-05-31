@@ -1,0 +1,15 @@
+import Component from '@ember/component';
+
+export default Component.extend({
+  classNames: ['modal-dialog'],
+
+  actions: {
+    closeModal() {
+      const onClose = this.get('close');
+
+      if (onClose) {
+        onClose();
+      }
+    },
+  },
+});

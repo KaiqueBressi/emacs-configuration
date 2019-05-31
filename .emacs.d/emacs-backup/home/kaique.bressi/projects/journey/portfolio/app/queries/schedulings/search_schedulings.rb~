@@ -1,0 +1,4 @@
+module Schedulings
+  class SearchQuery
+  end
+end

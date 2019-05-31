@@ -1,0 +1,71 @@
+import { getOwner } from '@ember/application';
+import { setupComponentTest } from 'ember-mocha';
+import { expect } from 'chai';
+import { context, describe, it } from 'mocha';
+import hbs from 'htmlbars-inline-precompile';
+import td from 'testdouble';
+import Component from '@ember/component';
+import menuItems from 'middle-office/pods/components/styleguide/main-nav/menu-items';
+import { run } from '@ember/runloop';
+import bkfCoreInitializer from 'middle-office/initializers/bkf-core';
+
+describe('Integration | Component | styleguide/main-nav', function() {
+  setupComponentTest('styleguide/main-nav', {
+    integration: true,
+  });
+
+  beforeEach(function() {
+    bkfCoreInitializer.initialize(getOwner(this));
+  });
+
+  context('when rendering the main navigation', function() {
+    context('when menuName exists on menuItems enum', function() {
+      it('renders the menu correctly', function() {
+        const menuName = 'homeRefi';
+        const menuLabels = menuItems[menuName].map(item => item.text);
+        this.set('menuName', menuName);
+
+        this.render(hbs`
+          {{styleguide/main-nav menuName=menuName}}
+        `);
+
+        const shadowRoot = this.$('.styleguide').get(0).shadowRoot;
+        const itemsName = this.$(shadowRoot)
+          .find('.main-nav__action-list:first a')
+          .toArray()
+          .map(item => item.innerText);
+
+        expect(itemsName).to.eql(menuLabels);
+      });
+    });
+
+    context('when menuName does not exists on menuItems enum', function() {
+      it('does not renders the items', function() {
+        this.render(hbs`
+          {{styleguide/main-nav menuName="dontExistentMenuName"}}
+        `);
+
+        const shadowRoot = this.$('.styleguide').get(0).shadowRoot;
+        const items = this.$(shadowRoot).find('[data-test-action-list="main-list"] a');
+
+        expect(items.length).to.eql(0);
+      });
+    });
+  });
+
+  context('when rendering the iconed menu', function() {
+    it('calls the logout action when logout icon was clicked', function() {
+      this.render(hbs`
+        {{styleguide/main-nav menuName="homeRefi"}}
+      `);
+
+      const shadowRoot = this.$('.styleguide').get(0).shadowRoot;
+      const logoutIcon = this.$(shadowRoot).find('[data-test-icon="logout2"]');
+
+      run(() => {
+        logoutIcon.click();
+        debugger;
+      });
+    });
+  });
+});

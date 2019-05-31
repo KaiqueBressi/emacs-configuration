@@ -1,0 +1,52 @@
+<div class="ui container">
+  <h1 class="ui header">
+    Leads
+    <div class="sub header">Solicitação de empréstimo com garantia</div>
+  </h1>
+  <div class="ui bottom attached active tab segment">
+    {{#if feedbackMessage }}
+      <div class="ui message transition fade down in {{ feedbackStatusClass }} save-message">
+        {{ feedbackMessage.text }}
+      </div>
+    {{/if}}
+
+    <div class="ui grid">
+      <div class="sixteen wide column">
+        <h3 class="ui aligned huge header">
+          Dados Pessoais
+        </h3>
+        <div class="ui divider"></div>
+      </div>
+
+      <div class="sixteen wide column">
+        {{ app-forms/lead/home-refi/personal-data
+          customer=customer
+          customerExists=customerExists
+          showErrors=showErrors }}
+      </div>
+
+      <div class="sixteen wide column">
+        <h3 class="ui aligned huge header">
+          Dados da solicitação
+        </h3>
+        <div class="ui divider"></div>
+      </div>
+
+      <div class="sixteen wide column">
+        {{ app-forms/lead/home-refi/operational-data showErrors=showErrors lead=lead }}
+      </div>
+    </div>
+
+    <div class="ui centered grid">
+      <div class="four wide column">
+        {{ app-button
+          data-test-submit-lead
+          classNames='fluid ui primary button'
+          onClick=(action 'submit')
+          isDisabled=isSaving
+          isLoading=isSaving
+          text='Criar Novo Lead de Home' }}
+      </div>
+    </div>
+  </div>
+</div>

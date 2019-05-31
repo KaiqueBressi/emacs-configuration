@@ -1,0 +1,7 @@
+module Scheduling
+  class CreateScheduleUseCase
+    def execute
+
+    end
+  end
+end

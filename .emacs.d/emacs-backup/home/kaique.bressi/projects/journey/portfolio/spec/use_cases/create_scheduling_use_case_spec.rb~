@@ -1,0 +1,24 @@
+require 'rails_helper'
+
+describe Portfolio::CreateSchedulingUseCase, :unit do
+  it 'creates a new schedule' do
+    operation = build(:portfolio_operation)
+    create_schedule = described_class.new
+
+    attributes = {
+      due_time: Time.now + 1.day,
+      comment: 'my comment',
+      consultant_id: 'afb3599e-6ef3-4b17-9703-43a30a5eec8b',
+      operation_id: operation.id
+    }
+    scheduling = create_schedule.execute(attributes)
+
+    expect(scheduling).to have_attributes(
+      due_time: attributes[:due_time],
+      comment: attributes[:my_comment],
+      consultant_id: attributes[:consultant_id],
+      operation: operation,
+      deleted_at: nil
+    )
+  end
+end

@@ -1,0 +1,53 @@
+package home_refi.test_contexts
+
+import org.camunda.bpm.engine.test.Deployment
+import org.camunda.bpm.engine.test.ProcessEngineRule
+import org.camunda.bpm.engine.test.assertions.ProcessEngineTests.assertThat
+import org.camunda.bpm.engine.test.assertions.ProcessEngineTests.taskQuery
+import org.junit.Rule
+import org.junit.Test
+import home_refi.test_helpers.Utils
+
+@Deployment(resources = ["./home_refi/FluxoHome.bpmn", "./home_refi/DecisoesFluxoHome.dmn"])
+class Perfilamento {
+    @Rule @JvmField
+    var processEngineRule = ProcessEngineRule()
+
+    @Test
+    fun OperacaoComOPerfilLinhaVerdeIniciaAtendimentoEmPerfilamento() {
+        val variables = Utils.greenLineVariables()
+
+        val processInstance = Utils.startProcess(variables)
+
+        assertThat(processInstance).isWaitingAt("Perfilamento")
+    }
+
+    @Test
+    fun OperacaoDeParceirosOfflineComecaEmPerfilamento() {
+        val variables = Utils.offlineVariables()
+
+        val processInstance = Utils.startProcess(variables)
+
+        assertThat(processInstance).isWaitingAt("Perfilamento")
+    }
+
+    @Test
+    fun OperacaoDeClienteOfflineDeveSerAssociadaPeloCandidateGroupProcessamentoOffline() {
+        val variables = Utils.offlineVariables()
+
+        val processInstance = Utils.startProcess(variables)
+
+        assertThat(processInstance).task(taskQuery().taskCandidateGroup("ProcessamentoOffline").taskDefinitionKey("Perfilamento")).isNotNull()
+    }
+
+    @Test
+    fun OperacaoComConsultorAssociadoDeveTerAssigneeParaOConsultorAssociado() {
+        val variables = Utils.variablesForPreLaudoStart()
+        variables["processamento_assignee"] = "consultant-id"
+
+        val processInstance = Utils.startProcess(variables)
+        Utils.completePreLaudoTask("APPROVED")
+
+        assertThat(processInstance).task(taskQuery().taskAssignee("consultant-id").taskDefinitionKey("Perfilamento")).isNotNull()
+    }
+}

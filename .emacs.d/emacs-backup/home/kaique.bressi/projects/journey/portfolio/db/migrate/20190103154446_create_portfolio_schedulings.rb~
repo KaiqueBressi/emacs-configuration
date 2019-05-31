@@ -1,0 +1,13 @@
+class CreateScheduling < ActiveRecord::Migration[5.2]
+  def change
+    create_table :schedulings do |t|
+      t.belongs_to  :portfolio_operation, type: :uuid, foreign_key: true
+      t.uuid        :consultant_id, null: false
+      t.string      :comment
+      t.datetime    :due_time, null: false
+      t.datetime    :deleted_at
+
+      t.timestamps
+    end
+  end
+end

@@ -1,0 +1,12 @@
+Hanami::Model.migration do
+  up do
+    alter_table :legal_risk_analysis_analyses_onus_legal_opinions do
+
+    end
+  end
+
+  down do
+    alter_table do
+    end
+  end
+end

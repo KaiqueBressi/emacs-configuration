@@ -1,0 +1,6 @@
+const redirect = path => {
+  window.history.pushState(null, null, path);
+  window.dispatchEvent(new Event('popstate'));
+};
+
+export default redirect;

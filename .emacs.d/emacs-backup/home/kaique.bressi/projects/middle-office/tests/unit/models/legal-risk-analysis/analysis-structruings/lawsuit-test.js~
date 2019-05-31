@@ -1,0 +1,39 @@
+import { expect } from 'chai';
+import { describe, it, context, beforeEach } from 'mocha';
+import { setupModelTest } from 'ember-mocha';
+import { getOwner } from '@ember/application';
+import { run } from '@ember/runloop';
+
+describe('Unit | Model | legal-risk-analysis/analysis-structurings/lawsuit', function() {
+  setupModelTest('legal-risk-analysis/analysis-structurings/lawsuit', {
+    integration: true,
+  });
+
+  beforeEach(function() {
+    this.buildRisk = buildRisk.bind(this);
+  });
+
+  describe('.selectDefaultRisk', function() {
+    context('when given a risk list', function() {
+      it('selects the iptu risk', function() {
+        const risk = this.buildRisk({ name: 'iptu' })
+        const risk2 = this.buildRisk({ name: 'condominium' })
+        const lawsuit = this.subject();
+
+        run(() => {
+          lawsuit.selectDefaultRisk([risk, risk2])
+        });
+
+        expect(lawsuit.get('risk').get('name')).to.eql('iptu')
+      });
+    });
+  });
+});
+
+function buildRisk(attributes) {
+  const store = getOwner(this).lookup('service:store');
+
+  return run(() => {
+    return store.createRecord('legal-risk-analysis/analysis-structurings/risk', attributes);
+  });
+}

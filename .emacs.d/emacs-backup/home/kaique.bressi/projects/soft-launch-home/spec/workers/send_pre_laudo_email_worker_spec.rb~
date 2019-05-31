@@ -1,0 +1,45 @@
+require 'rails_helper'
+
+describe SendPreLaudoEmailWorker do
+  context 'when sending a email if pre laudo was rejected' do
+    it 'gets the requester contact email and use the hermes gateway to send the email' do
+      application_id = SecureRandom.uuid
+      pre_laudo_decision = 'REJECTED'
+      core_gateway = instance_double(::Web::Core::Gateway)
+      hermes_gateway = spy('hermes_gateway')
+      allow(core_gateway).to receive(:requester_from).with(application_id: application_id).and_return(contact_email)
+
+      send_pre_laudo_email_worker = SendPreLaudoEmailWorker.new(core_gateway: core_gateway,
+                                                                hermes_gateway: hermes_gateway)
+      send_pre_laudo_email_worker.perform(pre_laudo_decision, application_id)
+
+      expect(hermes_gateway).to have_received(:send_email).with(contact_email['data']['attributes']['contact-email'])
+    end
+  end
+
+  context 'when pre laudo decision is not rejected' do
+    it 'does not send the email' do
+      application_id = SecureRandom.uuid
+      pre_laudo_decision = 'APPROVED'
+      core_gateway = instance_double(::Web::Core::Gateway)
+      hermes_gateway = spy('hermes_gateway')
+      allow(core_gateway).to receive(:requester_from).with(application_id: application_id).and_return(contact_email)
+
+      send_pre_laudo_email_worker = SendPreLaudoEmailWorker.new(core_gateway: core_gateway,
+                                                                hermes_gateway: hermes_gateway)
+      send_pre_laudo_email_worker.perform(pre_laudo_decision, application_id)
+
+      expect(hermes_gateway).not_to have_received(:send_email)
+    end
+  end
+
+  def contact_email
+    {
+      'data' => {
+        'attributes' => {
+          'contact-email' => 'email@email.com.br'
+        }
+      }
+    }
+  end
+end

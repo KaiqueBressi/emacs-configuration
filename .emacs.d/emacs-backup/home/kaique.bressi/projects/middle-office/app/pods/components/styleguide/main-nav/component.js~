@@ -1,0 +1,6 @@
+import Component from '@ember/component';
+import { menuItems, iconedItems } from './menu-items';
+
+export default Component.extend({
+  tagName: '',
+});

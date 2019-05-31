@@ -1,0 +1,7 @@
+require 'infra/neuron/geo_death_gateway.rb'
+
+register_service :geodeath_gateway do
+  ::Infra::Neuron::SaveAlgumaCoisa(
+    a: ::Infra::Neuron::GeoDeathGateway.new
+  )
+end

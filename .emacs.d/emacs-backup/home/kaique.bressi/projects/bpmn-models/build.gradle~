@@ -1,0 +1,55 @@
+plugins {
+  id 'org.jetbrains.kotlin.jvm' version '1.3.21'
+  id 'java'
+  id 'war'
+}
+
+group = 'br.com.creditas.camunda'
+version = '0.0.1-SNAPSHOT'
+
+description = """Camunda BPM Process Application"""
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+compileTestKotlin {
+        kotlinOptions {
+            jvmTarget = "1.8"
+        }
+}
+
+tasks.withType(JavaCompile) {
+  options.encoding = 'UTF-8'
+}
+
+repositories {
+  maven { url "https://app.camunda.com/nexus/content/groups/public" }
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:1.3.21"
+    implementation "org.jetbrains.kotlin:kotlin-reflect:1.3.21"
+
+    compile group: 'commons-io', name: 'commons-io', version:'2.6'
+    compile group: 'com.camunda.consulting.util', name: 'camunda-util-demo-support', version:'0.4.3'
+    compile group: 'javax.xml.bind', name: 'jaxb-api', version:'2.2.11'
+    compile group: 'javax.activation', name: 'activation', version:'1.1.1'
+
+    testCompile group: 'org.camunda.bpm.extension', name: 'camunda-bpm-assert', version:'1.2'
+    testCompile group: 'org.camunda.spin', name: 'camunda-spin-dataformat-all', version:'1.5.1'
+    testCompile group: 'org.camunda.bpm', name: 'camunda-engine-plugin-spin', version:'7.9.0'
+    testCompile group: 'org.camunda.connect', name: 'camunda-connect-connectors-all', version:'1.0.6'
+    testCompile group: 'org.camunda.bpm', name: 'camunda-engine-plugin-connect', version:'7.9.0'
+    testCompile group: 'org.camunda.template-engines', name: 'camunda-template-engines-freemarker', version:'1.0.1'
+    testCompile group: 'org.camunda.template-engines', name: 'camunda-template-engines-velocity', version:'1.0.1'
+    testCompile group: 'junit', name: 'junit', version:'4.12'
+    testCompile group: 'com.h2database', name: 'h2', version:'1.4.197'
+    testCompile group: 'org.camunda.bpm.extension', name: 'camunda-bpm-process-test-coverage', version:'0.3.2'
+    testCompile group: 'ch.qos.logback', name: 'logback-classic', version:'1.1.3'
+    testCompile group: 'org.slf4j', name: 'jcl-over-slf4j', version:'1.7.25'
+    testCompile group: 'org.slf4j', name: 'jul-to-slf4j', version:'1.7.25'
+
+    providedCompile group: 'org.camunda.bpm', name: 'camunda-engine', version:'7.9.0'
+    providedCompile group: 'org.camunda.bpm.dmn', name: 'camunda-engine-dmn', version:'7.9.0'
+    providedCompile group: 'javax.servlet', name: 'javax.servlet-api', version:'3.1.0'
+}

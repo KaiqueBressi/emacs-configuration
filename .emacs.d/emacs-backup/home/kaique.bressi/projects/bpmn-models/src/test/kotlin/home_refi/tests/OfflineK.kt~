@@ -1,0 +1,26 @@
+package home_refi.test_contexts
+
+import org.camunda.bpm.engine.runtime.ProcessInstance
+import org.camunda.bpm.engine.test.Deployment
+import org.camunda.bpm.engine.test.ProcessEngineRule
+import org.junit.Rule
+import org.junit.Test
+import org.camunda.bpm.engine.test.assertions.ProcessEngineTests.assertThat
+import home_refi.tests.FluxoHomeTestUtils
+
+@Deployment(resources = ["./home_refi/FluxoHome.bpmn", "./home_refi/DecisoesFluxoHome.dmn"])
+class Offline {
+    @Rule
+    var processEngineRule = ProcessEngineRule()
+
+    private val utils = FluxoHomeTestUtils()
+
+    @Test
+    fun OperacaoDeParceirosOfflineComecaEmProcessamentoOffline() {
+        val variables = utils.offlineVariables()
+
+        val processInstance = utils.startProcess(variables)
+
+        assertThat(processInstance).isWaitingAt("ProcessamentoOffline")
+    }
+}

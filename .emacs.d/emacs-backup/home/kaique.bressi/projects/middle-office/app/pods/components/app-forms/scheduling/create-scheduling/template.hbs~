@@ -1,0 +1,61 @@
+<div class="equal width fields">
+  <div class="ui two column grid">
+    {{#if hasErrorMessage}}
+      <div class="row">
+        <div class="column">
+          <div class="field">
+            <div data-test-message="error" class="error-message">{{errorMessage}}</div>
+          </div>
+        </div>
+      </div>
+    {{/if}}
+
+    <div class="row">
+      <div class="column">
+        <div class="field">
+          <label>Data: </label>
+          {{app-datepicker date=date}}
+        </div>
+      </div>
+      <div class="column">
+        <div class="field">
+          <label>Hora: </label>
+          {{app-timepicker time=time}}
+        </div>
+      </div>
+    </div>
+
+    <div class="column">
+      <div class="field">
+        <label for="comment">Comentário: </label>
+
+        <div class="field">
+          {{app-textarea
+            rows=7
+            id="comment"
+            data-test-field="scheduling-comment"
+            value=comment
+          }}
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="column">
+        <div class="field">
+          <div class="actions">
+            <button class="ui red button" onClick={{action onCancel}}>Cancelar</button>
+            {{app-button
+              classNames="ui green"
+              data-test-button="scheduling"
+              text="Salvar"
+              isDisabled=isLoading
+              isLoading=isLoading
+              onClick=(action 'onSave' onCreateScheduling)
+            }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

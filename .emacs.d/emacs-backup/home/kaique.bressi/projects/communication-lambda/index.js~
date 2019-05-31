@@ -1,0 +1,19 @@
+const AWS = require('aws-sdk');
+
+const lambda = new AWS.Lambda({
+  endpoint: new AWS.Endpoint('http://localhost:4000'),
+  region: 'us-east-1',
+});
+
+
+lambda.invoke({
+  FunctionName: 'hello',
+  InvocationType: 'Event',
+  Payload: JSON.stringify({ key: 'value' }),
+}, function(err, data) {
+  if (err) {
+    console.log(err, err.stack);
+  } else {
+    console.log(data);
+  }
+})

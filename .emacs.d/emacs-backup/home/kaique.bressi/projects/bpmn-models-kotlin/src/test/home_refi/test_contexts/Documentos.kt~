@@ -1,0 +1,37 @@
+package home_refi.test_contexts
+
+import org.camunda.bpm.engine.test.Deployment
+import org.camunda.bpm.engine.test.ProcessEngineRule
+import org.junit.Rule
+import org.junit.Test
+import org.camunda.bpm.engine.test.assertions.ProcessEngineAssertions.assertThat
+import home_refi.tests.helpers.FluxoHomeTestUtils
+
+@Deployment(resources = ["./home_refi/FluxoHome.bpmn", "./home_refi/DecisoesFluxoHome.dmn"])
+class Documentos {
+    @Rule @JvmField
+    var processEngineRule = ProcessEngineRule()
+
+    private val utils = FluxoHomeTestUtils()
+
+    @Test
+    fun OperacaoComValorDoEmprestimoBaixoFicaAEsperaDeDocumentos() {
+        val variables = utils.defaultVariables()
+        variables.put("loan_amount", 39999)
+
+        val processInstance = utils.startProcess(variables)
+
+        assertThat(processInstance).isWaitingAt("WaitForDocuments")
+    }
+
+    @Test
+    fun OperacaoEmEsperaDeDocumentosCompletaVaiParaPreLaudo() {
+        val variables = utils.variablesForPreLaudoStart()
+        variables.put("loan_amount", 39999)
+
+        val processInstance = utils.startProcess(variables)
+        utils.completeTaskByDefinitionKey("WaitForDocuments")
+
+        assertThat(processInstance).isWaitingAt("PreLaudo")
+    }
+}

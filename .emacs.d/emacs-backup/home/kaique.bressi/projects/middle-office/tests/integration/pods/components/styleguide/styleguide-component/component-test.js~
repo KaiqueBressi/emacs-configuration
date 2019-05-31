@@ -1,0 +1,29 @@
+import { setupComponentTest } from 'ember-mocha';
+import { expect } from 'chai';
+import { context, describe, it } from 'mocha';
+import { run } from '@ember/runloop';
+import hbs from 'htmlbars-inline-precompile';
+import td from 'testdouble';
+
+describe('Integration | Component | styleguide/styleguide component', function() {
+  setupComponentTest('styleguide/styleguide-component', {
+    integration: true,
+  });
+
+  context('when rendering an styleguide component', function() {
+    it('isoletes the inner DOM of the embbeded component from the outside world', function() {
+      this.render(hbs`
+       <div class="outside"> i'm outside of a styleguide component </div>
+
+       {{#styleguide/styleguide-component}}
+         <div class="inside">
+           i'm inside of a styleguide component
+         </div>
+       {{/styleguide/styleguide-component}}
+      `);
+
+      expect(this.$('.outside').length).to.eq(1);
+      expect(this.$('.inside').length).to.eq(0);
+    });
+  });
+});

@@ -1,0 +1,5 @@
+#!/bin/bash
+set -e
+
+BPMN_FILES=`git ls-files '*.bpmn' -o -m --exclude-standard`
+echo $BPMN_FILES

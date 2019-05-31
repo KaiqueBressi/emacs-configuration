@@ -1,0 +1,32 @@
+require 'use_case/legal_risk_analysis/analyses/issue_analysis_legal_opinion'
+require 'use_case/legal_risk_analysis/analyses/commands/issue_analysis_legal_opinion_cmd'
+require 'acceptance_helper'
+
+describe UseCase::LegalRiskAnalysis::Analyses::IssueAnalysisLegalOpinion do
+  context 'when issuing a legal opinion to analysis' do
+    it 'adds the legal opinion to that analysis' do
+      analyses_repository = FactoryBot.build(:legal_risk_analyses_repository)
+      analysis_structuring = FactoryBot.create(:persisted_analysis_structuring)
+      FactoryBot.create(:persisted_analysis, analysis_structuring: analysis_structuring)
+      cmd = UseCase::LegalRiskAnalysis::Analyses::IssueAnalysisLegalOpinionCmd.new(
+        analysis_structuring_id: analysis_structuring.id,
+        decision: 'approved',
+        justification: 'my legal opinion',
+        decided_by: 'd8d184d2-4ce5-4109-b02a-5e21b0e8947a'
+      )
+      issue_analysis_legal_opinion = described_class.new(analyses_repository: analyses_repository)
+
+      returned_legal_opinion = issue_analysis_legal_opinion.execute(cmd)
+
+      persisted_analysis = analyses_repository.find_last_analysis_by_structuring_id(analysis_structuring.id)
+      require 'byebug'
+      byebug
+      expect(persisted_analysis.legal_opinion).to eq(returned_legal_opinion)
+      expect(persisted_analysis.legal_opinion).to have_attributes(
+        decision: cmd.decision,
+        justification: cmd.justification,
+        decided_by: cmd.decided_by
+      )
+    end
+  end
+end

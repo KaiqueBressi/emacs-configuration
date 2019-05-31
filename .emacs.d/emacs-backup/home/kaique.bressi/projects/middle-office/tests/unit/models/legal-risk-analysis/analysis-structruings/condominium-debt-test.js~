@@ -1,0 +1,61 @@
+import { expect } from 'chai';
+import { describe, it, context, beforeEach } from 'mocha';
+import { setupModelTest } from 'ember-mocha';
+import { getOwner } from '@ember/application';
+import { run } from '@ember/runloop';
+
+describe('Unit | Model | legal-risk-analysis/analysis-structurings/condominium-debt', function() {
+  setupModelTest('legal-risk-analysis/analysis-structurings/condominium-debt', {
+    integration: true,
+  });
+
+  beforeEach(function() {
+    this.buildRisk = buildRisk.bind(this);
+  });
+
+  describe('.selectDefaultRisk', function() {
+    context('when given a risk list', function() {
+      it('selects the condominium risk', function() {
+        const risk = this.buildRisk({ name: 'iptu' })
+        const risk2 = this.buildRisk({ name: 'condominium' })
+        const condominiumDebt = this.subject();
+
+        run(() => {
+          condominiumDebt.selectDefaultRisk([risk, risk2])
+        });
+
+        expect(condominiumDebt.get('risk').get('name')).to.eql('condominium')
+      });
+    });
+  });
+
+  describe('.allowedRisks', function() {
+    context('when checking if a risk is allowed by the condominium debt', function() {
+      it('returns true if the given risk name is equal to condominium', function() {
+        const riskName = 'condominium'
+        const condominiumDebt = this.subject();
+
+        const allowed = condominiumDebt.allowedRisks(riskName);
+
+        expect(allowed).to.eql(true)
+      });
+
+      it('returns false if the given risk name is differente of condominium', function() {
+        const riskName = 'registration_annotation'
+        const condominiumDebt = this.subject();
+
+        const allowed = condominiumDebt.allowedRisks(riskName);
+
+        expect(allowed).to.eql(false)
+      });
+    });
+  });
+});
+
+function buildRisk(attributes) {
+  const store = getOwner(this).lookup('service:store');
+
+  return run(() => {
+    return store.createRecord('legal-risk-analysis/analysis-structurings/risk', attributes);
+  });
+}

@@ -1,0 +1,8 @@
+workflow "BPMN Image" {
+  on = "pull_request"
+  resolves = ["Post BPMN Image"]
+}
+
+action "Post BPMN Image" {
+  uses = "./bpmn-bot"
+}

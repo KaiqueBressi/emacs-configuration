@@ -1,0 +1,22 @@
+# frozen_string_literal: true
+
+module RuboCop
+  module Cop
+    module Creditas
+      class FormObject < Cop
+        MSG = 'You should be using Commands instead of #FormObject.'.freeze
+
+        def_node_matcher :form_object?, <<-PATTERN
+          (module
+            (const nil :FormObject) nil)
+        PATTERN
+
+        def on_send(node)
+          return unless form_object?(node)
+
+
+        end
+      end
+    end
+  end
+end

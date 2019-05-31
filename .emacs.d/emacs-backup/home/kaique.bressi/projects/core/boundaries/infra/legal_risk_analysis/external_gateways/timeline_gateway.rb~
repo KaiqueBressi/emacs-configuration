@@ -1,0 +1,11 @@
+module Infra
+  module LegalRiskAnalysis
+    module ExternalGateways
+      class TimelineGateway
+        def initialize()
+
+        end
+      end
+    end
+  end
+end

@@ -1,0 +1,3 @@
+{{#styleguide-component shadowDom=shadowDom}}
+  {{styleguide/show-scheduling scheduling=scheduling shadowDom=shadowDom}}
+{{/styleguide-component}}

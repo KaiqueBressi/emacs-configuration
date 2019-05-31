@@ -1,0 +1,31 @@
+require 'rails_helper'
+
+describe ProcessInstances::RetrieveAssociatedProcessInstances, :unit do
+  describe 'when retrieving all process instances associated to me' do
+    it 'returns all process instances that the responsible consultat is me' do
+      consultant_id = SecureRandom.uuid
+      process_instance_api = instance_spy(Camunda::Api::ProcessInstance)
+
+      retrieve_associated_process_instances = ProcessIntances::RetrieveAssociatedProcessInstances.new(
+        process_instance_api: process_instance_api
+      )
+
+      retrieve_associated_process_instances.perform(consultant_id)
+
+      expect(process_instance_api).to have_received(:query).with(query_paremeters(consultant_id))
+    end
+  end
+
+  def query_parameters(consultant_id, task_instances_key = [])
+    {
+      variables: [
+        {
+          name: 'processamento_assignee',
+          operator: 'eq',
+          value: consultant_id
+        }
+      ],
+      activityIdIn: task_instances_key
+    }
+  end
+end

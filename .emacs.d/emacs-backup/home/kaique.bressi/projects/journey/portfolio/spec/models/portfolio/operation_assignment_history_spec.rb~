@@ -1,0 +1,14 @@
+require 'rails_helper'
+
+describe Portfolio::OperationAssignmentHistory, :unit, type: :model do
+  describe '#sort_by_schedulings' do
+    it 'orders the operation assignment history based on scheduling due time desc' do
+      operations_with_schedulings = FactoryBot.create_list(:portfolio_operation_assignment_history, 3, :with_scheduling)
+      operations_without_schedulings = FactoryBot.create_list(:portfolio_operation_assignment_history, 2)
+
+      operations = Portfolio::OperationAssignmentHistory.sort_by_schedulings.to_a
+
+      expect(operations).to eq(operations_with_schedulings + operations_without_schedulings)
+    end
+  end
+end

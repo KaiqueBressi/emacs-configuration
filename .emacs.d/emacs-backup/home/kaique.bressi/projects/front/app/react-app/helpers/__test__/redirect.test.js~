@@ -1,0 +1,19 @@
+import React from 'react';
+import { render, cleanup } from 'react-testing-library';
+import redirect from '../redirect';
+
+describe('Helpers | Unit | redirect', () => {
+  it('should push state to window history', () => {
+    window.history.pushState = jest.fn();
+    const component = render(<button onClick={redirect('go-to-this-route')}> Botão </button>);
+
+    expect(window.history.pushState).toHaveBeenCalledWith(null, null, 'go-to-this-route');
+  });
+
+  it('should dispatch popstate to force ember transition to the desired route', () => {
+    window.dispatchEvent = jest.fn();
+    const component = render(<button onClick={redirect('go-to-this-route')}> Botão </button>);
+
+    expect(window.history.pushState).toHaveBeenCalledWith('popstate');
+  });
+});

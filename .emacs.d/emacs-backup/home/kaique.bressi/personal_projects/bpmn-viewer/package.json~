@@ -1,0 +1,9 @@
+{
+  "name": "bpmn-viewer",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "bpmn-to-image": "^0.3.0"
+  }
+}

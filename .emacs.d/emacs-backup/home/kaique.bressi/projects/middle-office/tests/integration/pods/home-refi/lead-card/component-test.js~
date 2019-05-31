@@ -1,0 +1,147 @@
+import { run } from '@ember/runloop';
+import { getOwner } from '@ember/application';
+import Component from '@ember/component';
+import { Promise as EmberPromise } from 'rsvp';
+import EmberObject from '@ember/object';
+import { setupComponentTest } from 'ember-mocha';
+import { it, describe, beforeEach, before } from 'mocha';
+import { expect } from 'chai';
+import td from 'testdouble';
+import hbs from 'htmlbars-inline-precompile';
+import globalPromise from 'middle-office/initializers/global-promise';
+
+describe('Integration: HomeRefi/LeadCardComponent', () => {
+  setupComponentTest('home-refi/lead-card', { integration: true });
+  before(globalPromise.initialize);
+
+  let fakeLead;
+  let fakeCustomer;
+
+  beforeEach(function() {
+    fakeLead = EmberObject.create({
+      id: 'flub-1234',
+      pqResult: td.function(),
+      application: td.object(),
+    });
+
+    fakeCustomer = EmberObject.create();
+
+    td.when(fakeLead.pqResult()).thenReturn(new EmberPromise(() => {}));
+
+    this.set('fakeLead', fakeLead);
+    this.set('fakeCustomer', fakeCustomer);
+  });
+
+  describe('the residence phone', () => {
+    it("is not visible when there isn't one", function() {
+      fakeCustomer.setProperties({
+        contactResidentialTelephoneCode: null,
+        contactResidentialTelephone: null,
+      });
+      this.render(hbs`{{home-refi/lead-card customer=fakeCustomer lead=fakeLead}}`);
+      const $residenceTelephone = this.$('[data-residence-phone]');
+
+      expect($residenceTelephone).to.have.length(0);
+    });
+
+    it('is visible if the customer has both the residence number and code', function() {
+      fakeCustomer.setProperties({
+        contactResidentialTelephoneCode: '11',
+        contactResidentialTelephone: '22223333',
+      });
+      this.render(hbs`{{home-refi/lead-card customer=fakeCustomer lead=fakeLead}}`);
+
+      const $residenceTelephone = this.$('[data-residence-phone]');
+      expect($residenceTelephone.text()).to.contain('11');
+      expect($residenceTelephone.text()).to.contain('22223333');
+    });
+  });
+
+  describe('the cellphone', () => {
+    it("is not visible when there isn't one", function() {
+      fakeCustomer.setProperties({
+        contactCellphoneCode: null,
+        contactCellphone: null,
+      });
+      this.render(hbs`{{home-refi/lead-card customer=fakeCustomer lead=fakeLead}}`);
+      const $residenceTelephone = this.$('[data-cellphone]');
+
+      expect($residenceTelephone).to.have.length(0);
+    });
+
+    it('is visible if the customer has both the cellphone number and code', function() {
+      fakeCustomer.setProperties({
+        contactCellphoneCode: '11',
+        contactCellphone: '22223333',
+      });
+      this.render(hbs`{{home-refi/lead-card customer=fakeCustomer lead=fakeLead}}`);
+
+      const $residenceTelephone = this.$('[data-cellphone]');
+      expect($residenceTelephone.text()).to.contain('11');
+      expect($residenceTelephone.text()).to.contain('22223333');
+    });
+  });
+
+  describe('PQ results', () => {
+    it('shows a loading message while the promise is not resolved', function() {
+      const neverResolves = new EmberPromise(() => {});
+      td.when(fakeLead.pqResult()).thenReturn(neverResolves);
+
+      this.render(hbs`{{home-refi/lead-card customer=fakeCustomer lead=fakeLead}}`);
+
+      const $pqResult = this.$('.pq-result');
+      expect($pqResult.find('[data-loading]')).to.have.length(1);
+    });
+
+    it('shows an error message when the promise rejects', function() {
+      td.when(fakeLead.pqResult()).thenReject('deu ruim');
+      this.render(hbs`{{home-refi/lead-card customer=fakeCustomer lead=fakeLead}}`);
+
+      const $pqResult = this.$('.pq-result');
+      expect($pqResult.find('.error').text()).to.contain('deu ruim');
+    });
+
+    it('notifies the user when the PQ was not run for the lead yet', function() {
+      td.when(fakeLead.pqResult()).thenResolve({ status: 'not-run' });
+      this.render(hbs`{{home-refi/lead-card customer=fakeCustomer lead=fakeLead}}`);
+
+      const $pqResult = this.$('.pq-result');
+      expect($pqResult.find('.pq-status [data-not-run]')).to.have.length(1);
+    });
+
+    it('shows the PQ approved message when the promise resolves to approved', function() {
+      td.when(fakeLead.pqResult()).thenResolve({ status: 'approved' });
+      this.render(hbs`{{home-refi/lead-card customer=fakeCustomer lead=fakeLead}}`);
+
+      const $pqResult = this.$('.pq-result');
+      expect($pqResult.find('.pq-status [data-approved]')).to.have.length(1);
+    });
+
+    it('shows the PQ not-approved message when the promise resolves to not-approved', function() {
+      td.when(fakeLead.pqResult()).thenResolve({ status: 'not-approved' });
+      this.render(hbs`{{home-refi/lead-card customer=fakeCustomer lead=fakeLead}}`);
+
+      const $pqResult = this.$('.pq-result');
+      expect($pqResult.find('.pq-status [data-not-approved]')).to.have.length(1);
+    });
+  });
+
+  describe('Link to application', () => {
+    it('does not show the link to the application when there is none', function() {
+      td.when(fakeLead.application).thenReturn(null);
+      this.render(hbs`{{home-refi/lead-card customer=fakeCustomer lead=fakeLead}}`);
+
+      const $pqResult = this.$('.pq-result');
+      expect($pqResult.find('.link-to-application')).to.have.length(0);
+    });
+
+    it('shows a link to the application when there is one', function() {
+      const fakeApplication = EmberObject.create();
+      td.when(fakeLead.application).thenReturn(fakeApplication);
+      this.render(hbs`{{home-refi/lead-card customer=fakeCustomer lead=fakeLead}}`);
+
+      const $pqResult = this.$('.pq-result');
+      expect($pqResult.find('.link-to-application')).to.have.length(1);
+    });
+  });
+});

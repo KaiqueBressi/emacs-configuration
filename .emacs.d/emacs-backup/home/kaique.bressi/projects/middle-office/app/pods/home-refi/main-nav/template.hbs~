@@ -1,0 +1,20 @@
+<div class="ui grid container middle aligned">
+  <span class="logo column four wide">
+    {{#link-to "index" title="creditas"}}
+      <img src="/images/logo-header.png" alt="Logo Creditas">
+    {{/link-to}}
+  </span>
+
+  <div class="column eight wide center aligned">
+    {{#if headerMenu}}
+      {{ app-menu class="inverted" links=items }}
+    {{/if}}
+  </div>
+
+  <span class="right floated right aligned column four wide">
+    {{ consultant.fullName }}
+    <a {{ action "logout" }} class="link-logout" title="Sair">
+      <i class="sign out icon"></i>
+    </a>
+  </span>
+</div>

@@ -1,0 +1,9 @@
+{{#styleguide/styleguide-component shadowDom=shadowDom}}
+  <div class="action-label"> Último contato </div>
+
+  {{#if scheduling}}
+
+  {{else}}
+    <div class="text-support"> Sem contato agendado </div>
+  {{/if}}
+{{/styleguide/styleguide-component}}

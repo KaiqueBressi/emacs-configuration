@@ -1,0 +1,26 @@
+require 'legal_risk_analysis/analysis_structurings/onuses/onus'
+
+shared_examples 'onus_example' do |onus_type|
+  context 'when adding a onus requirement' do
+    it 'appends the onus requirement to the list' do
+      onus = FactoryBot.build(onus_type)
+      onus_requirement = FactoryBot.build(:legal_risk_analysis_structuring_onus_requirement)
+
+      onus.add_requirement(onus_requirement)
+
+      expect(onus.requirements).to contain_exactly(onus_requirement)
+    end
+
+    it 'works with more than one onus requirement' do
+      onus = FactoryBot.build(onus_type)
+      onus_requirement = double('onus_requirement')
+      another_onus_requirement =
+      onus_requirement = FactoryBot.build(:legal_risk_analysis_structuring_onus_requirement)
+
+      onus.add_requirement(onus_requirement)
+      onus.add_requirement(another_onus_requirement)
+
+      expect(onus.requirements).to contain_exactly(onus_requirement, another_onus_requirement)
+    end
+  end
+end

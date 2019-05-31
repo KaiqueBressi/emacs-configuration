@@ -1,0 +1,8 @@
+require 'legal_risk_analysis/analysis_structurings/natural_person_risks/criminal_risk'
+
+FactoryBot.define do
+  factory :legal_risk_analysis_structuring_juridical_persons_criminal_risk,
+          class: 'LegalRiskAnalysis::AnalysisStructurings::NaturalPersonRisks::CriminalRisk' do
+    subject { FactoryBot.build(:legal_risk_analysis_structuring_natural_person) }
+  end
+end

@@ -1,0 +1,4 @@
+module Portfolio
+  class Scheduling < ApplicationRecord
+  end
+end

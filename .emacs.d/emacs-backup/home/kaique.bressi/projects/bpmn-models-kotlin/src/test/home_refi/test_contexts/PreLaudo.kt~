@@ -1,0 +1,51 @@
+package home_refi.test_contexts
+
+import org.camunda.bpm.engine.test.Deployment
+import org.camunda.bpm.engine.test.ProcessEngineRule
+import org.camunda.bpm.engine.test.assertions.ProcessEngineAssertions.assertThat
+import org.junit.Rule
+import org.junit.Test
+import home_refi.tests.helpers.FluxoHomeTestUtils
+
+@Deployment(resources = ["./home_refi/FluxoHome.bpmn", "./home_refi/DecisoesFluxoHome.dmn"])
+class PreLaudo {
+    @Rule @JvmField
+    var processEngineRule = ProcessEngineRule()
+
+    private val utils = FluxoHomeTestUtils()
+
+    @Test
+    fun OperacaoComOPerfilPadraoSemInformacaoDoGeodeathVaiParaOPreLaudo() {
+        val variables = utils.defaultVariables()
+        variables.put("loan_amount", 40000)
+        variables.put("source", "creditas")
+        variables.put("geodeath_decision", "error")
+
+        val processInstance = utils.startProcess(variables)
+
+       assertThat(processInstance).isWaitingAt("PreLaudo")
+    }
+
+    @Test
+    fun OperacaoComOPerfilPadraoAprovadoNoGeodeathVaiParaOProcessamento() {
+        val variables = utils.defaultVariables()
+        variables.put("loan_amount", 40000)
+        variables.put("source", "online-affiliate")
+        variables.put("geodeath_decision", "A")
+
+        val processInstance = utils.startProcess(variables)
+
+        assertThat(processInstance).isWaitingAt("Processamento")
+    }
+
+    @Test
+    fun OperacaoAprovadaEmPreLaudoVaiParaProcessamento() {
+        val variables = utils.variablesForPreLaudoStart()
+        variables.put("geodeath_decision", "error")
+
+        val processInstance = utils.startProcess(variables)
+        utils.completePreLaudoTask("APPROVED")
+
+        assertThat(processInstance).isWaitingAt("Processamento")
+    }
+}

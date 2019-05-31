@@ -1,0 +1,5 @@
+require 'json'
+
+def fetch_communication_tasks(event:, context:)
+
+end

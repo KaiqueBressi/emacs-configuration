@@ -1,0 +1,9 @@
+module ProcessInstances
+  class QueryProcessInstances
+    def initialize
+    end
+
+    def query(variable, )
+    end
+  end
+end

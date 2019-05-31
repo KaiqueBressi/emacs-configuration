@@ -1,0 +1,12 @@
+{{#styleguide/styleguide-component}}
+  <style>
+   .header {
+     margin-top: -1rem;
+     margin-bottom: 1rem;
+   }
+  </style>
+
+  <div class="header">
+    {{styleguide/header-tabs tabMenuName="homeRefiTabs"}}
+  </div>
+{{/styleguide/styleguide-component}}

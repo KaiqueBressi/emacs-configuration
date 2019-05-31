@@ -1,0 +1,22 @@
+
+lib = File.expand_path("../lib", __FILE__)
+$LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
+require "kaicop/version"
+
+Gem::Specification.new do |spec|
+  spec.name          = "kaicop"
+  spec.version       = Kaicop::VERSION
+  spec.authors       = ["Kaique Bressi"]
+  spec.email         = ["kaique_bressi@hotmail.com"]
+
+  spec.summary       = "Creditas's Custom Cops gem"
+
+  spec.bindir        = "exe"
+  spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
+  spec.require_paths = ["lib"]
+
+  spec.add_development_dependency "bundler", "~> 1.16"
+  spec.add_development_dependency "rake", "~> 10.0"
+
+  spec.add_runtime_dependency "rubocop", "~> 0.57.2"
+end

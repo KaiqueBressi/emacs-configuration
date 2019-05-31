@@ -1,0 +1,16 @@
+import React from 'react';
+import ReactDOM from 'react-dom';
+
+export default class Timeline extends React.Component {
+  redirect() {
+    const state = {
+      path: 'document-management',
+      uuid: '3975e5b5-e1da-41c5-816c-c0ff1ea883df',
+    };
+
+    window.history.pushState(state, null, 'emprestimo/garantia-imovel/documentos');
+    window.dispatchEvent(new Event('popstate'));
+  }
+
+  render() {}
+}

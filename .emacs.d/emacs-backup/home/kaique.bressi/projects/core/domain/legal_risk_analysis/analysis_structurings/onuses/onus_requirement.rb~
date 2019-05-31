@@ -1,0 +1,13 @@
+require 'legal_risk_analysis/_base/value_object'
+
+module LegalRiskAnalysis
+  module AnalysisStructurings
+    class OnusRequirement
+      prepend ValueObject
+
+      def initialize(requirement_id:)
+        @requirement_id = requirement_id
+      end
+    end
+  end
+end

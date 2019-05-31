@@ -1,0 +1,1 @@
+{{app-button data-test-button='schedule' classNames="red" text="Agendar Contato" onClick=(action 'onScheduling')}}

@@ -1,0 +1,12 @@
+import config from 'middle-office/config/environment';
+import DataAdapterMixin from 'ember-simple-auth/mixins/data-adapter-mixin';
+import BkfCoreAdapter from 'ember-cli-bkf-core/adapters/bkf-core';
+
+export default BkfCoreAdapter.extend(DataAdapterMixin, {
+  host: config.APP.orchestrationHost,
+  authorizer: 'authorizer:bkf-oauth2',
+
+  findHasMany(store, snapshot, url, relationship) {
+    debugger;
+  },
+});

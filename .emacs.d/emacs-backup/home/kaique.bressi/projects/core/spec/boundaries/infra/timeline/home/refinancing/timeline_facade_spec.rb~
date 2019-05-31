@@ -1,0 +1,23 @@
+require 'infra/timeline/home/refinancing/timeline_facade'
+require 'use_case/timeline/home/refinancing/create_record'
+
+describe Infra::Timeline::Home::Refinancing::TimelineFacade do
+  context 'when creating a record on the timeline' do
+    it 'calls the use case to create the record' do
+      record_data = {
+        comment: 'my timeline comment',
+        type: 'registry',
+        product_type: 'home_refi',
+        consultant_id: '8c9be081-d85c-4070-9c0c-9dd2993d9ffd',
+        lead_id: 'a584c7e5-4e23-43c0-921d-3cd2862a5771'
+      }
+      create_record = instance_spy(UseCase::Timeline::Home::Refinancing::CreateRecord)
+
+
+
+      expect(create_record).to have_received(:create_with).with(
+        have_attributes(record_data)
+      )
+    end
+  end
+end

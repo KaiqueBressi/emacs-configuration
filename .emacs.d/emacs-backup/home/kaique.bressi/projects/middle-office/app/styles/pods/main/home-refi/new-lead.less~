@@ -1,0 +1,7 @@
+.home-refi {
+  .ui.container {
+    .ui.header {
+      margin-top: 1rem;
+    }
+  }
+}

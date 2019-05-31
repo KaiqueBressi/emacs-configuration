@@ -1,0 +1,26 @@
+require 'api/json_api_parser'
+require 'use_case/legal_risk_analysis/analysis_structurings/commands/request_onus_requirement_cmd'
+require 'representers/legal_risk_analysis/analysis_structurings/requirement_representer'
+
+module Api
+  module LegalRiskAnalysis
+    module AnalysisStructurings
+      module Risks
+        module Onuses
+          module OnusRequirements
+            class V1 < Grape::API
+              parser :jsonapi, ::Api::JsonApiParser
+              version 'v1', using: :accept_version_header, strict: true, cascade: false
+
+              helpers do
+                def request_onus_requirement
+                  Main::ServiceRegistry[:request_onus_requirement]
+                end
+              end
+            end
+          end
+        end
+      end
+    end
+  end
+end

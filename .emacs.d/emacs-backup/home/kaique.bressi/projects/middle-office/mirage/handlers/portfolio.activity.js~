@@ -1,0 +1,13 @@
+export default function() {
+  this.get(
+    'portfolio/workflows/:workflowKey/operations/for-loan-operation-id/:loanOperationId/activities',
+    ({ portfolioOperations, portfolioActivities }, request) => {
+      const workflowKey = request.params.workflowKey;
+      const externalId = request.params.loanOperationId;
+
+      const operation = portfolioOperations.findBy({ workflowKey, externalId });
+
+      return portfolioActivities.where(activity => activity.operation.id == operation.id);
+    }
+  );
+}

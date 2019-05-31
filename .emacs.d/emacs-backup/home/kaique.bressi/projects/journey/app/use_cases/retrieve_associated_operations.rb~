@@ -1,0 +1,28 @@
+class RetrieveAssociatedOperations
+  def initialize(overrides = {})
+    @process_instance_api = overrides.fetch(:process_instance_api) { Camunda::Api::ProcessInstance.new }
+    @operations_adapter = overrides.fetch(:operations_adapater) { ::BPMAdapters::OperationsAdapter.new }
+  end
+
+  def perform(consultant_id:, task_instances_key: [])
+    query_params = build_query_parameters(consultant_id: consultant_id, task_instances_key: task_instances_key)
+
+    response = @process_instance_api.query(query_params).body
+    @operations_adapter.build_operation_attributes(response)
+  end
+
+  private
+
+  def build_query_parameters(consultant_id:, task_instances_key: [])
+    {
+      variables: [
+        {
+          name: 'processamento_assignee',
+          operator: 'eq',
+          value: consultant_id
+        }
+      ],
+      activityIdIn: task_instances_key
+    }
+  end
+end

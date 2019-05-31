@@ -1,0 +1,15 @@
+FROM gradle:5.3.1-jdk8
+
+USER root
+
+ENV APP_DIR /app
+RUN mkdir $APP_DIR
+WORKDIR $APP_DIR
+
+COPY ./build.gradle ./settings.gradle $APP_DIR/
+
+RUN gradle dependencies
+
+COPY . $APP_DIR
+
+RUN gradle build

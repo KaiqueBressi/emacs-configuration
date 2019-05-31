@@ -1,0 +1,7 @@
+import Component from '@ember/component';
+import { computed } from '@ember/object';
+import menuItems from 'middle-office/pods/components/app-layout/menu-items';
+
+export default Component.extend({
+  classNames: ['styleguide'],
+});

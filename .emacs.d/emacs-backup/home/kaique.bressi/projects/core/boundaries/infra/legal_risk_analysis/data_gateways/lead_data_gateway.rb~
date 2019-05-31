@@ -1,0 +1,11 @@
+require 'infra/database/sequel_connection'
+
+module Infra
+  module LegalRiskAnalysis
+    module DataGateways
+      class LeadDataGateway
+        include Infra::Database::SequelConnection
+      end
+    end
+  end
+end

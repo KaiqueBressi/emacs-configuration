@@ -1,0 +1,15 @@
+import Component from '@ember/component';
+import { computed } from '@ember/object';
+import menuItems from './menu-items';
+
+export default Component.extend({
+  tagName: '',
+
+  items: computed('tabMenuName', function() {
+    const tabMenuName = this.get('tabMenuName');
+
+    return menuItems[tabMenuName] || [];
+  }),
+
+  active: computed('Ember.getOwner(this).lookup('controller:application').currentPath')
+});

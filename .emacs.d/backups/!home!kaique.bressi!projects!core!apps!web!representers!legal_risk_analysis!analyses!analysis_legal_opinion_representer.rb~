@@ -1,0 +1,31 @@
+require 'api/json_api/explicit_routes'
+
+module Representers
+  module LegalRiskAnalysis
+    module Analyses
+      class AnalysisLegalOpinionRepresenter
+        include JSONAPI::Serializer
+        include Api::JsonApi::ExplicitRoutes
+
+        attribute :decision
+        attribute :justification
+        attribute :decided_at
+
+        def id
+          context.fetch(:analysis_structuring_id)
+        end
+
+        def type
+          'legal-risk-analysis analyses analysis-legal-opinion'
+        end
+
+        def link_routes(links)
+          links.add_self_link(
+            :legal_risk_analyses_analysis_legal_opinion,
+            id: context.fetch(:analysis_structuring_id)
+          )
+        end
+      end
+    end
+  end
+end

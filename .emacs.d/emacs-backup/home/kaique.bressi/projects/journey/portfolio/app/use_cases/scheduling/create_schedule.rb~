@@ -1,0 +1,10 @@
+
+
+
+    module Scheduling
+      class CreateSchedule
+        def execute
+
+        end
+      end
+    end

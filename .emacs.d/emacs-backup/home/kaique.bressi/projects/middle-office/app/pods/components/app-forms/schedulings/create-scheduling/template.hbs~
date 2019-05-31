@@ -1,0 +1,34 @@
+<div class="equal width fields">
+  <div class="ui two column grid">
+    {{#if feedbackMessage}}
+      <div class="row">
+        <div class="sixteen wide column">
+          {{ app-message feedbackMessage=feedbackMessage }}
+        </div>
+      </div>
+    {{/if}}
+
+    <div class="row">
+      <div class="column">
+        <div class="field">
+          <label>Data: </label>
+          {{app-datepicker date=date}}
+        </div>
+      </div>
+      <div class="column">
+        <div class="field">
+          <label>Hora: </label>
+          {{app-timepicker time=time}}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="actions">
+  <button class="ui red button">Cancelar</button>
+  <button class="ui green right labeled icon button">
+    Salvar
+    <i class="checkmark icon"></i>
+  </button>
+</div>

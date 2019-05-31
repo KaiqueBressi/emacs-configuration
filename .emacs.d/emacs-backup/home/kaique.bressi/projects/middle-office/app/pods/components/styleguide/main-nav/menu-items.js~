@@ -1,0 +1,29 @@
+import ENV from 'middle-office/config/environment';
+
+const menu = [
+  {
+    text: 'Minha Carteira',
+    route: '',
+    production: false,
+  },
+];
+
+const iconed = [
+  {
+    route: '',
+    production: false,
+    icon: 'styleguide-icons fa-user',
+  },
+];
+
+const filterProdItems = items => {
+  return ENV.APP.mdoFeatureFlag ? items : items.filter(item => item.production);
+};
+
+export const menuItems = filterProdItems(menu);
+export const iconedItems = filterProdItems(iconed);
+
+export default {
+  menuItems,
+  iconedItems,
+};

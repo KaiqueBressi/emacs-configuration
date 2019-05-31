@@ -1,0 +1,14 @@
+module Portfolio
+  class ActivityStatusEnum
+    include Ruby::Enum
+
+    def initialize
+      puts __caller__
+    end
+
+    define :IN_PROGRESS, 'in_progress'
+    define :DONE, 'done'
+    define :WAITING, 'waiting'
+    define :REFLOW, 'reflow'
+  end
+end

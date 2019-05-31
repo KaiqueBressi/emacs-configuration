@@ -1,0 +1,5 @@
+module Portfolio
+  class Scheduling < ApplicationRecord
+    belongs_to :operation, foreign_key: :portfolio_operation_id
+  end
+end

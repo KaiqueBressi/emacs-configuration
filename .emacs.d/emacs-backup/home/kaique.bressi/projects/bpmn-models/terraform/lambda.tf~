@@ -1,0 +1,34 @@
+provider "aws" {
+  skip_credentials_validation = true
+  skip_metadata_api_check     = true
+  s3_force_path_style         = true
+  access_key                  = "mock_access_key"
+  secret_key                  = "mock_secret_key"
+
+  endpoints {
+    lambda = "http://localhost:4574"
+  }
+}
+
+module "deploy_bpmn" {
+  source = "git@github.com:creditas/terraform-modules.git//lambda/edge?ref=0.7.3-beta"
+
+  name        = "${var.name}"
+  squad       = "${var.squad}"
+  owner       = "${var.owner}"
+  environment = "${var.environment}"
+  application = "${var.application}"
+
+  output_path             = "${path.module}/.zip/${var.name}.zip"
+  source_file_content     = "${file("${path.module}/../handler.js")}"
+  lambda_name             = "${var.environment}"
+  lambda_function_runtime = "node"
+  source_file_filename    = "handler.js"
+  lambda_function_handler = "handler.deployBpmn"
+}
+
+data "archive_file" "archive_file" {
+  type        = "zip"
+  output_path = "${path.module}/.zip/${var.name}.zip"
+  source_dir  = "${path.module}/../.deploy"
+}

@@ -1,0 +1,11 @@
+import Component from '@ember/component';
+import { reads } from '@ember/object/computed';
+import { get } from '@ember/object';
+
+export default Component.extend({
+  classNames: ['scheduling'],
+
+  actions: {
+    async onScheduling() {},
+  },
+});

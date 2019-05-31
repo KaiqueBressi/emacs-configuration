@@ -1,0 +1,35 @@
+import Ember from "ember";
+
+export async function getPqStatus(
+  maxRetries,
+  preQualificationModel,
+  checkAllApproved
+) {
+  let pqResults;
+  let retries = 0;
+
+  while (pqResults == null || pqResults.length === 0) {
+    if (retries++ > maxRetries) {
+      return "not-run";
+    }
+
+    if (retries > 1) {
+      await sleep(retries * 500);
+    }
+
+    pqResults = await this.hasMany(preQualificationModel).reload();
+  }
+
+  return checkAllApproved(pqResults) ? "approved" : "not-approved";
+}
+
+function sleep(ms) {
+  return new Ember.RSVP.Promise(resolve => {
+    if (Ember.testing) {
+      Ember.run.next(resolve);
+      return;
+    }
+
+    Ember.run.later(resolve, ms);
+  });
+}

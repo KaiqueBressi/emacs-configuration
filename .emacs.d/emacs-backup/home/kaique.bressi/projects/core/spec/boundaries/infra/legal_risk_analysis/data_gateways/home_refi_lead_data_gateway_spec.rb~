@@ -1,0 +1,20 @@
+require 'infra/legal_risk_analysis/data_gateways/lead_data_gateway'
+require 'infra/database/sequel_connection'
+require 'acceptance_helper'
+
+describe Infra::LegalRiskAnalysis::DataGateways::LeadDataGateway do
+  context 'when fetching the lead' do
+    it 'returns the lead given the analysis id' do
+      lead = FactoryBot.create(:crm_home_refi_lead, customer_id: FactoryBot.create(:crm_customer_account).id)
+      application = FactoryBot.create(:loan_home_refi_bkf_application, lead_id: lead.id)
+      legal_reference = FactoryBot.create(:persisted_legal_reference, application_id: application.id)
+      analysis_structuring = FactoryBot.create(:persisted_analysis_structuring, legal_reference: legal_reference)
+      analysis = FactoryBot.create(:persisted_analysis, analysis_structuring: analysis_structuring)
+      lead_data_gateway = described_class.new
+
+      returned_lead_id = lead_data_gateway.find_lead_id_by_analysis_id(analysis.id)
+
+      expect(returned_lead_id).to eq(lead.id)
+    end
+  end
+end

@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>E-mail Sob Recusa</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<style type="text/css">
+    /* CLIENT-SPECIFIC STYLES */
+    body, table, td, a{-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%;} /* Prevent WebKit and Windows mobile changing default text sizes */
+    table, td{mso-table-lspace: 0pt; mso-table-rspace: 0pt;} /* Remove spacing between tables in Outlook 2007 and up */
+    img{-ms-interpolation-mode: bicubic;} /* Allow smoother rendering of resized image in Internet Explorer */
+
+    /* RESET STYLES */
+    img{border: 0; height: auto; line-height: 100%; outline: none; text-decoration: none;}
+    table{border-collapse: collapse !important;}
+    body{height: 100% !important; margin: 0 !important; padding: 0 !important; width: 100% !important;}
+
+    /* iOS BLUE LINKS */
+    a[x-apple-data-detectors] {
+        color: inherit !important;
+        text-decoration: none !important;
+        font-size: inherit !important;
+        font-family: inherit !important;
+        font-weight: inherit !important;
+        line-height: inherit !important;
+    }
+
+    /* MOBILE STYLES */
+    @media screen and (max-width: 700px) {
+
+        /* ALLOWS FOR FLUID TABLES */
+        .wrapper {
+          width: 100% !important;
+            max-width: 100% !important;
+        }
+
+        /* ADJUSTS LAYOUT OF LOGO IMAGE */
+        .logo img {
+          margin: 0 auto !important;
+        }
+
+        /* USE THESE CLASSES TO HIDE CONTENT ON MOBILE */
+        .mobile-hide {
+          display: none !important;
+        }
+
+        .img-max {
+          max-width: 100% !important;
+          width: 100% !important;
+          height: auto !important;
+        }
+
+        /* FULL-WIDTH TABLES */
+        .responsive-table {
+          width: 100% !important;
+        }
+
+        /* UTILITY CLASSES FOR ADJUSTING PADDING ON MOBILE */
+        .padding {
+          padding: 10px 5% 15px 5% !important;
+        }
+
+        .padding-meta {
+          padding: 30px 5% 0px 5% !important;
+          text-align: center;
+        }
+
+        .padding-img {
+          padding: 30px 5% 0px 5% !important;
+        }
+
+        .no-padding {
+          padding: 0 !important;
+        }
+
+        .section-padding {
+          padding: 64px 50px !important;
+        }
+
+        /* ADJUST BUTTONS ON MOBILE */
+        .mobile-button-container {
+            margin: 0 auto;
+            width: 100% !important;
+        }
+
+        .mobile-button {
+            padding: 15px !important;
+            border: 0 !important;
+            font-size: 16px !important;
+            display: block !important;
+        }
+
+    }
+
+    /* ANDROID CENTER FIX */
+    div[style*="margin: 16px 0;"] { margin: 0 !important; }
+</style>
+</head>
+<body style="margin: 0 !important; padding: 0 !important;">
+
+<!-- HIDDEN PREHEADER TEXT -->
+<div style="display: none; font-size: 1px; color: #fefefe; line-height: 1px; font-family: Helvetica, Arial, sans-serif; max-height: 0px; max-width: 0px; opacity: 0; overflow: hidden;"></div>
+
+<!-- HEADER -->
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+    <tr>
+        <td align="center">
+            <!--[if (gte mso 9)|(IE)]>
+            <table align="center" border="0" cellspacing="0" cellpadding="0" width="700">
+            <tr>
+            <td align="center" valign="top" width="700">
+            <![endif]-->
+            <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 700px;" class="wrapper">
+                <tr>
+                    <td align="center" valign="top" style="padding: 0 50px;" class="logo">
+                        <img alt="Logo" src="https://fintech-email-marketing-images.s3.amazonaws.com/logo.jpg" width="569" height="191" style="display: block; font-family: Helvetica, Arial, sans-serif; color: #ffffff; font-size: 16px;" border="0">
+                    </td>
+                </tr>
+            </table>
+            <!--[if (gte mso 9)|(IE)]>
+            </td>
+            </tr>
+            </table>
+            <![endif]-->
+        </td>
+    </tr>
+    <tr>
+        <td bgcolor="#ffffff" align="center" style="padding: 64px 0 35px;" class="section-padding">
+            <!--[if (gte mso 9)|(IE)]>
+            <table align="center" border="0" cellspacing="0" cellpadding="0" width="700">
+            <tr>
+            <td align="center" valign="top" width="700">
+            <![endif]-->
+            <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width:700px;" class="responsive-table">
+                <tr>
+                    <td>
+                        <!-- HERO IMAGE -->
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                            <tr>
+                                <td style="font-size: 22px; font-family: Helvetica, Arial, sans-serif; color: #828496; padding: 0 60px;" class="padding">Olá, {{contact.firstname}}, tudo bem!
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                        <tr>
+                                            <td style="font-size: 28px; font-family: Helvetica, Arial, sans-serif; color: #22ee88; padding:30px 60px; line-height: 30px;" class="padding">
+                                                Novidade sobre seu pedido de empréstimo
+                                                <img src="https://fintech-email-marketing-images.s3.amazonaws.com/barra-div-.png" style="display: block; margin-top: 15px;" alt="">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="font-size: 24px; font-family: Helvetica, Arial, sans-serif; color: #22ee88; padding:0 60px 30px; line-height: 30px;" class="padding">
+                                                Analisamos seu pedido de empréstimo e, infelizmente, não conseguimos atender o imóvel colocado como garantia no momento.
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="font-size: 18px; font-family: Helvetica, Arial, sans-serif; color: #828496; padding:0 60px 25px 60px; line-height: 20px; text-align: justify;" class="padding">A análise passa por diversos fatores, como padrão construtivo, documentação, cidade e região. E seu imóvel da <strong>{{contact.endereco}}</strong> não foi aceito. :(</td>
+                                        </tr>
+                                        <tr>
+                                            <td bgcolor="#4499ee" style="font-size: 28px; font-family: Helvetica, Arial, sans-serif; color: #ffffff; text-align: center;padding:40px 60px 35px 60px;line-height: 36px;" class="padding">
+                                                Você ainda pode ter o empréstimo aprovado!
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td bgcolor="#4499ee" style="font-size: 16px; font-family: Helvetica, Arial, sans-serif; color: #ffffff; text-align: center; padding:0 60px 60px 60px;line-height: 22px;" class="padding">Se você tiver outro imóvel, pode tentar novamente e colocar ele como garantia. Outra forma é tentar o empréstimo com o bem que esteja no nome do seu cônjuge ou de um parente próximo, como pai, mãe, irmãos e filhos.
+                                                <div style="font-size: 15px; margin: 30px auto 0; width: 90%; font-family: Helvetica, Arial, sans-serif; color: #FFFFFF; border:1px solid; padding:15px; border-radius: 5px;">
+                                                    <div style="float: left; height: 100px; padding:0 20px 0 0;"><img src="https://fintech-email-marketing-images.s3.amazonaws.com/ico-info.png" alt=""></div>
+                                                    <p style=" margin:0; text-align:left;" ><strong>Quer mudar o bem dado como garantia?</strong><br>Responda este e-mail com o melhor dia e horário para conversarmos. :)</p>
+                                              </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="font-size: 18px; font-family: Helvetica, Arial, sans-serif; color: #828496; padding:30px 60px 25px 60px; line-height: 20px; text-align: justify;" class="padding">
+                                                <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                                    <tr>
+                                                        <td valign="middle">
+                                                          <a href="https://www.creditas.com.br/refinanciamento-veiculos"><img src="https://fintech-email-marketing-images.s3.amazonaws.com/ico-carro.png" alt="" style="display: inline-block;" width="150"></a>
+                                                        </td>
+                                                        <td>
+                                                            <span style="font-size: 24px; font-family: Helvetica, Arial, sans-serif; color: #22ee88; padding:30px 0 0 30px; display: inline-block;">Use seu carro como garantia</span>
+                                                            <span style="font-size: 16px; font-family: Helvetica, Arial, sans-serif; padding:15px 0 30px 30px; display: inline-block;">A Creditas também oferece o empréstimo com veículo em garantia. Se você possui um carro, pode fazer uma nova solicitação de crédito com este bem.</span>
+                                                            <a href="https://www.creditas.com.br/refinanciamento-veiculos" target="_blank" style="font-size: 15px; font-family: Helvetica, Arial, sans-serif; background-color: #ccff02; color: #003c3c; padding:0 60px 0 60px; line-height: 60px; border-radius: 5px; font-weight: bold; text-decoration: none; height: 60px; display: inline-block; text-align: center; width: 310px; margin-left: 30px;">SIMULAR COM CARRO EM GARANTIA</a>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td align="center" style="font-size: 18px; font-family: Helvetica, Arial, sans-serif; color: #828496; padding:30px 60px; font-weight: bold;" class="padding">Atenciosamente,</td>
+                                        </tr>
+                                        <tr>
+                                            <td align="center" style="font-size: 15px; font-family: Helvetica, Arial, sans-serif; color: #828496; padding:30px 60px 0 60px; line-height: 20px;" class="padding">
+                                                <a href="https://www.creditas.com.br/" target="_blank"><img alt="Creditas +55 11 3522-8009" src="https://fintech-email-marketing-images.s3.amazonaws.com/logo-creditas.jpg" width="141" height="47" style="display: block; font-family: Helvetica, Arial, sans-serif; color: #ffffff; font-size: 16px;" border="0"></a>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+            <!--[if (gte mso 9)|(IE)]>
+            </td>
+            </tr>
+            </table>
+            <![endif]-->
+        </td>
+    </tr>
+    <tr>
+        <td bgcolor="#FAFAFA" align="center" style="padding: 20px 15px 20px 15px;" class="section-padding">
+            <!--[if (gte mso 9)|(IE)]>
+            <table align="center" border="0" cellspacing="0" cellpadding="0" width="700">
+            <tr>
+            <td align="center" valign="top" width="700">
+            <![endif]-->
+            <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 700px;" class="responsive-table">
+                <tr>
+                    <td>
+                        <!-- TITLE SECTION AND COPY -->
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                            <tr>
+                                <td align="center" style="padding: 20px 0 20px 0; font-size: 16px; line-height: 25px; font-family: Helvetica, Arial, sans-serif; color: #828496;" class="padding"><img alt="Redes Sociais" src="https://fintech-email-marketing-images.s3.amazonaws.com/redes-sociais.gif" width="180" height="26" style="display: block; font-family: Helvetica, Arial, sans-serif; color: #ffffff; font-size: 16px;" border="0" usemap="#image-map2"></td>
+                            </tr>
+                            <tr>
+                                <td align="center" style="font-size: 16px; line-height: 25px; font-family: Helvetica, Arial, sans-serif; color: #828496;" class="padding">
+                                    <a href="https://play.google.com/store/apps/details?id=br.com.creditas.mobile"><img alt="Google Play" src="https://fintech-email-marketing-images.s3.amazonaws.com/googleplay.gif" width="126" height="42" style="font-family: Helvetica, Arial, sans-serif; color: #ffffff; font-size: 16px; margin-right: 10px;" border="0"></a>
+                                    <a href="https://itunes.apple.com/us/app/creditas/id1270180256?ls=1&mt=8"><img alt="Apple Store" src="https://fintech-email-marketing-images.s3.amazonaws.com/applestore.gif" width="127" height="42" style="font-family: Helvetica, Arial, sans-serif; color: #ffffff; font-size: 16px;" border="0"></a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="center" style="font-size: 12px; line-height: 15px; font-family: Helvetica, Arial, sans-serif; color: #828496; padding: 20px 15px;" class="padding">Nossa consulta financeira é totalmente gratuita. Não solicitamos nenhum tipo de depósito ou pagamento antecipado para aprovação da operação de empréstimo. Por razões de segurança, não enviamos e-mails com extensões (@gmail, @yahoo, @hotmail etc) apenas @creditas.com.br. A Creditas atua como correspondente bancário seguindo as normas definidas pelo Banco Central do Brasil na resolução 3.954/11. O www.creditas.com.br pertence à    <id="footer">
+            {{ site_settings.company_name }}&nbsp;
+            {{ site_settings.company_street_address_1 }}&nbsp;
+            {{ site_settings.company_street_address_2 }}&nbsp;
+            {{ site_settings.company_city }}&nbsp;
+            {{ site_settings.company_state }}&nbsp;
+            {{ site_settings.company_zip }}&nbsp;
+            {{ site_settings.company_country }}&nbsp;
+            <br/>
+
+            <a class="hubspot-mergetag" data-unsubscribe="true" href="{{ unsubscribe_link_all }}">Não quero mais receber e-mails</a>
+        </p>.</td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+            <!--[if (gte mso 9)|(IE)]>
+            </td>
+            </tr>
+            </table>
+            <![endif]-->
+        </td>
+    </tr>
+  </table>
+  <map name="image-map2">
+    <area target="_blank" alt="Facebook" title="Facebook" href="https://www.facebook.com/creditasbr" coords="13,13,11" shape="circle">
+    <area target="_blank" alt="Linkedin" title="Linkedin" href="https://www.linkedin.com/company/creditasbr/" coords="64,13,11" shape="circle">
+    <area target="_blank" alt="Instagram" title="Instagram" href="https://www.instagram.com/creditasbr/" coords="116,13,11" shape="circle">
+    <area target="_blank" alt="YouTube" title="YouTube" href="https://www.youtube.com/channel/UCt-q8pULaA9Fme4cVXcUAJw" coords="167,13,11" shape="circle">
+  </map>
+
+  <map name="Map">
+  <area shape="rect" coords="62,594,167,626" href="https://play.google.com/store/apps/details?id=br.com.creditas.mobile" target="_blank">
+  <area shape="rect" coords="187,592,292,627" href="https://itunes.apple.com/us/app/creditas/id1270180256?ls=1&mt=8" target="_blank">
+  </map>
+  </body>
+  </html>

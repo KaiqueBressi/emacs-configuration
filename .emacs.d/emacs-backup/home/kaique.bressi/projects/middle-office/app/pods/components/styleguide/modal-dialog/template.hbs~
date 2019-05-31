@@ -1,0 +1,19 @@
+{{#styleguide/styleguide-component shadowDom=shadowDom}}
+  {{#if isVisible}}
+    <div class="modal-dialog__overlay translucent" data-test-attribute="modal-dialog">
+      <div class="modal-dialog__content">
+        <header class="modal-dialog__head">
+          <button class="modal-dialog__close" type="button" onclick={{action 'closeModal'}}>
+            <img src="/svgs/icon-system-close.svg" class="modal-dialog__icon">
+          </button>
+        </header>
+
+        <div class="modal-dialog__body">
+          <h5 class="modal-dialog__title"> {{title}} </h5>
+
+          {{yield}}
+        </div>
+      </div>
+    </div>
+  {{/if}}
+{{/styleguide/styleguide-component}}

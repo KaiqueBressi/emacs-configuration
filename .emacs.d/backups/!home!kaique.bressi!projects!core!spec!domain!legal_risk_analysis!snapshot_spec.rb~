@@ -1,0 +1,269 @@
+require 'legal_risk_analysis/snapshot_visitor'
+
+describe LegalRiskAnalysis::SnapshotVisitor do
+  context 'when visiting a legal reference with a subject' do
+    it 'generates the snapshot with real estates' do
+      real_estate = FactoryBot.build(
+        :legal_risk_analysis_real_estate,
+        id: '12f4fe6b-7b75-4b34-8719-dec1e7cfc2e7',
+        street: 'Rua João Vicente da Fonseca',
+        number: '100',
+        complement: 'Proximo a praça do costinha',
+        neighborhood: 'Pq São Rafael',
+        city: 'São Paulo',
+        state: 'SP',
+        zip_code: '08320310'
+      )
+      legal_reference = FactoryBot.build(:legal_risk_analysis_legal_reference, real_estates: [real_estate])
+      snapshot_visitor = described_class.new
+
+      legal_reference.accept(snapshot_visitor)
+      result = snapshot_visitor.result
+
+      expect(result).to contain_exactly(
+        type: 'RealEstate',
+        id: '12f4fe6b-7b75-4b34-8719-dec1e7cfc2e7',
+        address: {
+          street: 'Rua João Vicente da Fonseca',
+          number: '100',
+          complement: 'Proximo a praça do costinha',
+          neighborhood: 'Pq São Rafael',
+          city: 'São Paulo',
+          state: 'SP',
+          zip_code: '08320310'
+        },
+        onuses: []
+      )
+    end
+
+    it 'generates the snapshot with natural persons' do
+      natural_person = FactoryBot.build(
+        :legal_risk_analysis_natural_person,
+        id: 'e0965f96-531a-4ee9-86b7-c015854bc6f1',
+        full_name: 'Joãozinho',
+        cpf: '46565500936',
+        birth_date: Date.new(2015, 10, 10),
+        marital_status: ::LegalRiskAnalysis::LegalReferences::NaturalPersons::MaritalStatus::SINGLE,
+        residence_state: 'SP',
+        residence_city: 'São Paulo',
+        professional_situation:
+          ::LegalRiskAnalysis::LegalReferences::NaturalPersons::ProfessionalSituation::BUSINESSMAN,
+        real_estate_owner: true
+      )
+      legal_reference = FactoryBot.build(:legal_risk_analysis_legal_reference, natural_persons: [natural_person])
+      snapshot_visitor = described_class.new
+
+      legal_reference.accept(snapshot_visitor)
+      result = snapshot_visitor.result
+
+      expect(result).to contain_exactly(
+        type: 'NaturalPerson',
+        id: 'e0965f96-531a-4ee9-86b7-c015854bc6f1',
+        full_name: 'Joãozinho',
+        cpf: '46565500936',
+        birth_date: Date.new(2015, 10, 10),
+        marital_status: ::LegalRiskAnalysis::LegalReferences::NaturalPersons::MaritalStatus::SINGLE,
+        residence_state: 'SP',
+        residence_city: 'São Paulo',
+        professional_situation:
+          ::LegalRiskAnalysis::LegalReferences::NaturalPersons::ProfessionalSituation::BUSINESSMAN,
+        real_estate_owner: true,
+        onuses: []
+      )
+    end
+
+    it 'generates the snapshot with juridical persons' do
+      juridical_person = FactoryBot.build(
+        :legal_risk_analysis_juridical_person,
+        id: '90562592-0974-4a6f-9b67-cea75e6eaa13',
+        cnpj: '82636264000109',
+        company_name: 'Creditas Ltda',
+        start_date: Date.new(2000, 12, 30),
+        registration_status: 'active',
+        city: 'São Paulo',
+        state: 'SP'
+      )
+      legal_reference = FactoryBot.build(:legal_risk_analysis_legal_reference, juridical_persons: [juridical_person])
+      snapshot_visitor = described_class.new
+
+      legal_reference.accept(snapshot_visitor)
+      result = snapshot_visitor.result
+
+      expect(result).to contain_exactly(
+        type: 'JuridicalPerson',
+        id: '90562592-0974-4a6f-9b67-cea75e6eaa13',
+        cnpj: '82636264000109',
+        company_name: 'Creditas Ltda',
+        start_date: Date.new(2000, 12, 30),
+        registration_status: 'active',
+        city: 'São Paulo',
+        state: 'SP',
+        onuses: []
+      )
+    end
+  end
+
+  context 'when visiting a analysis structuring with onuses' do
+    it 'generates the snapshot with basic debts' do
+      real_estate = FactoryBot.build(:legal_risk_analysis_real_estate)
+      legal_reference = FactoryBot.build(:legal_risk_analysis_legal_reference, real_estates: [real_estate])
+      basic_debt = FactoryBot.build(
+        :legal_risk_analysis_structuring_basic_debt,
+        id: 'cc686926-e942-4197-8a25-cefb6003805d',
+        identifier: 'IPTU',
+        value: 1000
+      )
+      analysis_structuring = FactoryBot.build(:legal_risk_analysis_structuring, :with_risks,
+                                              legal_reference: legal_reference)
+      risk = analysis_structuring.risks.sample
+      analysis_structuring.add_onus(risk.id, basic_debt)
+      snapshot_visitor = described_class.new
+
+      legal_reference.accept(snapshot_visitor)
+      analysis_structuring.accept(snapshot_visitor)
+      result = snapshot_visitor.result
+
+      expect(result).to contain_exactly(include(
+        type: 'RealEstate',
+        id: real_estate.id,
+        onuses: [
+          {
+            type: 'BasicDebt',
+            id: 'cc686926-e942-4197-8a25-cefb6003805d',
+            identifier: 'IPTU',
+            value: 1000
+          }
+        ]
+      ))
+    end
+
+    it 'generates the snapshot with lawsuits' do
+      real_estate = FactoryBot.build(:legal_risk_analysis_real_estate)
+      legal_reference = FactoryBot.build(:legal_risk_analysis_legal_reference, real_estates: [real_estate])
+      lawsuit = FactoryBot.build(
+        :legal_risk_analysis_structuring_lawsuit,
+        id: 'cc686926-e942-4197-8a25-cefb6003805d',
+        identifier: 'Processo 08123001230123',
+        value: 1000,
+        type: 'Ação de Execução Fiscal',
+        status: ::LegalRiskAnalysis::AnalysisStructurings::Onuses::LawsuitStatus::ACTIVE,
+        plaintiff: 'Fulano',
+        defendant: 'Ciclano'
+      )
+      analysis_structuring = FactoryBot.build(:legal_risk_analysis_structuring, :with_risks,
+                                              legal_reference: legal_reference)
+      risk = analysis_structuring.risks.sample
+      analysis_structuring.add_onus(risk.id, lawsuit)
+      snapshot_visitor = described_class.new
+
+      legal_reference.accept(snapshot_visitor)
+      analysis_structuring.accept(snapshot_visitor)
+      result = snapshot_visitor.result
+
+      expect(result).to contain_exactly(include(
+        type: 'RealEstate',
+        id: real_estate.id,
+        onuses: [
+          {
+            type: 'Lawsuit',
+            id: 'cc686926-e942-4197-8a25-cefb6003805d',
+            identifier: 'Processo 08123001230123',
+            value: 1000,
+            lawsuit_type: 'Ação de Execução Fiscal',
+            status: ::LegalRiskAnalysis::AnalysisStructurings::Onuses::LawsuitStatus::ACTIVE,
+            plaintiff: 'Fulano',
+            defendant: 'Ciclano'
+          }
+        ]
+      ))
+    end
+
+    it 'generates the snapshot with condominium debts' do
+      real_estate = FactoryBot.build(:legal_risk_analysis_real_estate)
+      legal_reference = FactoryBot.build(:legal_risk_analysis_legal_reference, real_estates: [real_estate])
+      installment_plan = FactoryBot.build(
+        :legal_risk_analysis_installment_plan,
+        installment_amount: 1000,
+        total_number_of_installments: 20,
+        number_of_paid_installments: 10
+      )
+      condominium_debt = FactoryBot.build(
+        :legal_risk_analysis_structuring_condominium_debt,
+        id: 'aeb37944-2265-4091-bd68-fc4e3d9fa8ec',
+        value: 1000,
+        oldest_overdue_installment: Date.new(2014, 10, 10),
+        installment_plan: installment_plan
+      )
+      analysis_structuring = FactoryBot.build(:legal_risk_analysis_structuring, :with_risks,
+                                              legal_reference: legal_reference)
+      risk = analysis_structuring.risks.sample
+      analysis_structuring.add_onus(risk.id, condominium_debt)
+      snapshot_visitor = described_class.new
+
+      legal_reference.accept(snapshot_visitor)
+      analysis_structuring.accept(snapshot_visitor)
+      result = snapshot_visitor.result
+
+      expect(result).to contain_exactly(include(
+        type: 'RealEstate',
+        id: real_estate.id,
+        onuses: [
+          {
+            type: 'CondominiumDebt',
+            id: 'aeb37944-2265-4091-bd68-fc4e3d9fa8ec',
+            value: 1000,
+            oldest_overdue_installment: Date.new(2014, 10, 10),
+            installment_amount: 1000,
+            total_number_of_installments: 20,
+            number_of_paid_installments: 10
+          }
+        ]
+      ))
+    end
+  end
+
+  context 'when visiting a analysis with onuses legal opinion' do
+    it 'generates the snapshot with the onus legal opinion' do
+      legal_reference = build_legal_reference
+      analysis_structuring = FactoryBot.build(:legal_risk_analysis_structuring, :with_risks,
+                                              legal_reference: legal_reference)
+      onus = build_onus_in_analysis_structuring(analysis_structuring)
+      onus_legal_opinion = FactoryBot.build(
+        :legal_risk_analysis_analyses_onus_legal_opinion,
+        onus_id: onus.id,
+        brings_risk: true,
+        justification: 'Dívida pode recair sobre o imóvel'
+      )
+      analysis = FactoryBot.build(:legal_risk_analysis_analyses_analysis,
+                                  :with_onus_legal_opinion, onus_legal_opinion: onus_legal_opinion)
+      snapshot_visitor = described_class.new
+
+      legal_reference.accept(snapshot_visitor)
+      analysis_structuring.accept(snapshot_visitor)
+      analysis.accept(snapshot_visitor)
+      result = snapshot_visitor.result
+
+      expect(result).to contain_exactly(include(
+        onuses: contain_exactly(include(
+          {
+            id: onus.id,
+            brings_risk: true,
+            justification: 'Dívida pode recair sobre o imóvel'
+          }
+        ))
+      ))
+    end
+  end
+
+  def build_legal_reference
+    real_estate = FactoryBot.build(:legal_risk_analysis_real_estate)
+    FactoryBot.build(:legal_risk_analysis_legal_reference, real_estates: [real_estate])
+  end
+
+  def build_onus_in_analysis_structuring(analysis_structuring)
+    onus = FactoryBot.build(:legal_risk_analysis_structuring_basic_debt)
+    risk = analysis_structuring.risks.sample
+    analysis_structuring.add_onus(risk.id, onus)
+    onus
+  end
+end

@@ -1,0 +1,17 @@
+class SendPreLaudoEmailWorker
+  include Sidekiq::Worker
+
+  def initialize(core_gateway: nil, hermes_gateway: nil)
+    @core_gateway = core_gateway || ::Web::Core::Gateway.new
+    @hermes_gateway = hermes_gateway || ::Web::Hermes::Gateway.new
+  end
+
+  def perform(pre_laudo_decision, application_id)
+    return unless pre_laudo_decision == 'REJECTED'
+
+    requester = @core_gateway.requester_from(application_id: application_id)
+    contact_email = requester['data']['attributes']['contact-email']
+
+    @hermes_gateway.send_email(contact_email)
+  end
+end

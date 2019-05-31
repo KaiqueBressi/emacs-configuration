@@ -1,0 +1,16 @@
+#Configure here general information about the environment, such as SonarQube server connection details for example
+#No information about specific project should appear here
+
+#----- Default SonarQube server
+#sonar.host.url=http://localhost:9000
+
+#----- Default source code encoding
+#sonar.sourceEncoding=UTF-8
+
+sonar.projectBaseDir=/home/kaique.bressi/projects/core
+sonar.cobol.copy.directories=/copy
+sonar.projectKey=sonar-qube-core-key
+sonar.projectName=Core
+sonar.projectVersion=1.0
+sonar.sources=.
+sonar.sourceEncoding=UTF-8

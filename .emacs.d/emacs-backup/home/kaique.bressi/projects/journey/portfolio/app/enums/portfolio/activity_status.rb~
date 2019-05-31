@@ -1,0 +1,10 @@
+module Portfolio
+  module ActivityStatus
+    include Ruby::Enum
+
+    define :IN_PROGRESS, 'in_progress'
+    define :DONE, 'done'
+    define :WAITING, 'waiting'
+    define :REFLOW, 'reflow'
+  end
+end

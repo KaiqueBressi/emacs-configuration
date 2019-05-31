@@ -1,0 +1,29 @@
+{{#styleguide/styleguide-component}}
+  <div class="main-nav">
+    <div class="container">
+      <div class="main-nav__logo">
+        {{#link-to "index" title="creditas"}}
+          <img src="/images/logo-header.png" alt="Logo Creditas" width="121">
+        {{/link-to}}
+      </div>
+
+      <ul class="main-nav__action-list ">
+        {{#each menuItems as |menuItem| }}
+          <li> {{ link-to menuItem.text menuItem.route}} </li>
+        {{/each}}
+      </ul>
+
+      <ul class="main-nav__action-list main-nav__action-list--iconed">
+        {{#each iconedItems as |iconedItem| }}
+          <li>
+            {{#link-to iconedItem.route }}
+              <span>
+                <i class={{iconedItem.icon}}></i>
+              </span>
+            {{/link-to}}
+          </li>
+        {{/each}}
+      </ul>
+    </div>
+  </div>
+{{/styleguide/styleguide-component}}

@@ -1,0 +1,5 @@
+require 'legal_risk_analayis/snapshot_visitor'
+
+FactoryBot.define do
+  factory :legal_risk_analysis_snapshot_visitor, class: 'LegalRiskAnalysis::SnapshotVisitor'
+end

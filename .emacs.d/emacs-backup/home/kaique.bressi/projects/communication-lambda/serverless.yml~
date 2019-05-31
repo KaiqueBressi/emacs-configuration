@@ -1,0 +1,16 @@
+service: communication-lambda
+
+plugins:
+  - serverless-dotenv-plugin
+provider:
+  name: aws
+  runtime: nodejs10.x
+  stage: ${opt:stage, 'development'}
+
+functions:
+  fetchCommunicationTasks:
+    handler: src/handler.fetchCommunicationTasks
+    events:
+      - http:
+          path: fetch-communication-tasks
+          method: get

@@ -1,0 +1,6 @@
+#!/bin/ruby
+
+require 'octokit'
+
+puts "teste"
+client = Octokit::Client.new(:access_token => ENV['GITHUB_TOKEN'])

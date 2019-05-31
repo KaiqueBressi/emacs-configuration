@@ -1,0 +1,34 @@
+<div class="search">
+  <div class="ui grid search__header">
+    <div class="ui container main_header">
+      <div class="ui grid segment">
+        <div class="eight wide column">
+          {{customer-search-form value=search on-search=(action (mut _customersPromise))}}
+        </div>
+
+        <div class="eight wide column">
+          {{link-to
+            "Criar novo lead"
+            "lead.home-refi"
+            (query-params cpf=_searchedCpf)
+            class="green small right floated ui button nowrap"}}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ui container search__result">
+    {{#if _customersPromise}}
+      {{customers-leads
+        class="ui grid segment"
+        leads='home-refi'
+        customersPromise=_customersPromise}}
+    {{else}}
+      <div class="ui grid segment">
+        <div class="computer only row centered search__result--empty">
+          Busque um cliente por email ou CPF para exibir resultados
+        </div>
+      </div>
+    {{/if}}
+  </div>
+</div>

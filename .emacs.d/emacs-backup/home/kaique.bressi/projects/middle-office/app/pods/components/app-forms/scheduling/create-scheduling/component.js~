@@ -1,0 +1,28 @@
+import Component from '@ember/component';
+import { notEmpty } from '@ember/object/computed';
+
+export default Component.extend({
+  classNames: ['create-scheduling-form'],
+  hasErrorMessage: notEmpty('errorMessage'),
+
+  parseDateTime() {
+    const parsedDate = moment(this.get('date')).format('DD/MM/YYYY');
+    const parsedTime = moment(this.get('time')).format('HH:mm');
+    const dateTime = moment(`${parsedDate} ${parsedTime}`, 'DD/MM/YYYY HH:mm');
+
+    if (dateTime.isValid()) {
+      return dateTime.utc().toDate();
+    }
+
+    return null;
+  },
+
+  actions: {
+    onSave(createScheduling) {
+      const dueTime = this.parseDateTime();
+      const comment = this.get('comment');
+
+      createScheduling(dueTime, comment);
+    },
+  },
+});

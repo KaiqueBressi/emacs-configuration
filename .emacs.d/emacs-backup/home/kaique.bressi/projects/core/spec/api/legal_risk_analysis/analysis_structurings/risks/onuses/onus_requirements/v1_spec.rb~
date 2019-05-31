@@ -1,0 +1,61 @@
+require 'acceptance_helper'
+
+describe Api::LegalRiskAnalysis::AnalysisStructurings::Risks::Onuses::OnusRequirements::V1 do
+  before do
+    header 'Accept-Version', 'v1'
+    header 'Content-Type', 'application/vnd.api+json'
+  end
+
+  context 'POST /legal-risk-analysis/analysis-structurings/onus-requirements' do
+    it 'creates the requirement associated with the onus' do
+      authenticate_consultant_user
+      onus_requirement_self_link = get_onus_requirement_link
+
+      post onus_requirement_self_link
+
+      response = JSON.parse(last_response.body)
+      expect(last_response).to have_http_status(201)
+      expect(response['data']['id']).not_to be_empty
+    end
+  end
+
+  def get_onus_requirement_link
+    analysis_structuring = FactoryBot.create(:persisted_analysis_structuring, :with_risks)
+    risk = analysis_structuring.risks.sample
+    params = { analysis_structuring_id: analysis_structuring.id, risk_id: risk.id }
+
+    post '/legal-risk-analysis/analysis-structurings/lawsuits', JSON.dump(post_params(params))
+
+    response.dig('data', 'links', 'related', 'onus-requirement')
+  end
+
+  def onus_post_params(params = {})
+    {
+      'data' => {
+        'type' => 'legal-risk-analysis analysis-structurings lawsuits',
+        'attributes' => {
+          'identifier' => 'identificador da dívida',
+          'value' => '20000',
+          'type' => 'Ação de Execução Fiscal',
+          'status' => LegalRiskAnalysis::AnalysisStructurings::Onuses::LawsuitStatus::ACTIVE,
+          'plaintiff' => 'foo',
+          'defendant' => 'bar'
+        },
+        'relationships' => {
+          'risk' => {
+            'data' => {
+              'type' => 'legal-risk-analysis analysis-structurings risks',
+              'id' => params[:risk_id]
+            }
+          },
+          'analysis-structuring' => {
+            'data' => {
+              'type' => 'legal-risk-analysis analysis-structurings',
+              'id' => params[:analysis_structuring_id]
+            }
+          }
+        }
+      }
+    }
+  end
+end

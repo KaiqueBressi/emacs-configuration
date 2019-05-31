@@ -1,0 +1,102 @@
+("use strict");
+
+const authenticate = require("./authentication_service");
+const { Kafka } = require("kafkajs");
+const uuid = require("uuid/v4");
+
+class ExternalTask {
+  constructor(kafkaProducer, httpRequester) {
+    this.httpRequester = httpRequester;
+    this.kafkaProducer = kafkaProducer;
+  }
+
+  async handleCommunicationTasks() {
+    await this.httpRequester
+      .post("/api/v1/orchestration/external-activities/lock", {
+        worker_id: process.env.CLIENT_ID,
+        limit: 10,
+        topics: [
+          {
+            name: process.env.EXTERNAL_TASK_TOPIC_NAME,
+            duration: 1000
+          }
+        ]
+      })
+      .then(async response => {
+        await this.processTask(response.data.data);
+      });
+  }
+
+  async processTask(data) {
+    for (let externalTask of data) {
+      await this.sendToKafka(externalTask);
+
+      this.completeTask(externalTask.id);
+    }
+  }
+
+  async sendToKafka(externalTask) {
+    await this.kafkaProducer.send({
+      topic: process.env.KAFKA_PRODUCER_TOPIC,
+      messages: [
+        {
+          value: JSON.stringify({
+            metadata: {
+              timestamp: new Date(),
+              name: externalTask.attributes["activity-key"],
+              uuid: uuid()
+            },
+            ...externalTask.attributes["decision-variables"]
+          })
+        }
+      ]
+    });
+  }
+
+  async completeTask(taskId) {
+    await this.httpRequester.post(
+      `/api/v1/orchestration/external-activities/${taskId}/complete`,
+      {
+        worker_id: process.env.CLIENT_ID
+      }
+    );
+  }
+}
+
+async function fetchCommunicationTasks(event, context, callback) {
+  const kafka = new Kafka({
+    clientId: process.env.CLIENT_ID,
+    brokers: [process.env.KAFKA_BROKERS]
+  });
+
+  const kafkaProducer = kafka.producer();
+  await kafkaProducer.connect();
+
+  await authenticate(async httpRequester => {
+    const externalTask = new ExternalTask(kafkaProducer, httpRequester);
+
+    await externalTask.handleCommunicationTasks();
+  });
+}
+
+module.exports = { fetchCommunicationTasks };
+
+// async createProcessInstance() {
+//   await this.httpRequester.post("/api/v1/orchestration/operations/start", {
+//     id: 90000,
+//     workflow_key: "FluxoHome",
+//     decision_variables: {
+//       serasa_score: { value: 900 },
+//       processing_probability: { value: 100 },
+//       family_monthly_income: { value: 100000 },
+//       real_estate_type: { value: "house" },
+//       real_estate_state: { value: "SP" },
+//       loan_amount: { value: 40000 },
+//       professional_status: { value: "clt" },
+//       real_estate_city: { value: "São Paulo" },
+//       geodeath_decision: { value: "G" },
+//       source: { value: "online-affiliate" },
+//       processamento_assignee: { value: "assignee" }
+//     }
+//   });
+// }

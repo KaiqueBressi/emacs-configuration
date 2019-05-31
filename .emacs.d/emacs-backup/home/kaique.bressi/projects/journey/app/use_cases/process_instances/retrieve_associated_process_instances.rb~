@@ -1,0 +1,28 @@
+module ProcessInstances
+  class RetrieveAssociatedProcessInstances
+    def initialize(overrides = {})
+      @process_instance_api = overrides.fetch(:process_instance_api) { Camunda::Api::ProcessInstance.new }
+    end
+
+    def perform(consultant_id:, task_instances_key: [])
+      query_params = build_query_parameters(consultant_id: consultant_id, task_instances_key: task_instances_key)
+
+      @process_instance_api.query(query_params)
+    end
+
+    private
+
+    def build_query_parameters(consultant_id:, task_instances_key: [])
+      {
+        variables: [
+          {
+            name: 'processamento_assignee',
+            operator: 'eq',
+            value: consultant_id
+          }
+        ],
+        activityIdIn: task_instances_key
+      }
+    end
+  end
+end

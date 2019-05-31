@@ -1,0 +1,17 @@
+# frozen_string_literal: true
+
+require 'rubocop/cop/creditas/form_object'
+
+RSpec.describe RuboCop::Cop::Creditas::FormObject do
+  subject(:cop) { described_class.new(config) }
+
+  let(:config) { RuboCop::Config.new }
+
+  it 'registers an offense when using `#FormObject`' do
+    expect_offense(<<-RUBY.strip_indent)
+      module FormObject
+      ^^^^^^^^^^^^^^^^^ You should be using Commands instead of #FormObject.
+      end
+    RUBY
+  end
+end

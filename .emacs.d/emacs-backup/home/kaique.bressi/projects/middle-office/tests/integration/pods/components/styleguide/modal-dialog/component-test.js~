@@ -1,0 +1,45 @@
+import { setupComponentTest } from 'ember-mocha';
+import { expect } from 'chai';
+import { context, describe, it } from 'mocha';
+import hbs from 'htmlbars-inline-precompile';
+import { run } from '@ember/runloop';
+import td from 'testdouble';
+
+describe('Integration | Component | styleguide/modal-dialog', function() {
+  setupComponentTest('styleguide/modal-dialog', {
+    integration: true,
+  });
+
+  context('when rendering a modal dialog', function() {
+    it('is automatically closed when the isVisible is set to false', function() {
+      this.set('isVisible', true);
+
+      this.render(hbs`
+        {{styleguide/modal-dialog isVisible=isVisible shadowDom=false}}
+      `);
+
+      this.set('isVisible', false);
+      const modalDialog = this.$('[data-test-attribute="modal-dialog"]').get(0);
+      expect(modalDialog).to.be.undefined;
+    });
+
+    it('removes the scrolling capability from screen', async function() {
+      this.render(hbs`
+        {{styleguide/modal-dialog isVisible=true shadowDom=false}}
+      `);
+
+      const body = this.$(document.body);
+      const overflow = body.css('overflow');
+      expect(overflow).to.eql('hidden');
+    });
+
+    it('executes onClose function when the modal is closed', function() {
+      const onClose = td.function();
+      this.set('onClose', onClose);
+
+      this.render(hbs`
+        {{styleguide/modal-dialog isVisible=true onClose=onClose shadowDom=false}}
+      `);
+    });
+  });
+});

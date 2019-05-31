@@ -1,0 +1,17 @@
+module LegalRiskAnalysis
+  module AnalysisStructurings
+    module Onuses
+      class Onus
+        attr_reader :requirements
+
+        def requirements
+          @requirements ||= []
+        end
+
+        def add_requirement(onus_requirement)
+          requirements << onus_requirement
+        end
+      end
+    end
+  end
+end

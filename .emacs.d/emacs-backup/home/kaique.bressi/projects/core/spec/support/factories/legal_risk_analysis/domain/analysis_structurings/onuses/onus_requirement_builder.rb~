@@ -1,0 +1,9 @@
+require 'legal_risk_analysis/analysis_structurings/onuses/onus_requirement'
+
+FactoryBot.define do
+  factory :legal_risk_analysis_structurings_onus_requirement,
+    class: 'LegalRiskAnalysis::AnalysisStructurings::Onuses::OnusRequirement' do
+
+    sequence(:requirement_id) { :requirement_id }
+  end
+end

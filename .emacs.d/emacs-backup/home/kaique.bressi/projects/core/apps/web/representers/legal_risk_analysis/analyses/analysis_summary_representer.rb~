@@ -1,0 +1,20 @@
+require 'api/json_api/explicit_routes'
+
+module Representers
+  module LegalRiskAnalysis
+    module Analyses
+      class AnalysisSummary
+        include JSONAPI::Serializer
+        include Api::JsonApi::ExplicitRoutes
+
+        def type
+          'legal-risk-analysis analyses analysis-summary'
+        end
+
+        def link_routes(links)
+
+        end
+      end
+    end
+  end
+end

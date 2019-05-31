@@ -1,0 +1,1 @@
+FROM lambci/lambda:nodejs10.x

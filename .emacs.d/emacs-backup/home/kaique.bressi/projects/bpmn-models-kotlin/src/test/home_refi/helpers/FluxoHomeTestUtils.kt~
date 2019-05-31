@@ -1,0 +1,72 @@
+package home_refi.tests.helpers
+
+import org.camunda.bpm.engine.runtime.ProcessInstance
+import org.camunda.bpm.engine.task.Task
+import org.camunda.bpm.engine.test.assertions.ProcessEngineTests.*
+
+class FluxoHomeTestUtils {
+    fun startProcess(variables: Map<String, Object>): ProcessInstance {
+        return runtimeService().startProcessInstanceByKey("FluxoHome", variables)
+    }
+
+    fun defaultVariables(): Map<String, Object> {
+        val variables = HashMap<String, Object>()
+
+        variables.put("loan_amount", 40000)
+        variables.put("source", "creditas")
+        variables.put("real_estate_city", "São Paulo")
+        variables.put("processing_probability", 0.485)
+        variables.put("real_estate_state", "SP")
+        variables.put("real_estate_type", "house")
+        variables.put("family_monthly_income", 20000)
+        variables.put("serasa_score", 500)
+        variables.put("geodeath_decision", "R")
+        variables.put("professional_status", "clt")
+
+        return variables
+    }
+
+    fun greenLineVariables(): Map<String, Object> {
+        val variables = defaultVariables()
+        variables.put("loan_amount", 40000)
+        variables.put("real_estate_type", "apartment")
+
+        return variables
+    }
+
+    fun variablesForPreLaudoStart(): Map<String, Object> {
+        val variables = defaultVariables()
+        variables.put("loan_amount", 40000)
+        variables.put("source", "online-affiliate")
+        variables.put("geodeath_decision", "G")
+        return variables
+    }
+
+
+    fun variablesForTrocaImovelStart(): Map<String, Object> {
+        val variables = variablesForPreLaudoStart()
+        variables.put("geodeath_decision", "R")
+        return variables
+    }
+
+    fun offlineVariables(): Map<String, Object> {
+        val variables = defaultVariables()
+        variables.put("source", "offline-affiliate")
+        return variables
+    }
+
+    @JvmOverloads
+    fun completeTaskByDefinitionKey(definitionKey: String, variables: Map<String, Object> = HashMap<String, Object>()) {
+        complete(getTaskByDefinitionKey(definitionKey), variables)
+    }
+
+    fun completePreLaudoTask(evaluationResult: String) {
+        val preLaudoVariables = HashMap<String, Object>()
+        preLaudoVariables.put("property_evaluation", evaluationResult)
+        completeTaskByDefinitionKey("PreLaudo", preLaudoVariables)
+    }
+
+    private fun getTaskByDefinitionKey(definitionKey: String): Task {
+        return taskQuery().taskDefinitionKey(definitionKey).singleResult()
+    }
+}

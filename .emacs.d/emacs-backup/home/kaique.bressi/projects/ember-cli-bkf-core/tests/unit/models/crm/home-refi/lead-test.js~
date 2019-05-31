@@ -1,0 +1,48 @@
+import { expect } from "chai";
+import { describe, beforeEach, context, it } from "mocha";
+import { setupModelTest } from "ember-mocha";
+import Ember from "ember";
+import td from "testdouble";
+
+import { MAX_RETRIES } from "ember-cli-bkf-core/models/crm/home-refi/lead";
+
+describe("Model: crm/home-refi/lead", () => {
+  setupModelTest("crm/home-refi/lead", { integration: true });
+  let store;
+
+  beforeEach(function() {
+    store = Ember.getOwner(this).lookup("service:store");
+  });
+
+  describe(".pqResult()", () => {
+    beforeEach(function() {
+      this.createLead = createLead.bind(this);
+    });
+
+    it("returns status = approved if there are both PENDING and APPROVED reports", async function() {
+      const reports = pqReports([
+        { status: "approved" },
+        { status: "pending" }
+      ]);
+      const lead = this.createLead();
+
+      const result = await lead.pqResult();
+      expect(result.status).to.eql("approved");
+    });
+
+    function pqReports(reports) {
+      let result;
+      Ember.run(() => {
+        result = reports.map(report => {
+          return store.createRecord("engine/auto-refi/report", report);
+        });
+      });
+
+      return result;
+    }
+  });
+});
+
+function createLead(attrs) {
+  return this.subject(...attrs);
+}

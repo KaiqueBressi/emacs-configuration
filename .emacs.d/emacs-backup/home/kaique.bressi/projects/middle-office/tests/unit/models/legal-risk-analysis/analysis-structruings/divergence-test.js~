@@ -1,0 +1,39 @@
+import { expect } from 'chai';
+import { describe, it, context, beforeEach } from 'mocha';
+import { setupModelTest } from 'ember-mocha';
+import { getOwner } from '@ember/application';
+import { run } from '@ember/runloop';
+
+describe('Unit | Model | legal-risk-analysis/analysis-structurings/divergence', function() {
+  setupModelTest('legal-risk-analysis/analysis-structurings/divergence', {
+    integration: true,
+  });
+
+  beforeEach(function() {
+    this.buildRisk = buildRisk.bind(this);
+  });
+
+  describe('.selectDefaultRisk', function() {
+    context('when given a risk list', function() {
+      it('selects the registration annotation risk', function() {
+        const risk = this.buildRisk({ name: 'iptu' })
+        const risk2 = this.buildRisk({ name: 'registration_annotation' })
+        const divergence = this.subject();
+
+        run(() => {
+          divergence.selectDefaultRisk([risk, risk2])
+        });
+
+        expect(divergence.get('risk').get('name')).to.eql('registration_annotation')
+      });
+    });
+  });
+});
+
+function buildRisk(attributes) {
+  const store = getOwner(this).lookup('service:store');
+
+  return run(() => {
+    return store.createRecord('legal-risk-analysis/analysis-structurings/risk', attributes);
+  });
+}

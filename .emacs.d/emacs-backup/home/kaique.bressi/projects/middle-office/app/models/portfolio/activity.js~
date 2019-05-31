@@ -1,0 +1,11 @@
+import DS from 'ember-data';
+import attr from 'ember-data/attr';
+
+export default DS.Model.extend({
+  status: attr('string'),
+  consultantId: attr('string'),
+  name: attr('string'),
+  createdAt: attr('date'),
+
+  operation: DS.belongsTo('portfolio.operation'),
+});

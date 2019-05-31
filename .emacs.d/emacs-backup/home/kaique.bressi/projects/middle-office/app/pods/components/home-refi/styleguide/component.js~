@@ -1,0 +1,13 @@
+import Component from '@ember/component';
+import { computed } from '@ember/object';
+import menuItems from 'middle-office/pods/components/app-layout/menu-items';
+
+export default Component.extend({
+  classNames: ['main-nav'],
+
+  items: computed('menuName', function() {
+    const menuName = this.get('menuName');
+
+    return menuItems[menuName] || [];
+  }),
+});

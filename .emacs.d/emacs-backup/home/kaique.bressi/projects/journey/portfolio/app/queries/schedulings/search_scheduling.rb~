@@ -1,0 +1,7 @@
+module Schedulings
+  class SearchScheduling
+    def search_by(operation_id:, consultant_id:)
+      Schedulings.where(operation_id: operation_id, consultant_id: consultant_id)
+    end
+  end
+end

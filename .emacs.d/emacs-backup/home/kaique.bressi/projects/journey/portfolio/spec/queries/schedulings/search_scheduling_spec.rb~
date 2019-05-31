@@ -1,0 +1,16 @@
+# require 'rails_helper'
+
+# describe Schedulings::SearchScheduling, type: :query do
+#   context 'when searching for a scheduling' do
+#     it 'returns the scheduling for the respective given operation and consultant id' do
+#       # scheduling = FactoryBot.create(:scheduling, consultant_id: 'e7f995a1-47e8-40b3-8d2f-9e3f4e3eea9e')
+#       # search_scheduling = described_class.new
+
+#       # returned_scheduling = search_scheduling.search_by(operation_id: operation.id, consultant_id: consultant.id)
+
+#       # persisted_scheduling = Schedulings.find(scheduling.id)
+#       # expect(scheduling).to eq(returned_scheduling)
+#       # expect(persisted_scheduling).to eq(scheduling)
+#     end
+#   end
+# end

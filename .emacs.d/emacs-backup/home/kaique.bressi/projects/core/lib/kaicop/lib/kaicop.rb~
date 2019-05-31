@@ -1,0 +1,5 @@
+require "kaicop/version"
+
+module Kaicop
+  # Your code goes here...
+end

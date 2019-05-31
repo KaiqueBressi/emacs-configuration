@@ -1,0 +1,6 @@
+require 'sequel'
+require 'infra/database/sequel_connection'
+
+task :migrate_analysis => :enviroment do
+
+end

@@ -1,0 +1,9 @@
+require 'infra/legal_risk_analysis/external_gateways/timeline_gateway'
+
+describe Infra::LegalRiskAnalysis::ExternalGateways::TimelineGateway do
+  context 'when creating a record on the timeline context' do
+    it 'creates the timeline record' do
+
+    end
+  end
+end

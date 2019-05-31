@@ -1,0 +1,45 @@
+import { setupComponentTest } from 'ember-mocha';
+import { expect } from 'chai';
+import { context, describe, it } from 'mocha';
+import EmberObject from '@ember/object';
+import hbs from 'htmlbars-inline-precompile';
+import moment from 'moment';
+
+describe('Integration | Component | styleguide/show-scheduling', function() {
+  setupComponentTest('styleguide/show-scheduling', {
+    integration: true,
+  });
+
+  context('when rendering a show scheduling component', function() {
+    it('shows the due time of the given scheduling', function() {
+      const date = new Date(2018, 11, 24, 23, 33, 30);
+      const scheduling = createScheduling(date);
+      this.set('scheduling', scheduling);
+
+      this.render(hbs`
+        {{styleguide/show-scheduling scheduling=scheduling shadowDom=false}}
+      `);
+
+      const showScheduling = this.$('[data-test-attribute="content"]').get(0).innerText;
+      const formattedDate = moment(date).format('DD/MM/YYYY - h:mm:ss a');
+      expect(showScheduling).to.eql(formattedDate);
+    });
+
+    it('shows a default text if no scheduling given', function() {
+      this.render(hbs`
+        {{styleguide/show-scheduling shadowDom=false}}
+      `);
+
+      const showScheduling = this.$('[data-test-attribute="content"]').get(0).innerText;
+      expect(showScheduling).to.eql(formattedDate);
+    });
+  });
+});
+
+function createScheduling(date) {
+  const dueTime = date;
+
+  return EmberObject.create({
+    dueTime,
+  });
+}

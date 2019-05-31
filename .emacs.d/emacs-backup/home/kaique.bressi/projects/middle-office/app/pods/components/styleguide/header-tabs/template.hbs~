@@ -1,0 +1,11 @@
+{{#styleguide/styleguide-component}}
+  <div class="container">
+    <ul class="header-tabs">
+      {{#each items as |menuItem| }}
+        <li class="header-tabs__item">
+          {{link-to menuItem.text menuItem.route}}
+        </li>
+      {{/each}}
+    </ul>
+  </div>
+{{/styleguide/styleguide-component}}

@@ -1,0 +1,15 @@
+require 'infra/risk_analysis_input/home_refi_loan_gateway'
+require 'acceptance_helper'
+
+describe ::Infra::RiskAnalysisInput::HomeRefiLoanGateway do
+  context 'when getting persons from the application' do
+    it 'returns all the persons from the application' do
+
+    end
+  end
+
+  def build_application(**options)
+
+
+  end
+end

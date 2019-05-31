@@ -1,0 +1,21 @@
+import Component from '@ember/component';
+
+export default Component.extend({
+  didRender() {
+    this.$(document.body).css('overflow', 'hidden');
+  },
+
+  willDestroy() {
+    this.$(document.body).css('overflow', 'auto');
+  },
+
+  actions: {
+    closeModal() {
+      const onClose = this.get('close');
+
+      if (onClose) {
+        onClose();
+      }
+    },
+  },
+});

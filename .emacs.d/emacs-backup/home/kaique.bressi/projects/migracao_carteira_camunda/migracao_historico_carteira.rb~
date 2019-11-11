@@ -1,0 +1,64 @@
+require 'logger'
+require 'json'
+require 'concurrent'
+require 'httparty'
+
+class Camunda
+  include HTTParty
+
+  logger ::Logger.new($stdout)
+
+  base_uri 'https://api.stg.creditas.io/v0/journey-v2'
+
+  headers 'Authorization' => "Bearer #{ENV.fetch('TOKEN')}", 'Content-Type' => 'application/json'
+end
+
+def correlate_message(business_key)
+  JSON.dump(
+    {
+      "messageName" => "AddToPhaseHistory",
+      "businessKey" => business_key,
+      "processVariables" => {
+        "portfolioName" => {
+          "value" => "home-refi",
+          "type" => "String"
+        },
+        "phaseName" => {
+          "value" => "Processamento",
+          "type" => "String"
+        },
+        "eventType" => {
+          "value" => ENV.fetch('EVENT_TYPE'),
+          "type" => "String"
+        }
+      }
+    }
+  )
+end
+
+pool = Concurrent::FixedThreadPool.new(256, fallback_policy: :caller_runs)
+
+leads_to_migrate = JSON.parse(File.read('leads_to_migrate_staging.json'))
+
+puts "Total de Leads para Migrar: " + leads_to_migrate.count.to_s
+
+puts "Tem certeza que deseja rodar a migração? Yes/No"
+
+yesorno = gets.chomp
+exit unless yesorno == "yes"
+
+all_create_correlate_requests = leads_to_migrate.map do |lead|
+  Concurrent::Promises.future_on(pool) do
+    response = Camunda.post("/engine-rest/message", body: correlate_message(lead["reference_id"]))
+
+    unless response.code == 204
+      File.open('errors.txt', 'a') do |f|
+        f.write("Erro na hora de correlacionar mensagem: #{lead["reference_id"]} \n")
+      end
+    end
+  end
+end
+
+all_create_correlate_requests.map(&:wait)
+
+puts "Migração finalizada com sucesso"

@@ -1,0 +1,36 @@
+require 'json'
+require 'securerandom'
+
+namespace :home_refi do
+  task :create_contacts => :environment do
+    file_path = 'recipes/imported_files/leads_to_create_contact.json'
+    kafka_notifier = Infra::Notification::Kafka::Client.new
+    topic = 'hermes-home-refi-application-created'
+
+    File.read(file_path, 'r') do |content|
+      leads_to_migrate = JSON.parse(content)
+
+      leads_to_migrate.each do |lead_information|
+        event = create_event_body(lead_information)
+
+        kafka_notifier.notify_async(event, topic)
+      end
+    end
+  end
+
+  def create_event_body(lead_information)
+    {
+      metadada: {
+        timestamp: Time.now.to_time,
+        name: 'home_refi_application_created'
+        uuid: SecureRandom.uuid
+        request_id: SecureRandom.uuid
+      }
+      application_id: lead_information[:application_id],
+      operation_id: lead_information[:operation_id],
+      customer_email: lead_information[:customer_email],
+      customer_name: lead_information[:customer_name],
+      customer_cpf: lead_information[:customer_cpf]
+    }
+  end
+end

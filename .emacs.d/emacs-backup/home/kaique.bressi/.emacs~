@@ -21,7 +21,7 @@
  '(neo-show-hidden-files t)
  '(package-selected-packages
    (quote
-    (company eglot flycheck-kotlin terraform-mode rjsx-mode jsx-mode js-auto-beautify ## kotlin-mode stylus-mode flycheck web-mode prettier-js robe neotree enh-ruby-mode auto-complete smartparens projectile monokai-theme better-defaults)))
+    (yaml-mode company eglot flycheck-kotlin terraform-mode rjsx-mode jsx-mode js-auto-beautify ## kotlin-mode stylus-mode flycheck web-mode prettier-js robe neotree enh-ruby-mode auto-complete smartparens projectile monokai-theme better-defaults)))
  '(prettier-js-command "prettier")
  '(save-interprogram-paste-before-kill t)
  '(save-place-mode t)
@@ -154,3 +154,9 @@ If the new path's directories does not exist, create them."
   (setq web-mode-markup-indent-offset 2)
 )
 (add-hook 'web-mode-hook  'my-web-mode-hook)
+
+
+;; kotlin language server
+(add-to-list 'eglot-server-programs '(kotlin-mode . ("/home/kaique.bressi/kotlin-language/KotlinLanguageServer/server/build/distributions/server-0.1.13/bin/kotlin-language-server")))
+
+(add-hook 'kotlin-mode-hook 'eglot-ensure)

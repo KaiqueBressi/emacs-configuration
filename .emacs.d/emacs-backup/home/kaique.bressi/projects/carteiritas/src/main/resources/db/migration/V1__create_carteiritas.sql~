@@ -1,0 +1,5 @@
+CREATE TABLE public.customers (
+  wallet_id uuid NOT NULL,
+  reference_id  uuid NOT NULL,
+  PRIMARY KEY (wallet_id, reference_id)
+)

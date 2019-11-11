@@ -1,0 +1,14 @@
+module Infra
+  module Orchestration
+    module Entity
+      class Operation
+        attr_reader :id, :discarded
+
+        def initialize(attributes={})
+          @id = attributes.fetch(:id)
+          @discaded = attributes.dig(:attributes, :discaded)
+        end
+      end
+    end
+  end
+end

@@ -1,0 +1,93 @@
+require 'logger'
+require 'json'
+require 'concurrent'
+require 'httparty'
+
+class Camunda
+  include HTTParty
+
+  logger ::Logger.new($stdout)
+
+  base_uri 'https://api.prod.creditas.io/v0/journey-v2'
+
+  headers 'Authorization' => "Bearer #{ENV.fetch('TOKEN')}", 'Content-Type' => 'application/json'
+end
+
+def tasks_filter
+  JSON.dump(
+    {
+      "processDefinitionId" => "FluxoHome:15:88403820-f51c-11e9-9275-0242ac110002",
+      "taskDefinitionKey" => ENV.fetch("TASK_NAME"),
+      "createdBefore" => "2019-10-22T19:37:30.000+0300",
+      "unassigned" => true,
+      "active" => true
+    }
+  )
+end
+
+def process_instances_filter(process_instances_ids)
+  JSON.dump(
+    {
+      "processDefinitionId" => "FluxoHome:15:88403820-f51c-11e9-9275-0242ac110002",
+      "processInstanceIds" => process_instances_ids
+    }
+  )
+end
+
+def correlate_message(business_key)
+  JSON.dump(
+    {
+      "messageName" => "AddToPhaseHistory",
+      "businessKey" => business_key,
+      "processVariables" => {
+        "portfolioName" => {
+          "value" => "home-refi",
+          "type" => "String"
+        },
+        "phaseName" => {
+          "value" => ENV.fetch("TASK_NAME"),
+          "type" => "String"
+        },
+        "eventType" => {
+          "value" => ENV.fetch('EVENT_TYPE'),
+          "type" => "String"
+        }
+      }
+    }
+  )
+end
+
+pool = Concurrent::FixedThreadPool.new(256, fallback_policy: :caller_runs)
+
+tasks_to_migrate = Camunda.post("/engine-rest/task", body: tasks_filter)
+
+process_instances_ids = tasks_to_migrate.map { |task| task["processInstanceId"] }
+
+process_instances = Camunda.post("/engine-rest/process-instance", body: process_instances_filter(process_instances_ids))
+
+puts "Total de Tasks : " + tasks_to_migrate.count.to_s
+
+puts "Total de Process Instances : " + process_instances.count.to_s
+
+puts "Você tem certeza que deseja rodar essa migração?"
+
+yesorno = gets.chomp
+exit unless yesorno == "yes"
+
+all_create_correlate_requests = process_instances.map do |process_instance|
+  business_key = process_instance['businessKey']
+
+  Concurrent::Promises.future_on(pool) do
+    response = Camunda.post("/engine-rest/message", body: correlate_message(business_key))
+
+    unless response.code == 204
+      File.open('errors.txt', 'a') do |f|
+        f.write("Erro na hora de correlacionar mensagem: #{business_key} #{response} \n")
+      end
+    end
+  end
+end
+
+all_create_correlate_requests.map(&:wait)
+
+puts "Migração finalizada com sucesso"

@@ -1,0 +1,16 @@
+/home/kaique.bressi/projects/rubocop/lib/rubocop/ast/node.rb
+/home/kaique.bressi/projects/rubocop/lib/rubocop/ast/#node.rb#
+/home/kaique.bressi/projects/rubocop/lib/rubocop/ast/node/def_node.rb
+/home/kaique.bressi/projects/rubocop/lib/rubocop/ast/node/#def_node.rb#
+/home/kaique.bressi/projects/rubocop/spec/rubocop/cop/metrics/perceived_method_length_spec.rb
+/home/kaique.bressi/projects/rubocop/spec/rubocop/cop/metrics/#perceived_method_length_spec.rb#
+/home/kaique.bressi/projects/rubocop/lib/rubocop/ast/node/array_node.rb
+/home/kaique.bressi/projects/rubocop/lib/rubocop/ast/node/#array_node.rb#
+/home/kaique.bressi/projects/rubocop/lib/rubocop/cop/mixin/too_many_lines.rb
+/home/kaique.bressi/projects/rubocop/lib/rubocop/cop/mixin/#too_many_lines.rb#
+/home/kaique.bressi/projects/rubocop/spec/rubocop/cop/metrics/method_length_spec.rb
+/home/kaique.bressi/projects/rubocop/spec/rubocop/cop/metrics/#method_length_spec.rb#
+/home/kaique.bressi/projects/rubocop/lib/rubocop/cop/metrics/perceived_method_length.rb
+/home/kaique.bressi/projects/rubocop/lib/rubocop/cop/metrics/#perceived_method_length.rb#
+/home/kaique.bressi/projects/rubocop/lib/rubocop/cop/metrics/method_length.rb
+/home/kaique.bressi/projects/rubocop/lib/rubocop/cop/metrics/#method_length.rb#

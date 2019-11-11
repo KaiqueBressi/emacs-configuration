@@ -1,0 +1,72 @@
+require 'logger'
+require 'json'
+require 'concurrent'
+require 'httparty'
+require 'date'
+
+class Camunda
+  include HTTParty
+
+  logger ::Logger.new($stdout)
+
+  base_uri 'https://api.stg.creditas.io/v0/journey-v2'
+
+  headers 'Authorization' => "Bearer #{ENV.fetch('TOKEN')}", 'Content-Type' => 'application/json'
+end
+
+def process_instances_filter
+  JSON.dump(
+    {
+      "processDefinitionId" => "FluxoHome:8:44364e53-ad96-11e9-b08b-0242ac110003",
+      "startedAfter" => DateTime.now.prev_month(3).strftime("%Y-%m-%dT%H:%m:%S.000%z"),
+      "unfinished" => true
+    }
+  )
+end
+
+def generate_body
+  JSON.dump(
+    {
+      "sourceProcessDefinitionId" => "FluxoHome:8:44364e53-ad96-11e9-b08b-0242ac110003",
+      "targetProcessDefinitionId" => "FluxoHome:23:b716ec6e-dfb8-11e9-acc7-0242ac110002"
+    }
+  )
+end
+
+def migration_body(migration_plan, process_instances_ids)
+  JSON.dump(
+    {
+      "migrationPlan" => migration_plan,
+      "processInstanceIds" => process_instances_ids
+    }
+  )
+end
+
+already_defined_process_instances = JSON.parse(File.read('final.json')).map { |process_instance| process_instance["id_"] }
+
+process_instances_count = Camunda.post("/engine-rest/history/process-instance/count", body: process_instances_filter)
+process_instances = []
+
+while process_instances.size < process_instances_count.parsed_response['count']
+  process_instances += Camunda.post("/engine-rest/history/process-instance?maxResults=5000&firstResult=#{process_instances.size}", body: process_instances_filter)
+end
+
+process_instances_ids = process_instances.map { |process_instance| process_instance["id"] }
+process_instances_ids += already_defined_process_instances
+process_instances_ids = process_instances_ids.uniq
+
+puts "Total de process instances do history: " + process_instances.count.to_s
+puts "Total de process instances do SQL: " + already_defined_process_instances.count.to_s
+
+puts "Total de process instances únicos: " + process_instances_ids.count.to_s
+
+migration_plan = Camunda.post("/engine-rest/migration/generate", body: generate_body).parsed_response
+puts migration_plan.to_json
+
+puts "Tem certeza que deseja migrar?"
+
+yesorno = gets.chomp
+exit unless yesorno == "yes"
+
+response = Camunda.post("/engine-rest/migration/executeAsync", body: migration_body(migration_plan, process_instances_ids))
+puts response

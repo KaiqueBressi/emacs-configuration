@@ -1,0 +1,12 @@
+module Notification
+  module Consumers
+    class ActivityAssigned
+      def initialize
+
+      end
+
+      def perform(event_id, data)
+      end
+    end
+  end
+end

@@ -1,0 +1,79 @@
+require 'rails_helper'
+
+describe JourneyActivityAssignedWorker do
+  describe '#perform' do
+    context 'when receiving a valid activity assigned event' do
+      it 'calls OperationalGateway to change consultant' do
+        operation_id = 'asdlkjfal'
+        transaction_code = '123'
+        consultant_id = '1'
+        consultant_email ='a@b.com'
+        activity_key = 'Processamento'
+        workflow_key = 'FluxoHome'
+        message = build_message(operation_id, consultant_id, activity_key, workflow_key)
+        operational_gateway = instance_spy(::Web::Operational::Gateway)
+        core_gateway = instance_double(::Web::Core::Gateway)
+        allow(core_gateway)
+          .to receive(:transaction_code_from)
+          .with(operation_id: operation_id)
+          .and_return(transaction_code)
+        allow(core_gateway)
+          .to receive(:consultant_email)
+          .with(consultant_id: consultant_id)
+          .and_return(consultant_email)
+
+        described_class.new(operational_gateway: operational_gateway, core_gateway: core_gateway).perform(message)
+
+        expect(operational_gateway).to have_received(:change_consultant).with(transaction_code, consultant_email)
+      end
+    end
+
+    context 'when receiving an invalid activity_key in activity assigned event' do
+      it 'does not call OperationalGateway to change consultant' do
+        operation_id = 'asdlkjfal'
+        transaction_code = '123'
+        consultant_id = '1'
+        consultant_email ='a@b.com'
+        activity_key = 'PreLaudo'
+        workflow_key = 'FluxoHome'
+        message = build_message(operation_id, consultant_id, activity_key, workflow_key)
+        operational_gateway = instance_spy(::Web::Operational::Gateway)
+        core_gateway = instance_double(::Web::Core::Gateway)
+
+        described_class.new(operational_gateway: operational_gateway, core_gateway: core_gateway).perform(message)
+
+        expect(operational_gateway).not_to have_received(:change_consultant).with(transaction_code, consultant_email)
+      end
+    end
+
+    context 'when receiving an invalid workflow_key in activity assigned event' do
+      it 'does not call OperationalGateway to change consultant' do
+        operation_id = 'asdlkjfal'
+        transaction_code = '123'
+        consultant_id = '1'
+        consultant_email ='a@b.com'
+        activity_key = 'Processamento'
+        workflow_key = 'FluxoAuto'
+        message = build_message(operation_id, consultant_id, activity_key, workflow_key)
+        operational_gateway = instance_spy(::Web::Operational::Gateway)
+        core_gateway = instance_double(::Web::Core::Gateway)
+
+        described_class.new(operational_gateway: operational_gateway, core_gateway: core_gateway).perform(message)
+
+        expect(operational_gateway).not_to have_received(:change_consultant).with(transaction_code, consultant_email)
+      end
+    end
+
+    def build_message(operation_id, consultant_id, activity_key, workflow_key)
+      {
+        'data' => {
+          'activity_key' => activity_key,
+          'operation_id' => operation_id,
+          'consultant_id' => consultant_id,
+          'workflow_key' => workflow_key
+        }
+      }
+    end
+  end
+end
+

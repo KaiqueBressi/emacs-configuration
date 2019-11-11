@@ -154,3 +154,9 @@ If the new path's directories does not exist, create them."
   (setq web-mode-markup-indent-offset 2)
 )
 (add-hook 'web-mode-hook  'my-web-mode-hook)
+
+
+;; kotlin language server
+(require 'eglot)
+(add-to-list 'eglot-server-programs '(kotlin-mode . ("/home/kaique.bressi/kotlin-language/KotlinLanguageServer/server/build/distributions/server-0.1.13/bin/kotlin-language-server")))
+(add-hook 'kotlin-mode-hook 'eglot-ensure)

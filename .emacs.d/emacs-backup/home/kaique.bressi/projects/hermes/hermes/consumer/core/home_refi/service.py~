@@ -1,0 +1,20 @@
+class Service:
+    subscribers = {}
+
+    def __init__(self):
+        self.__register_subscribe()
+
+    def subscribe(self, obj):
+        self.subscribers[obj.name] = obj
+
+    def has_subscribers(self, name):
+        return name in self.subscribers
+
+    def process(self, message):
+        name = message['metadata']['name']
+        if self.has_subscribers(name):
+            event = self.subscribers[name]
+            event.handle(message)
+
+    def __register_subscribe(self):
+        self.subscribe(LeadCreated())

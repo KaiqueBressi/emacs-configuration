@@ -2,7 +2,7 @@
 
 ;; ----- ido-last-directory-list -----
 (
- ("/home/kaique.bressi/projects/middle-office/app/pods/components/app-forms/processing/discard/" . "recursive-reason/")
+ ("/home/kaique.bressi/projects/regua-de-comunicacao-home/terraform/" . "prod/")
 )
 
 ;; ----- ido-work-directory-list -----
@@ -17,17 +17,9 @@
 
 ;; ----- ido-dir-file-cache -----
 (
- ("/home/kaique.bressi/projects/middle-office/mirage/factories/" (23644 43189 100939 548000) "auto-refi.address.js" "consultant.js" "auto-refi.banco-pan-application.js" "auto-refi.pipeline.js" "document-management.zip.js" "home-refi.lead.js" "auto-refi.santana-application.js" "auto-refi.credit-reference.js" "home-refi.banco-pan-application.js" "home-refi.person.js" "affiliates.partners-api.js" "auto-refi.approve-credit.js" "home-refi.domus-application.js" "bank.js" "orchestration.queue.js" "auto-refi.person.js" "auto-refi.penalization.js" "partner.js" "auto-refi.attachment.js" "home-refi.fapa-application.js" "auto-refi.application.js" "orchestration.operation.js" "affiliates.partner.js" "home-refi.document-template.js" "home-refi.banco-maxima-application.js" "portfolio.operation.js" "auto-refi.application-submission.js" "home-refi.address.js" "auto-refi.inspection.js" "auto-refi.credit-reference.address.js" "home-refi.employment.js" "../" "auto-refi.fidc-application.js" "closing.assignment.js" "processing.discard.js" "home-refi.chb-application.js" "document-management.home.refinancing.document.js" "auto-refi.task.js" "home-refi.application.js" "auto-refi.assignment.js" "auto-refi.formalization-customer.js" "home-refi.barigui-application.js" "auto-refi.application-change-request.js" "orchestration.activity.js" "auto-refi.inspection-station.js" "customer.js" "closing.loan.js" "auto-refi.proposal.js" "auto-refi.bv-application.js" "auto-refi.employment.js" "auto-fin.application.js" "auto-refi.submission-queue.js" "processing.operation.js" "branch.js" "home-refi.record.js" "./" "auto-refi.document.js" "home-refi.banco-paulista-application.js" "auto-refi.evaluation.js" "auto-refi.record.js" "auto-refi.lead.js" "document-management.attachment.js")
+ ("/home/kaique.bressi/projects/regua-de-comunicacao-home/terraform/prod/" (23889 60195 243165 757000) "backend.conf" "../" "resources.json" "./" "terraform.tfvars")
 
- ("/home/kaique.bressi/projects/middle-office/app/pods/main/home-refi/" (23634 1950 588709 228000) "route.js" "leads/" "../" "./")
-
- ("/home/kaique.bressi/projects/middle-office/app/models/schedulings/" (23614 5115 392889 67000) "../" "scheduling.js" "./")
-
- ("/home/kaique.bressi/projects/middle-office/app/pods/components/app-forms/processing/discard/recursive-reason/" (23492 59752 41483 78000) "../" "component.js" "./")
-
- ("/home/kaique.bressi/projects/middle-office/app/pods/components/app-forms/processing/discard/" (23615 20473 317689 390000) "../" "component.js" "recursive-reason/" "./")
-
- ("/home/kaique.bressi/projects/middle-office/app/pods/components/schedulings/scheduling-status/" (23615 20517 277332 329000) "../" "template.hbs" "component.js" "./")
+ ("/home/kaique.bressi/projects/regua-de-comunicacao-home/terraform/" (23889 60218 774597 555000) "prod/" "deploy_user.tf" "../" "staging/" "./")
 )
 
 ;; ----- ido-unc-hosts-cache -----

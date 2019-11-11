@@ -1,0 +1,71 @@
+require 'logger'
+require 'json'
+require 'concurrent'
+require 'httparty'
+
+class Camunda
+  include HTTParty
+
+  logger ::Logger.new($stdout)
+
+  base_uri 'https://camunda.journey.stg.creditas.io/'
+  headers 'Authorization' => "Bearer #{ENV.fetch('TOKEN')}", 'Content-Type' => 'application/json'
+end
+
+def migration_plan_request_body(source_process_definition_id, target_process_definition_id, process_instances_ids)
+  JSON.dump(
+    {
+      "migrationPlan" => {
+        "sourceProcessDefinitionId" => source_process_definition_id,
+        "targetProcessDefinitionId" => target_process_definition_id,
+        "instructions" => [
+          {
+            "sourceActivityIds" => ["Processamento"],
+            "targetActivityIds" => ["EsperarPorDocumentosPPBaixo"]
+          }
+        ]
+      },
+      "processInstanceIds" => process_instances_ids
+    }
+  )
+end
+
+def process_instances_filter(process_instances_to_query)
+  JSON.dump(
+    {
+      "processDefinitionKey" => "FluxoHome",
+      "processInstanceIds" => process_instances_to_query,
+      "variables" => [
+        {
+          "name" => "processing_probability",
+          "operator" => "lteq",
+          "value" => 0.23
+        }
+      ]
+    }
+  )
+end
+
+process_definitions = Camunda.get("/engine-rest/process-definition?key=FluxoHome")
+source_process_definition, target_process_definition = process_definitions.sort_by { |process_definition| process_definition['version'] }.last(2)
+
+source_process_definition_id = source_process_definition['id']
+target_process_definition_id = target_process_definition['id']
+
+tasks_processamento = Camunda.get("/engine-rest/task?processDefinitionId=#{source_process_definition_id}&unassigned=true&taskDefinitionKey=Processamento")
+process_instances_to_query = tasks_processamento.map { |task| task['processInstanceId'] }
+
+process_instances = Camunda.post("/engine-rest/process-instance", body: process_instances_filter(process_instances_to_query))
+process_instances_ids = process_instances.map { |process_instance| process_instance['id'] }
+
+puts process_instances
+puts "Process Instances para Migrar:" + process_instances.count.to_s
+
+migration_plan_body = migration_plan_request_body(source_process_definition_id, target_process_definition_id, process_instances_ids)
+puts migration_plan_body
+
+yesorno = gets.chomp
+exit unless yesorno == "yes"
+
+migration_plan = Camunda.post("/engine-rest/migration/executeAsync", body: migration_plan_body)
+puts migration_plan

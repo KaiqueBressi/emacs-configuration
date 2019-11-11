@@ -1,0 +1,21 @@
+import React from "react";
+import phoneFormat from "../../helpers/phone-format";
+import Audio from "./audio";
+
+const RecordingSnippetList = ({ voice }) => {
+  const recordingSnippets = voice.recordingSnippets.map(recordingSnippet => {
+    return {
+      recording: recordingSnippet
+    };
+  });
+
+  return recordingSnippets.map(recordingSnippet => (
+    <Audio
+      canDownload
+      voice={recordingSnippet}
+      key={recordingSnippet.recording}
+    />
+  ));
+};
+
+export default RecordingSnippetList;

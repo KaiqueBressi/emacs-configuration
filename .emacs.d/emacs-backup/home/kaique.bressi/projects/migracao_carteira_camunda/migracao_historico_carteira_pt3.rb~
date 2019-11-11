@@ -1,0 +1,103 @@
+require 'logger'
+require 'json'
+require 'concurrent'
+require 'httparty'
+require 'securerandom'
+
+class Camunda
+  include HTTParty
+
+  logger ::Logger.new($stdout)
+
+  base_uri 'https://api.stg.creditas.io/v0/journey-v2'
+
+  headers 'Authorization' => "Bearer #{ENV.fetch('TOKEN')}", 'Content-Type' => 'application/json'
+end
+
+PROCESS_DEFINITION_ID = "FluxoHome:27:5065fd29-f446-11e9-835f-0242ac110002"
+
+def history_task_filter
+  JSON.dump(
+    {
+      "processDefinitionId" => PROCESS_DEFINITION_ID,
+      "taskDefinitionKeyIn" => ["PreLaudo", "Processamento"],
+      "sorting" => [
+        {
+          "sortBy" => "startTime",
+          "sortOrder" => "asc"
+        }
+      ]
+    }
+  )
+end
+
+def process_instances_filter(process_instances_ids)
+  JSON.dump(
+    {
+      "processDefinitionId" => PROCESS_DEFINITION_ID,
+      "processInstanceIds" => process_instances_ids
+    }
+  )
+end
+
+tasks = []
+
+loop do
+  returned_tasks = Camunda.post("/engine-rest/history/task?firstResult=#{tasks.count}&maxResults=1000", body: history_task_filter)
+
+  tasks += returned_tasks
+
+  break if returned_tasks.count == 0
+end
+
+process_instances_ids = tasks.map { |task| task["processInstanceId"] }
+
+process_instances = Camunda.post("/engine-rest/process-instance", body: process_instances_filter(process_instances_ids))
+
+grouped_tasks = tasks.group_by { |task| task['processInstanceId'] }
+grouped_process_instances = process_instances.group_by { |process_instance| process_instance['id'] }
+
+customer_insert_list = []
+phase_insert_list = []
+
+grouped_tasks.each do |process_instance_id, tasks_to_migrate|
+  processing_tasks = tasks_to_migrate.select { |t| t['taskDefinitionKey'] == 'Processamento' }.sort { |t| DateTime.parse(t['startTime']) }
+
+  process_instance = grouped_process_instances[process_instance_id]&.first
+
+  tasks_to_migrate = [processing_tasks[0]] if processing_tasks.count > 1
+
+  next unless process_instance
+
+  tasks_to_migrate.each do |task|
+    id = SecureRandom.uuid
+    portfolio_name = 'home-refi'
+    reference_id = process_instance['businessKey']
+
+    hidden = process_instance['suspended']
+    customer_created_at = 'now'
+    customer_updated_at = 'now'
+
+    if (task['taskDefinitionKey'] == 'PreLaudo' && tasks_to_migrate.count == 1) || (task['taskDefinitionKey'] == 'Processamento')
+      active_consultant = task['assignee'] ? "'#{task['assignee']}'" : 'NULL'
+
+      customer_insert_list << "('#{portfolio_name}', '#{reference_id}', #{hidden}, #{customer_created_at}, #{customer_updated_at}, #{active_consultant})"
+    end
+
+    name = task['name']
+    task_created_at = task['startTime']
+    task_updated_at = task['startTime']
+    completed_at = task['endTime'] || 'NULL'
+    assigned_at = task['assignee'] ? 'now' : 'NULL'
+    reflow = false
+
+    phase_insert_list << "('#{id}', '#{portfolio_name}', '#{reference_id}', '#{name}', '#{task_created_at}', '#{task_updated_at}', '#{completed_at}', #{assigned_at}, false)"
+  end
+end
+
+File.open('batch.sql', 'w') do |f|
+  f.puts "INSERT INTO customer (portfolio_name, reference_id, hidden, created_at, updated_at, active_consultant) VALUES " + customer_insert_list.join(',') + " ON CONFLICT DO NOTHING"
+  f.puts "INSERT INTO phase (id, portfolio_name, reference_id, name, created_at, updated_at, completed_at, assigned_at, reflow) VALUES " + phase_insert_list.join(',')
+end
+
+puts "Finalizado"

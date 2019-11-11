@@ -1,0 +1,36 @@
+require 'logger'
+require 'json'
+require 'concurrent'
+require 'httparty'
+
+class Camunda
+  include HTTParty
+
+  logger ::Logger.new($stdout)
+
+  base_uri 'https://api.prod.creditas.io/v0/journey-v2'
+
+  headers 'Authorization' => "Bearer #{ENV.fetch('TOKEN')}", 'Content-Type' => 'application/json'
+end
+
+def process_instances_filter
+  JSON.dump(
+    {
+      "processDefinitionKey" => "FluxoHome",
+      "suspended" => true,
+      "startedBefore" => "2019-04-01T15:28:41.000-0300"
+    }
+  )
+end
+
+process_instances = Camunda.post("/engine-rest/history/process-instance/count", body: process_instances_filter)
+
+require 'pry-byebug'; byebug;
+
+puts "Total de process instances: " + process_instances.count.to_s
+
+
+puts "Tem certeza que deseja rodar a migração? Yes/No"
+
+yesorno = gets.chomp
+exit unless yesorno == "yes"

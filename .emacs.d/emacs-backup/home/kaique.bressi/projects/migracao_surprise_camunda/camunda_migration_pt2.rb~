@@ -1,0 +1,188 @@
+require 'logger'
+require 'json'
+require 'concurrent'
+require 'httparty'
+
+class Camunda
+  include HTTParty
+
+  logger ::Logger.new($stdout)
+
+  base_uri 'https://api.prod.creditas.io/v0/journey-v2'
+  headers 'Authorization' => "Bearer #{ENV.fetch('TOKEN')}", 'Content-Type' => 'application/json'
+end
+
+def calculate_priority_bonus(lead_group, processing_priority)
+  group_bonus = {
+    "ProcessamentoLinhaVerde" => 2,
+    "ProcessamentoPontaAPonta" => 2,
+    "ProcessamentoM4+" => 1,
+    "ProcessamentoAcademy" => 0
+  }
+
+  (group_bonus[lead_group] + processing_priority) * 10000
+end
+
+def filter_only_candidate_groups(identities_link)
+  identities_link.select do |identity_link|
+    identity_link['type'] == 'candidate'
+  end
+end
+
+def candidates_group_list(lead_group)
+  candidate_groups = {
+    "ProcessamentoLinhaVerde" => ["ProcessamentoPontaAPonta"],
+    "ProcessamentoPontaAPonta" => ["ProcessamentoPontaAPonta"],
+    "ProcessamentoM4+" => ["ProcessamentoPontaAPonta", "ProcessamentoM4+"],
+    "ProcessamentoAcademy" => ["ProcessamentoPontaAPonta", "ProcessamentoM4+", "ProcessamentoAcademy"]
+  }
+
+  candidate_groups[lead_group]
+end
+
+def tasks_filter
+  JSON.dump(
+    {
+      "processDefinitionKey" => "FluxoHome",
+      "taskDefinitionKey" => "Processamento",
+      "active" => true
+    }
+  )
+end
+
+def identity_link_delete_body(identity_link)
+  JSON.dump(
+    {
+      "groupId" => identity_link["groupId"],
+      "type" => identity_link["type"]
+    }
+  )
+end
+
+def identity_link_add_body(candidate_group)
+  JSON.dump(
+    {
+      "groupId" => candidate_group,
+      "type" => 'candidate'
+    }
+  )
+end
+
+def update_task_body(priority, task)
+  JSON.dump(
+    {
+      "name" => task['name'],
+      "description" => task["description"],
+      "assignee" => task["assignee"],
+      "owner" => task["owner"],
+      "delegationState" => task["delegationState"],
+      "due" => task["due"],
+      "followUp" => task["followUp"],
+      "priority" => priority,
+      "parentTaskId" => task["parentTaskId"],
+      "caseInstanceId" => task["caseInstanceId"],
+      "tenantId" => task["tenantId"]
+    }
+  )
+end
+
+pool = Concurrent::FixedThreadPool.new(256, fallback_policy: :caller_runs)
+
+tasks_to_update = Camunda.post("/engine-rest/task", body: tasks_filter)
+
+all_variables_requests = tasks_to_update.each_with_object({}) do |task, result|
+  task_id = task['id']
+  process_instance_id = task['processInstanceId']
+
+  result[task_id] = Concurrent::Promises.future_on(pool) do
+    response = Camunda.get("/engine-rest/process-instance/#{process_instance_id}/variables")
+
+    unless response.code == 200
+      File.open('erros2.txt', 'a') do |f|
+        f.write("Erro na hora de pegar váriaveis: Process Instance ID: #{task['processInstanceId']} + taskID: #{task['id']}  + #{response.message}\n")
+      end
+    end
+
+    response
+  end
+end
+
+all_variables_requests.values.map(&:wait!)
+
+all_identities_links_requests = tasks_to_update.each_with_object({}) do |task, result|
+  task_id = task['id']
+
+  result[task_id] = Concurrent::Promises.future_on(pool) do
+    response = Camunda.get("/engine-rest/task/#{task_id}/identity-links")
+
+    unless response.code == 200
+      File.open('erros2.txt', 'a') do |f|
+        f.write("Erro na hora de pegar identity links: Process Instance ID: #{task['processInstanceId']} + taskID: #{task['id']}  + #{response.message}\n")
+      end
+    end
+
+    response
+  end
+end
+
+all_identities_links_requests.values.map(&:wait!)
+
+puts "Total de Tasks para Atualizar: " + tasks_to_update.count.to_s
+puts "Tem certeza que deseja rodar a migração? Yes/No"
+
+yesorno = gets.chomp
+exit unless yesorno == "yes"
+
+all_identities_links_to_delete = tasks_to_update.map do |task|
+  identities_links_to_delete = filter_only_candidate_groups(all_identities_links_requests[task['id']].value)
+
+  identities_links_to_delete.map do |identity_link|
+    Concurrent::Promises.future_on(pool) do
+      response = Camunda.post("/engine-rest/task/#{task['id']}/identity-links/delete", body: identity_link_delete_body(identity_link))
+
+      unless response.code == 204
+        File.open('erros2.txt', 'a') do |f|
+          f.write("Erro na hora de deletar CG: Process Instance ID: #{task['processInstanceId']} + taskID: #{task['id']}  + #{response.message}\n")
+        end
+      end
+    end
+  end
+end
+all_identities_links_to_delete.flatten.map(&:wait)
+
+all_identities_links_to_add = tasks_to_update.map do |task|
+  variables = all_variables_requests[task['id']].value
+  lead_group = variables['operation_profile']['value']
+  candidates_groups_to_add = candidates_group_list(lead_group)
+
+  candidates_groups_to_add.map do |candidate_group|
+    Concurrent::Promises.future_on(pool) do
+      response = Camunda.post("/engine-rest/task/#{task['id']}/identity-links", body: identity_link_add_body(candidate_group))
+
+      unless response.code == 204
+        File.open('erros2.txt', 'a') do |f|
+          f.write("Erro na hora de adicionar CG: Process Instance ID: #{task['processInstanceId']} + taskID: #{task['id']}  + #{response.message}\n")
+        end
+      end
+    end
+  end
+end
+all_identities_links_to_add.flatten.map(&:wait)
+
+all_update_tasks_requests = tasks_to_update.map do |task|
+  variables = all_variables_requests[task['id']].value
+  lead_group = variables['operation_profile']['value']
+  processing_priority = variables['processamento_priority']['value']
+  final_priority = calculate_priority_bonus(lead_group, processing_priority)
+
+  Concurrent::Promises.future_on(pool) do
+    response = Camunda.put("/engine-rest/task/#{task['id']}", body: update_task_body(final_priority, task))
+
+    unless response.code == 204
+      File.open('erros2.txt', 'a') do |f|
+        f.write("Erro na hora de atualizar a task: Process Instance ID: #{task['processInstanceId']} + taskID: #{task['id']}  + #{response.message}\n")
+      end
+    end
+  end
+end
+all_update_tasks_requests.map(&:wait)

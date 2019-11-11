@@ -1,0 +1,12 @@
+/home/kaique.bressi/projects/carteiritas/src/main/kotlin/br/com/creditas/carteiritas/WebApplication.kt
+/home/kaique.bressi/projects/carteiritas/src/main/kotlin/br/com/creditas/carteiritas/#WebApplication.kt#
+/home/kaique.bressi/projects/carteiritas/src/main/resources/application-dbmigration.yaml
+/home/kaique.bressi/projects/carteiritas/src/main/resources/#application-dbmigration.yaml#
+/home/kaique.bressi/projects/carteiritas/src/main/resources/db/migration/V1__create_carteiritas.sql
+/home/kaique.bressi/projects/carteiritas/src/main/resources/db/migration/#V1__create_carteiritas.sql#
+/home/kaique.bressi/projects/hermes/hermes/domain/contact/contact.py
+/home/kaique.bressi/projects/hermes/hermes/domain/contact/#contact.py#
+/home/kaique.bressi/projects/hermes/hermes/application/use_cases/account/assign_contact.py
+/home/kaique.bressi/projects/hermes/hermes/application/use_cases/account/#assign_contact.py#
+/home/kaique.bressi/projects/carteiritas/src/main/kotlin/br/com/creditas/carteiritas/configuration/RequestIdFilter.kt
+/home/kaique.bressi/projects/carteiritas/src/main/kotlin/br/com/creditas/carteiritas/configuration/#RequestIdFilter.kt#

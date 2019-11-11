@@ -1,0 +1,18 @@
+module Notification
+  module Producers
+    class HomeOperationAssigned < Base
+      def event
+        'home-operation-assigned'
+      end
+
+      def produce(operation_id, workflow_key, consultant_id, activity_key)
+        return unless workflow_key == 'FluxoHome' && activity_key == 'Processamento'
+
+        super(
+          operation_id: operation_id,
+          consultant_id: consultant_id
+        )
+      end
+    end
+  end
+end

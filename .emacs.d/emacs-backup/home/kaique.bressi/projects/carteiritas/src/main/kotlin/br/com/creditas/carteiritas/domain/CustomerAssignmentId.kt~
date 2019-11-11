@@ -1,0 +1,8 @@
+package br.com.creditas.carteiritas.domain
+
+import java.io.Serializable
+import java.util.*
+import javax.persistence.Embeddable
+
+@Embeddable
+data class AssignmentId(val customerId: CustomerId, val consultantId: UUID): Serializable

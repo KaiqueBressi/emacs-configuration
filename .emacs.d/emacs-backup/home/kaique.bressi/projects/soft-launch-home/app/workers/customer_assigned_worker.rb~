@@ -1,0 +1,47 @@
+class CustomerAssignedWorker
+  include Sidekiq::Worker
+  HOME_PORTFOLIO_NAME = 'home-refi'.freeze
+
+  def initialize(operational_gateway: nil, core_gateway: nil)
+    @operational_gateway = operational_gateway || ::Web::Operational::Gateway.new
+    @core_gateway = core_gateway || ::Web::Core::Gateway.new
+  end
+
+  def perform(message)
+    data = data_from(message)
+    consultant_id = data.fetch(:consultant_id)
+    operation_id = data.fetch(:reference_id)
+    return unless valid_portfolio?(data.fetch(:workflow_key))
+
+    core_consultant_email = @core_gateway.consultant_email(consultant_id: consultant_id)
+    operational_consultant_email = operational_email_mapping(core_consultant_email) || core_consultant_email
+    transaction_code = @core_gateway.transaction_code_from(operation_id: operation_id)
+
+    @operational_gateway.change_consultant(transaction_code, operational_consultant_email)
+  end
+
+  private
+
+  def data_from(message)
+    message.deep_symbolize_keys.fetch(:data)
+  end
+
+  def valid_activity?(activity_key)
+    VALID_ACTIVITIES.include?(activity_key)
+  end
+
+  def valid_portfolio?(portfolio_name)
+    portfolio_name == HOME_PORTFOLIO_NAME
+  end
+
+  def operational_email_mapping(core_consultant_email)
+    {
+      'marcelo.rocha@creditas.com.br'   => 'marcelo@bankfacil.com.br',
+      'caio.ventura@creditas.com.br'    => 'caioventura@bankfacil.com.br',
+      'andre.miranda@creditas.com.br'   => 'andre.miranda@bankfacil.com.br',
+      'rodrigo.mathias@creditas.com.br' => 'rodrigomathias@bankfacil.com.br',
+      'joao.oliveira@creditas.com.br'   => 'joao.oliveira@bankfacil.com.br',
+      'isabella.silveira@creditas.com.br' => 'isabella@bankfacil.com.br',
+    }[core_consultant_email]
+  end
+end

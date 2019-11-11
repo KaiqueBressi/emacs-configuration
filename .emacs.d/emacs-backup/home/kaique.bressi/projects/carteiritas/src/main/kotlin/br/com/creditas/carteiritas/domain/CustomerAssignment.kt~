@@ -1,0 +1,8 @@
+package br.com.creditas.carteiritas.domain
+
+import javax.persistence.Entity
+import javax.persistence.Table
+import javax.persistence.Id
+
+@Entity
+data class CustomerAssignment(@Id val assignmentId: AssignmentId)

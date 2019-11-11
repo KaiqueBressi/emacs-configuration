@@ -1,0 +1,28 @@
+const uuid = require('uuid/v4');
+const { getJourneyRequester, getHermesRequester } = require('./authenticationService');
+
+const journeyRequester = getJourneyRequester();
+const hermesRequester = getHermesRequester();
+
+async function handleCommunicationTasks() {
+  const response = await this.httpRequester.post('/api/v1/orchestration/external-activities/lock', {
+    worker_id: process.env.CLIENT_ID,
+    limit: 100,
+    topics: [
+      {
+        name: process.env.EXTERNAL_TASK_TOPIC_NAME,
+        duration: 1000,
+      },
+    ],
+  });
+
+  await processTasks(response.data.data);
+}
+
+function processTasks(data) {}
+
+function completeTask(taskId) {
+  httpRequester.post(`/api/v1/orchestration/external-activities/${taskId}/complete`, {
+    worker_id: process.env.CLIENT_ID,
+  });
+}

@@ -1,0 +1,22 @@
+const crypto = require('crypto');
+
+function generateSignature(data) {
+  return crypto
+    .createHmac('SHA1', '137a803b-f5af-49b3-b09b-acb3af7b633a')
+    .update(JSON.stringify(data))
+    .digest('base64');
+}
+
+const data = {
+  event_name: 'Task_0wv0dwj',
+  metadata: {
+    reference: '7beb0fd6-5a7a-4f4f-9abe-a49ed92fd44a',
+    type: 'home-refi',
+    source: 'core',
+  },
+  properties: {},
+};
+
+const hermesSignature = generateSignature(data);
+
+console.log(hermesSignature);

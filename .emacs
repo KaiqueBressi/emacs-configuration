@@ -13,6 +13,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(blacken-skip-string-normalization t)
  '(css-indent-offset 2)
  '(flycheck-rubocop-lint-only t)
  '(js-indent-level 2)
@@ -21,12 +22,12 @@
  '(neo-show-hidden-files t)
  '(package-selected-packages
    (quote
-    (yaml-mode company eglot flycheck-kotlin terraform-mode rjsx-mode jsx-mode js-auto-beautify ## kotlin-mode stylus-mode flycheck web-mode prettier-js robe neotree enh-ruby-mode auto-complete smartparens projectile monokai-theme better-defaults)))
- '(prettier-js-command "prettier")
+    (tide blacken flycheck virtualenvwrapper dockerfile-mode haskell-mode multi-term scala-mode company-lsp lsp-mode jedi typescript-mode yaml-mode company eglot flycheck-kotlin terraform-mode rjsx-mode jsx-mode js-auto-beautify ## kotlin-mode stylus-mode web-mode prettier-js robe neotree enh-ruby-mode auto-complete smartparens projectile monokai-theme better-defaults)))
  '(save-interprogram-paste-before-kill t)
  '(save-place-mode t)
  '(show-trailing-whitespace nil)
  '(terraform-indent-level 2)
+ '(typescript-indent-level 2)
  '(web-mode-code-indent-offset 2)
  '(web-mode-css-indent-offset 2)
  '(web-mode-tests-directory "~/tests/"))
@@ -37,9 +38,13 @@
  ;; If there is more than one, they won't work right.
  )
 
+(exec-path-from-shell-initialize)
+
 (setq inhibit-splash-screen t
       initial-scratch-message nil
       initial-major-mode 'ruby-mode)
+
+(defalias 'yes-or-no-p 'y-or-n-p)
 
 ;; Navigate between windows using Shift-left, shift-up, shift-right
 (windmove-default-keybindings)
@@ -134,20 +139,19 @@ If the new path's directories does not exist, create them."
 (setq auto-save-file nil)
 (setq create-lockfiles nil)
 
+(require 'terraform-mode)
+(add-hook 'terraform-mode-hook #'terraform-format-on-save-mode)
 
-;; (setq auto-save-file-name-transforms
-;;   `((".*" "~/.emacs.d/emacs-save/" t)))
+(setq auto-save-file-name-transforms
+  `((".*" "~/.emacs.d/emacs-save/" t)))
 
 (setq explicit-shell-file-name "/bin/sh")
 
 (setq tab-width 2)
 
-;; enable prettier-js on javascript mode
-(require 'prettier-js)
-(add-hook 'js-mode-hook 'prettier-js-mode)
-
 (require 'web-mode)
 (add-to-list 'auto-mode-alist '("\\.hbs\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.tsx$" . web-mode))
 
 (defun my-web-mode-hook ()
   "Hooks for Web mode."
@@ -155,8 +159,68 @@ If the new path's directories does not exist, create them."
 )
 (add-hook 'web-mode-hook  'my-web-mode-hook)
 
+(autoload 'typescript-mode "typescript-mode" "Major mode for tsx files" t)
+(add-to-list 'auto-mode-alist '("\\.ts$" . typescript-mode))
 
-;; kotlin language server
-(require 'eglot)
-(add-to-list 'eglot-server-programs '(kotlin-mode . ("/home/kaique.bressi/kotlin-language/KotlinLanguageServer/server/build/distributions/server-0.1.13/bin/kotlin-language-server")))
-(add-hook 'kotlin-mode-hook 'eglot-ensure)
+(add-hook 'python-mode-hook 'jedi:setup)
+(setq jedi:complete-on-dot t)
+
+;; enable prettier-js on javascript mode
+(require 'prettier-js)
+(add-hook 'js-mode-hook 'prettier-js-mode)
+(add-hook 'web-mode-hook 'prettier-js-mode)
+(add-hook 'typescript-mode-hook 'prettier-js-mode)
+
+(defun setup-tide-mode ()
+  (interactive)
+  (tide-setup)
+  (flycheck-mode +1)
+  (setq flycheck-check-syntax-automatically '(save mode-enabled))
+  (eldoc-mode +1)
+  (tide-hl-identifier-mode +1)
+  ;; company is an optional dependency. You have to
+  ;; install it separately via package-install
+  ;; `M-x package-install [ret] company`
+  (company-mode +1))
+
+;; aligns annotation to the right hand side
+(setq company-tooltip-align-annotations t)
+
+(add-hook 'typescript-mode-hook #'setup-tide-mode)
+(add-hook 'web-mode-hook #'setup-tide-mode)
+
+;; multi-term configuration
+
+(require 'multi-term)
+(setq multi-term-program "/bin/zsh")
+
+;; spotify
+
+(add-to-list 'load-path "~/spotify.el")
+(require 'spotify)
+
+;; Settings
+(setq spotify-oauth2-client-secret "ae6dfbc75a0447d39596491c208bd359")
+(setq spotify-oauth2-client-id "03235af39f8d41189ce886a7fa126b1b")
+(define-key spotify-mode-map (kbd "C-c .") 'spotify-command-map)
+
+(setq spotify-transport 'connect)
+
+;; enable flycheck in python buffers
+(defun flycheck-python-setup ()
+  (flycheck-mode))
+(add-hook 'python-mode-hook #'flycheck-python-setup)
+
+;; autoload virtualenv at current project
+(setq projectile-switch-project-action
+      '(lambda ()
+         (venv-projectile-auto-workon)
+         (projectile-find-file)))
+
+(setq-default flycheck-disabled-checkers '(python-flake8))
+
+;; enable python formatter black
+(add-hook 'python-mode-hook 'blacken-mode)
+
+;; ;; auto import missing dependencies
+;; (define-key python-mode-map (kbd "C-c a") #'pyimport-insert-missing)

@@ -1,0 +1,9 @@
+require 'legal_risk_analysis/analyses/juridical_analyst'
+require 'securerandom'
+
+FactoryBot.define do
+  factory :legal_risk_analysis_analyses_juridical_analyst, class: 'LegalRiskAnalysis::Analyses::JuridicalAnalyst' do
+    id { SecureRandom.uuid }
+    name { "Joãozinho" }
+  end
+end

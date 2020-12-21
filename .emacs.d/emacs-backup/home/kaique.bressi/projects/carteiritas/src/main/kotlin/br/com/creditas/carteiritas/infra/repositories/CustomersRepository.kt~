@@ -1,7 +1,0 @@
-package br.com.creditas.carteiritas.infra.repositories
-
-import br.com.creditas.carteiritas.domain.CustomerEntity
-import br.com.creditas.carteiritas.domain.CustomerId
-import org.springframework.data.repository.CrudRepository
-
-interface CustomersRepository : CrudRepository<CustomerEntity, CustomerId>

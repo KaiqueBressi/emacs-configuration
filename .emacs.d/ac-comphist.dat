@@ -1,5 +1,437 @@
-((("completePreLaudoTask" .
-   [0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0])
+((("extract_file" .
+   [2 0 0 0 0 0 0 0 0 0 0 0])
+  ("List" .
+   [2 0 0 0])
+  ("sftp_file_mock" .
+   [1 0 0 0 0 0 0 0 0 0 0 0 0 0])
+  ("sftp_client_mock" .
+   [1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0])
+  ("SFTP" .
+   [1 0 0 0])
+  ("sftp" .
+   [1 0 0 0])
+  ("from_transport" .
+   [1 0 0 0 0 0 0 0 0 0 0 0 0 0])
+  ("read_file" .
+   [2 0 0 0 0 0 0 0 0])
+  ("apex_ftp" .
+   [1 0 0 0 0 0 0 1])
+  ("ApexFtp" .
+   [3 0 0 0 0 0 0])
+  ("s" .
+   [1])
+  ("connect" .
+   [1 0 0 0 0 0 0])
+  ("Transport" .
+   [2 0 0 0 0 0 0 0 0])
+  ("transport" .
+   [1 0 0 0 0 0 0 0 0])
+  ("Iterable" .
+   [0 0 0 1 0 0 0 0])
+  ("ABC" .
+   [1 0 0])
+  ("EventAbstract" .
+   [1 0 0 0 0 0 0 0 0 0 0 0 0])
+  ("event_response" .
+   [1 0 0 0 0 0 0 0 0 0 0 0 0 0])
+  ("institution" .
+   [0 0 0 0 0 0 0 0 0 0 1])
+  ("institution_id" .
+   [1 0 0 0 0 0 0 0 0 0 0 0 0 0])
+  ("institution_repository" .
+   [1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0])
+  ("institution_from_repository" .
+   [2 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0])
+  ("institution_from_session" .
+   [1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0])
+  ("exc_info=" .
+   [0 0 0 0 0 0 0 0 1])
+  ("exception" .
+   [1 0 0 0 0 0 0 0 0])
+  ("info" .
+   [1 0 0 0])
+  ("logger" .
+   [2 0 0 0 0 0])
+  ("getLogger" .
+   [1 0 0 0 0 0 0 0 0])
+  ("gather" .
+   [2 0 0 0 0 0])
+  ("await" .
+   [3 0 0 0 0])
+  ("args" .
+   [2 0 0 0])
+  ("session" .
+   [0 0 0 0 0 0 1])
+  ("dependency_injection_container" .
+   [0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0])
+  ("argument" .
+   [1 0 0 0 0 0 0 0])
+  ("typing_information" .
+   [1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0])
+  ("injected_function" .
+   [1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0])
+  ("UserRepository" .
+   [0 0 0 0 0 0 0 0 1 0 0 0 0 0])
+  ("user_repository" .
+   [2 0 0 0 0 0 0 0 0 0 0 0 0 0 1])
+  ("repositories" .
+   [0 0 0 0 0 0 0 0 0 0 0 1])
+  ("investments" .
+   [1 0 0 0 0 0 0 0 0 0 0])
+  ("function" .
+   [3 0 0 0 0 0 0 0])
+  ("get_type_hints" .
+   [1 0 0 0 0 0 0 0 1 0 0 0 0 0])
+  ("account" .
+   [1 0 0 0 0 0 0])
+  ("Apple" .
+   [1 0 0 0 0])
+  ("infrastructure" .
+   [3 0 0 0 0 0 0 0 0 0 0 0 0 1])
+  ("account_provider_table" .
+   [1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0])
+  ("plaid_provider_table" .
+   [1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0])
+  ("Account" .
+   [2 0 0 0 0 0 0])
+  ("PlaidProvider" .
+   [2 1 0 0 0 0 0 0 0 0 0 0 0])
+  ("plaid_provider" .
+   [2 0 0 0 0 0 0 0 0 0 0 0 0 0])
+  ("AccountProvider" .
+   [1 0 0 0 0 0 0 0 0 0 0 0 0 0 0])
+  ("account_provider" .
+   [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1])
+  ("providers" .
+   [1 0 0 0 0 0 0 0 1])
+  ("banking" .
+   [3 0 0 0 0 0 0])
+  ("pjoin" .
+   [1 0 0 0 0])
+  ("provider_table" .
+   [1 0 0 0 0 0 0 0 0 0 0 0 0 0])
+  ("mapper" .
+   [2 0 0 0 0 0])
+  ("Column" .
+   [1 0 0 0 0 0])
+  ("primary_key" .
+   [1 0 0 0 0 0 0 0 0 0 0])
+  ("String" .
+   [2 0 0 0 0 0])
+  ("train" .
+   [6 0 0 0 0])
+  ("__calculate_simple_moving_average" .
+   [0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1])
+  ("average" .
+   [1 0 0 0 0 0 0])
+  ("all_close" .
+   [1 0 0 0 0 0 0 0 0])
+  ("dataframe" .
+   [4 0 0 0 0 0 0 0 0])
+  ("loc" .
+   [1 0 0])
+  ("dataset" .
+   [3 0 0 0 0 0 0])
+  ("input_dataset_blocks" .
+   [2 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0])
+  ("input_dataset" .
+   [1 0 0 0 0 0 0 0 0 0 0 0 0])
+  ("pyplot" .
+   [1 0 0 0 0 0])
+  ("figure" .
+   [2 0 0 0 0 0])
+  ("Trader" .
+   [1 0 0 0 0 0])
+  ("plot" .
+   [8 0 0 0])
+  ("Model" .
+   [3 0 0 0 0])
+  ("load_model" .
+   [1 0 0 0 0 0 0 0 0 0])
+  ("linear_regression" .
+   [1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0])
+  ("tax_planning_documents" .
+   [1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0])
+  ("DocumentUploadAPI" .
+   [0 1 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0])
+  ("patch" .
+   [1 0 0 0 0])
+  ("APIView" .
+   [1 0 0 0 0 0 0])
+  ("GoalAPI" .
+   [1 0 0 0 0 0 0])
+  ("SendConsumerStatusToAirtable" .
+   [0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1])
+  ("send_consumer_status_to_airtable" .
+   [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1])
+  ("event_handlers" .
+   [1 0 0 0 0 0 0 0 0 0 0 0 0 0])
+  ("priority" .
+   [1 0 0 0 1 0 0 0])
+  ("goal" .
+   [8 0 0 0])
+  ("already_saved" .
+   [1 0 0 0 0 0 0 1 0 0 0 0 0])
+  ("min_value" .
+   [1 0 0 0 0 0 0 0 0])
+  ("SUCCESS" .
+   [0 0 1 0 0 0 0])
+  ("b" .
+   [1])
+  ("bbva_user_id" .
+   [1 0 0 0 0 0 0 0 0 0 0 0])
+  ("BBVAAccountFactory" .
+   [1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0])
+  ("bbva_account" .
+   [3 0 0 0 0 0 0 0 0 0 0 0])
+  ("BBVAAccount" .
+   [1 0 0 0 0 0 0 0 0 0 0])
+  ("params" .
+   [1 0 0 0 0 0])
+  ("content" .
+   [1 0 0 0 0 0 0])
+  ("bbva_response" .
+   [7 0 0 0 0 0 0 0 0 0 0 0 0])
+  ("status_code" .
+   [2 0 0 0 0 0 0 0 0 0 0])
+  ("json" .
+   [3 0 0 0])
+  ("get_setted_up_headers" .
+   [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1])
+  ("loads" .
+   [2 0 0 0 0])
+  ("get_url" .
+   [2 0 0 0 0 0 0])
+  ("url" .
+   [1 0 0])
+  ("account_details_response" .
+   [1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0])
+  ("plaid_account_id" .
+   [1 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0])
+  ("linked_bank_account" .
+   [1 0 0 0 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0])
+  ("access_token" .
+   [1 0 0 0 1 2 0 0 0 0 0 0])
+  ("get_account_details" .
+   [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1])
+  ("BankAccount" .
+   [1 0 0 0 0 0 0 0 0 0 0])
+  ("balance" .
+   [2 0 0 0 0 0 0])
+  ("account_numbers" .
+   [2 0 0 0 0 0 0 0 0 0 0 0 0 0 0])
+  ("TRANSFER_TYPE" .
+   [1 0 0 0 0 0 0 0 0 0 0 0 0])
+  ("recurring_day" .
+   [3 0 0 0 0 0 0 0 0 0 0 0 0])
+  ("return_value" .
+   [1 0 0 0 0 0 0 0 0 0 0 0])
+  ("SavingsLinkedBankAccountFactory" .
+   [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0])
+  ("savings_linked_bank_account_mock" .
+   [0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0])
+  ("SavingsLinkedBankAccount" .
+   [0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0])
+  ("savings_linked_bank_account" .
+   [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1])
+  ("GeneratorExit" .
+   [0 0 0 1 0 0 0 0 0 0 0 0 0])
+  ("next_deposit_date" .
+   [1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0])
+  ("get_next_deposit_date" .
+   [0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0])
+  ("build" .
+   [2 0 0 0 0])
+  ("SavingsPlan" .
+   [5 0 0 0 0 0 0 2 0 0 0])
+  ("notification_day" .
+   [2 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0])
+  ("NOTIFICATION_DAY" .
+   [1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0])
+  ("default" .
+   [1 0 0 0 0 0 0])
+  ("IntegerField" .
+   [1 0 0 0 0 0 0 0 0 0 0 0])
+  ("t" .
+   [2])
+  ("amount" .
+   [2 0 0 0 0 0])
+  ("first" .
+   [1 0 0 0 0])
+  ("assertIn" .
+   [2 0 0 0 0 0 0 0])
+  ("step_name" .
+   [1 0 0 0 0 0 0 0 0])
+  ("SlugField" .
+   [2 0 0 0 0 0 0 0 0])
+  ("freeze_time" .
+   [2 0 0 1 1 0 0 0 0 0 0])
+  ("old_monthly_amount" .
+   [0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0])
+  ("today" .
+   [3 0 0 0 0])
+  ("freezegun" .
+   [2 0 0 0 0 0 0 0 0])
+  ("__previous_monthly_amount" .
+   [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1])
+  ("__eq__" .
+   [0 0 1 0 0 0])
+  ("SavingsOnboardingSetup" .
+   [0 0 1 0 0 0 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0])
+  ("savings" .
+   [6 0 0 0 0 0 1])
+  ("create_steps" .
+   [1 0 0 0 0 0 0 0 0 0 0 0])
+  ("steps" .
+   [1 0 0 0 0])
+  ("event" .
+   [26 0 0 0 0])
+  ("tag" .
+   [7 0 0])
+  ("savings_onboarding_setup" .
+   [1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0])
+  ("months" .
+   [3 0 0 0 0 0])
+  ("relativedelta" .
+   [1 0 0 0 0 0 0 0 1 0 0 0 0])
+  ("created_at" .
+   [2 0 0 0 0 0 0 0 0 0])
+  ("last_sucessful_deposit_date" .
+   [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1])
+  ("reach_by" .
+   [5 0 0 0 0 0 0 0])
+  ("savings_plan" .
+   [13 0 0 0 0 0 0 0 0 0 0 0])
+  ("__difference_in_months" .
+   [0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 2])
+  ("_" .
+   [3])
+  ("year" .
+   [3 0 0 0])
+  ("date_two" .
+   [2 0 0 0 0 0 0 0])
+  ("month" .
+   [4 0 0 0 0])
+  ("date_one" .
+   [1 0 0 0 0 0 0 0])
+  ("date" .
+   [5 0 0 0])
+  ("d" .
+   [1])
+  ("SubFactory" .
+   [1 0 0 0 0 0 0 0 0 0])
+  ("factory" .
+   [2 0 0 0 0 0 0])
+  ("uuid" .
+   [1 0 0 0])
+  ("TestCase" .
+   [2 0 0 0 0 0 0 0])
+  ("tearDownClass" .
+   [1 0 0 0 0 0 0 0 0 0 0 0 0])
+  ("KeyError" .
+   [0 1 0 0 0 0 0 0])
+  ("source_of_income" .
+   [1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0])
+  ("enum" .
+   [0 0 0 2])
+  ("FinancialSourceTypeEnum" .
+   [0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0])
+  ("financial_source" .
+   [1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0])
+  ("payload" .
+   [5 0 0 0 0 0 0])
+  ("url_cancel_deposit" .
+   [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1])
+  ("client" .
+   [1 0 0 0 0 0])
+  ("kwargs" .
+   [4 0 0 0 0 0])
+  ("APITestBaseSetup" .
+   [0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0])
+  ("CancelDepositAPI" .
+   [1 0 0 1 0 0 0 0 0 0 0 0 0 1 0 0])
+  ("put" .
+   [1 0 0])
+  ("post" .
+   [2 0 0 0])
+  ("requests" .
+   [3 0 0 0 0 0 0 0])
+  ("user_authentication_payload" .
+   [1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0])
+  ("given" .
+   [1 0 0 0 0])
+  ("utcnow" .
+   [11 0 0 0 0 0])
+  ("email" .
+   [0 0 1 0 0])
+  ("name" .
+   [1 1 0 0])
+  ("Faker" .
+   [2 0 0 0 0])
+  ("faker" .
+   [3 0 0 0 0])
+  ("bbva_registered_bank_account" .
+   [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 1 0 0 0 0 0 0 0])
+  ("account_id" .
+   [7 0 0 0 0 0 0 1 0 0])
+  ("consumer" .
+   [7 0 0 0 0 0 0 1])
+  ("bank_account" .
+   [6 0 0 1 0 1 0 0 1 0 0 0])
+  ("mock" .
+   [6 0 1 0])
+  ("user" .
+   [7 0 0 0])
+  ("BBVAForm" .
+   [1 0 0 1 2 0 0 0])
+  ("bbva_consumer" .
+   [6 0 0 0 0 0 0 0 1 0 0 0 0])
+  ("st" .
+   [4 0])
+  ("registered_bank_account" .
+   [0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0])
+  ("register_bank_account" .
+   [0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0])
+  ("double" .
+   [1 0 0 0 0 0])
+  ("x" .
+   [2])
+  ("AC" .
+   [1 0])
+  ("account_reference_id" .
+   [3 0 0 0 0 2 0 0 0 1 1 0 0 0 0 0 0 0 0 0])
+  ("BBVARegisteredBankAccount" .
+   [0 0 0 0 1 0 0 0 0 1 0 1 1 0 0 0 0 0 0 0 0 0 0 0 0])
+  ("models" .
+   [8 0 0 0 0 3])
+  ("verify" .
+   [6 0 0 0 0 0])
+  ("save" .
+   [7 0 1 0])
+  ("BBVAConsumer" .
+   [6 0 0 0 0 0 0 1 1 0 0 0])
+  ("breakpoint" .
+   [46 0 0 0 0 0 0 0 0 0])
+  ("pytest" .
+   [2 0 0 0 0 0])
+  ("get_address" .
+   [0 0 0 0 0 0 1 0 0 0 0])
+  ("get_user" .
+   [1 0 0 0 0 0 1 0])
+  ("AnswerInterface" .
+   [0 0 0 0 0 0 1 0 0 0 0 0 0 0 0])
+  ("User" .
+   [1 0 0 0])
+  ("when" .
+   [22 0 0 0])
+  ("uuid4" .
+   [12 0 0 0 5])
+  ("UUID" .
+   [2 0 1 1])
+  ("user_id" .
+   [33 2 0 1 2 2 2])
+  ("cls" .
+   [10 0 0])
   ("justification:" .
    [1 0 0 0 0 0 0 0 0 0 0 0 0 0])
   ("else" .
@@ -53,7 +485,7 @@
   ("analysis" .
    [7 0 1 1 2 1 0 4])
   ("a" .
-   [4])
+   [12])
   ("approvable" .
    [1 0 0 0 0 0 0 0 0 0])
   ("analysis_structuring" .
@@ -61,11 +493,11 @@
   ("all_to_be_requested_requirements" .
    [0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0])
   ("count" .
-   [2 0 0 0 0])
+   [3 0 0 0 0])
   ("if" .
    [4 0])
   ("end" .
-   [2 0 0])
+   [4 0 0])
   ("LegalRiskAnalysis::Analyses::DecisionType::APPROVED" .
    [0 0 0 0 0 0 0 0 0 2 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1])
   ("all_onuses" .
@@ -80,5 +512,381 @@
    [10 0 0 0 0 0 0 0])
   ("def" .
    [1 0 0])
-  ("Utils" .
-   [2 0 0 0 0])))
+  ("BBVAConsumerDTO" .
+   [1 0 0 0 0 0 0 0 0 0 0 0 1 0 0])
+  ("bbva_consumer_dto" .
+   [1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0])
+  ("BBVAIntegration" .
+   [1 0 0 0 0 0 0 0 0 0 0 0 0 0 0])
+  ("create_account" .
+   [0 0 0 0 0 0 0 0 0 0 0 0 0 2])
+  ("consumer_id" .
+   [28 0 0 0 0 0 0 0 0 2 0])
+  ("thenReturn" .
+   [13 0 0 0 1 1 0 0 0 0])
+  ("response" .
+   [12 0 0 0 0 0 0 0])
+  ("BBVAIntegrationService" .
+   [1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0])
+  ("expected_response" .
+   [1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1])
+  ("Dict" .
+   [4 0 0 0])
+  ("register_account" .
+   [0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0])
+  ("TransactionFactory" .
+   [1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1])
+  ("was_planned" .
+   [0 0 0 0 1 0 0 0 0 0 0])
+  ("transaction" .
+   [3 0 0 0 0 0 0 0 0 0 0])
+  ("BBVATransactionHistory" .
+   [1 0 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0 0 1])
+  ("BBVATransactionHistoryService" .
+   [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0])
+  ("create" .
+   [1 0 0 0 0 0])
+  ("external_id" .
+   [1 0 0 0 0 1 0 0 0 0 0])
+  ("transaction_id" .
+   [1 0 0 0 0 0 0 0 0 0 0 0 0 0])
+  ("status" .
+   [3 0 0 0 0 0])
+  ("verifyZeroInteractions" .
+   [0 0 0 0 0 0 0 0 0 1 1 0 1 0 0 0 0 0 0 0 0 3])
+  ("Publisher" .
+   [1 0 0 0 0 0 0 0 1])
+  ("dispatch" .
+   [1 0 0 0 0 0 0 0])
+  ("objects" .
+   [3 0 0 0 0 1 0])
+  ("Response" .
+   [1 0 0 0 0 0 0 0])
+  ("HTTP_204_NO_CONTENT" .
+   [0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0])
+  ("CancelDepositService" .
+   [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 3 0 0 1])
+  ("cancel" .
+   [2 0 0 0 0 1])
+  ("request" .
+   [5 0 0 0 0 0 0])
+  ("data" .
+   [3 0 0 0])
+  ("main" .
+   [3 0 0 0])
+  ("celery" .
+   [2 0 0 0 0 0])
+  ("app" .
+   [1 0 0])
+  ("assertEqual" .
+   [5 0 0 0 0 0 0 0 0 0 0])
+  ("income" .
+   [1 0 0 0 0 0])
+  ("SourceOfIncomeEnum" .
+   [0 0 0 0 1 0 3 0 0 0 0 0 0 0 0 0 0 1])
+  ("SALARY" .
+   [0 0 0 0 0 2])
+  ("bbva_form" .
+   [2 0 0 0 0 0 0 0 0])
+  ("Transaction" .
+   [1 0 0 0 1 0 1 1 0 0 0])
+  ("extra_deposit_value" .
+   [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1])
+  ("Decimal" .
+   [2 0 0 0 0 0 0])
+  ("deposit_extra_value" .
+   [0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0])
+  ("day" .
+   [5 0 1])
+  ("setdefault" .
+   [0 0 0 0 0 0 0 0 0 1])
+  ("step_tag" .
+   [1 0 0 0 0 0 0 0])
+  ("timedelta" .
+   [1 0 0 0 0 0 0 0 0])
+  ("months_between_created_at_and_reach_by" .
+   [1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0])
+  ("airtable" .
+   [1 0 0 0 0 0 0 0])
+  ("AirtableClient" .
+   [1 0 1 0 0 0 0 0 0 0 0 0 0 0])
+  ("integrations" .
+   [0 0 0 0 0 0 0 0 0 0 0 6])
+  ("shared" .
+   [2 0 0 0 0 2])
+  ("airtable_integration" .
+   [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1])
+  ("TestAirtableClient" .
+   [1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0])
+  ("airtable_client" .
+   [2 0 0 0 0 0 0 0 0 0 0 0 0 0 0])
+  ("full_url" .
+   [2 0 0 0 0 0 0 0])
+  ("method" .
+   [4 0 0 0 0 0])
+  ("body" .
+   [7 0 0 0])
+  ("dumps" .
+   [5 0 0 0 0])
+  ("headers" .
+   [1 0 0 1 0 0 0])
+  ("extra_headers" .
+   [2 0 0 0 0 0 0 0 0 0 0 0 0])
+  ("full_headers" .
+   [1 0 0 0 0 0 0 0 0 0 0 0])
+  ("settings" .
+   [3 0 0 0 0 0 0 0])
+  ("AIRTABLE_API_KEY" .
+   [0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0])
+  ("AIRTABLE" .
+   [1 0 0 0 0 0 0 0])
+  ("BankAccountInterface" .
+   [1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1])
+  ("get_bbva_form" .
+   [1 0 0 0 0 0 0 0 0 0 0 0 0])
+  ("final_pdf_file_path" .
+   [2 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0])
+  ("environ" .
+   [1 0 0 0 0 0 0])
+  ("get" .
+   [13 0 0])
+  ("AWS_STORAGE_BUCKET_NAME" .
+   [1 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0])
+  ("django" .
+   [1 0 0 0 0 0])
+  ("bucket_name" .
+   [1 0 0 0 0 0 0 0 0 0 0])
+  ("NOTIFICATION_TIME" .
+   [0 0 1 0 1 0 0 0 0 0 0 0 0 0 0 0 0])
+  ("hour" .
+   [1 0 0 0])
+  ("notification_time" .
+   [2 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0])
+  ("minute" .
+   [2 0 0 0 0 0])
+  ("m" .
+   [1])
+  ("value" .
+   [3 0 0 0 0])
+  ("Exception" .
+   [0 0 0 0 0 0 0 0 1])
+  ("exceptions" .
+   [1 1 0 0 0 0 0 0 0 0])
+  ("InsuficcientFunds" .
+   [0 0 2 0 1 0 0 0 0 0 0 0 0 0 0 0 1])
+  ("ANY" .
+   [2 0 0])
+  ("full_name" .
+   [2 0 0 0 0 0 0 0 0])
+  ("names" .
+   [2 0 0 0 0])
+  ("__check_all_names_similarity" .
+   [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0])
+  ("owner" .
+   [2 0 0 0 0])
+  ("upper" .
+   [1 0 0 0 0])
+  ("record_id" .
+   [2 0 0 0 0 0 0 0 0])
+  ("fields" .
+   [2 0 0 0 0 0])
+  ("__log" .
+   [1 0 0 0 0])
+  ("table" .
+   [2 0 0 0 0])
+  ("relative_url" .
+   [1 0 0 0 0 0 0 0 0 0 0 0])
+  ("BBVAConsumerCreated" .
+   [3 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0])
+  ("BBVA" .
+   [1 0 0 0])
+  ("domain" .
+   [3 0 0 0 0 0])
+  ("events" .
+   [1 0 0 0 0 0])
+  ("bbva_consumer_created" .
+   [1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0])
+  ("tests" .
+   [1 0 0 0 0])
+  ("factories" .
+   [1 0 0 0 0 0 0 0 0])
+  ("BBVAConsumerFactory" .
+   [2 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0])
+  ("AirtableIntegration" .
+   [4 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0])
+  ("is_enabled" .
+   [1 0 0 0 0 0 0 0 0 0])
+  ("interfaces" .
+   [1 0 0 0 0 0 0 0 0 0])
+  ("UserInterface" .
+   [2 0 0 0 0 0 0 0 0 0 0 0 0])
+  ("get_airtable_employee_id" .
+   [0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0])
+  ("user_email" .
+   [2 0 0 0 0 0 0 0 0 0])
+  ("update_record" .
+   [2 0 0 0 0 0 0 0 0 0 0 0 0])
+  ("approval_status" .
+   [1 0 0 0 0 0 0 0 0 0 0 0 0 0 0])
+  ("ConsumerApprovalStatus" .
+   [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0])
+  ("REVIEW" .
+   [1 0 0 0 0 0])
+  ("linked_account" .
+   [0 0 0 0 0 0 1 0 0 0 0 0 0 0])
+  ("Goal" .
+   [2 0 0 0])
+  ("all" .
+   [1 0 0])
+  ("goals" .
+   [1 0 0 0 0])
+  ("monthly" .
+   [1 0 0 0 0 0 0])
+  ("monthly_amount" .
+   [2 0 0 0 0 0 0 0 0 0 0 0 0 0])
+  ("__round_monthly_amount" .
+   [0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0])
+  ("ROUND_UP" .
+   [1 0 0 0 0 0 0 0])
+  ("savings_plan_status" .
+   [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1])
+  ("usd_jpy" .
+   [3 0 0 0 0 1 0])
+  ("i" .
+   [1])
+  ("model" .
+   [1 0 0 0 0])
+  ("database_session" .
+   [1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0])
+  ("LazyFunction" .
+   [1 0 0 0 0 0 0 0 0 0 0 0])
+  ("AssetAllocation" .
+   [4 0 0 0 0 0 0 1 0 0 0 0 0 0 0])
+  ("USStock" .
+   [1 1 0 0 0 0 0])
+  ("CASH" .
+   [3 0 0 0])
+  ("holding" .
+   [4 0 0 0 0 0 0])
+  ("security" .
+   [8 0 0 0 0 0 0 0])
+  ("current_value" .
+   [3 0 0 0 0 0 0 1 0 0 0 0 0])
+  ("Cash" .
+   [6 0 0 0])
+  ("SecurityType" .
+   [3 0 0 0 0 0 0 0 1 0 0 0])
+  ("EQUITY" .
+   [0 0 0 0 0 1])
+  ("cusip" .
+   [3 0 0 0 0])
+  ("typing" .
+   [2 0 0 0 0 0])
+  ("Bool" .
+   [1 0 0 0])
+  ("INTERNATIONAL_STOCK" .
+   [0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0])
+  ("InternationalStock" .
+   [2 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0])
+  ("US_STOCK" .
+   [1 0 0 0 0 0 0 0])
+  ("U" .
+   [1])
+  ("FIXED_INCOME" .
+   [0 0 0 0 0 0 0 0 0 0 0 1])
+  ("INTERNATIONAL_BOND" .
+   [1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0])
+  ("InternationalBond" .
+   [2 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0])
+  ("US_BOND" .
+   [1 0 0 0 0 0 0])
+  ("A" .
+   [3])
+  ("MoneyDecimal" .
+   [2 0 0 0 0 0 0 0 0 0 0 0])
+  ("application" .
+   [1 0 0 0 0 0 0 0 0 0 0])
+  ("injects" .
+   [7 0 0 0 0 0 0])
+  ("Injector" .
+   [3 0 0 0 0 0 0 0])
+  ("TestContainer" .
+   [1 0 0 0 0 0 0 0 0 0 0 0 0])
+  ("decorated_function" .
+   [1 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0])
+  ("OtherDependency" .
+   [0 0 0 0 0 0 0 0 0 0 0 0 0 0 1])
+  ("result" .
+   [4 0 0 0 0 0])
+  ("TestClass" .
+   [1 0 0 0 0 0 0 0 0])
+  ("TestDependency" .
+   [2 0 0 0 0 0 0 0 0 0 0 0 0 0])
+  ("injector" .
+   [2 0 0 0 0 0 0 0])
+  ("my_container" .
+   [2 0 0 0 0 0 0 0 0 0 0 0])
+  ("InjectedFunction" .
+   [1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0])
+  ("__call__" .
+   [1 0 0 0 0 0 0 0])
+  ("chico" .
+   [1 0 0 0 0])
+  ("ConsolidatedPortfolio" .
+   [0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0])
+  ("international" .
+   [1 0 0 0 0 0 0 0 0 0 0 0 0])
+  ("account_data" .
+   [1 0 0 0 0 0 0 0 0 0 0 0])
+  ("holding_data" .
+   [2 0 0 0 0 0 0 0 0 0 0 0])
+  ("sleep" .
+   [6 0 0 0 0])
+  ("security_data" .
+   [1 0 0 0 0 0 0 0 0 0 0 0 0])
+  ("async" .
+   [1 0 0 0 0])
+  ("eod_response" .
+   [1 0 0 0 0 0 0 0 0 0 0 0])
+  ("eod_adapter" .
+   [0 0 0 0 1 0 0 0 0 0 0])
+  ("EodAdapter" .
+   [0 0 0 1 0 0 0 0 0 0])
+  ("US" .
+   [1 0])
+  ("Non" .
+   [2 0 0])
+  ("International" .
+   [3 0 0 0 0 0 0 0 0 0 0 0 0])
+  ("Other" .
+   [1 0 0 0 0])
+  ("Bond" .
+   [1 0 0 0])
+  ("ETF" .
+   [1 0 0])
+  ("RSAKey" .
+   [1 0 0 0 0 0])
+  ("__init__" .
+   [2 0 0 0 0 0 0 0])
+  ("e" .
+   [1])
+  ("apex" .
+   [1 0 0 0])
+  ("ftp" .
+   [0 0 1])
+  ("flatten" .
+   [1 0 0 0 0 0 0])
+  ("tolist" .
+   [1 0 0 0 0 0])
+  ("predicted_result" .
+   [1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0])
+  ("values" .
+   [1 0 0 0 0 0])
+  ("highest_result" .
+   [1 0 0 0 0 0 0 0 0 0 0 0 0 0])
+  ("final_result" .
+   [2 0 0 0 0 0 0 0 0 0 0 0])
+  ("ticker_symbol" .
+   [1 0 0 0 0 0 0 0 0 0 0 0 0])
+  ("difference_in_porcentage" .
+   [0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0])))

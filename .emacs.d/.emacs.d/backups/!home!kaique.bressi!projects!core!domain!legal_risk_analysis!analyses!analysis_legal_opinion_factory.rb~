@@ -1,0 +1,53 @@
+require 'legal_risk_analysis/analyses/decision_type'
+
+module LegalRiskAnalysis
+  module Analyses
+    class AvailableDecisions
+      def initialize(analysis_structurings_repository:)
+        @analysis_structurings_repository = analysis_structurings_repository
+      end
+
+      def create(analysis, justification, decision, decided_by)
+        @analysis = analysis
+        @analysis_structuring = @analysis_structurings_repository.find_by_id(analysis.analysis_structuring_id)
+
+        if decision == LegalRiskAnalysis::Analyses::DecisionType::APPROVED
+          fail 'analysis not approvable' unless approvable?
+
+          decision = check_pending_items ? LegalRiskAnalysis::Analyses::DecisionType::APPROVED_WITH_PENDING_:
+            LegalRiskAnalysis::Analyses::DecisionType::APPROVED
+        else
+          fail 'analysis not rejectable' unless rejectable?
+        end
+
+        create_analysis_legal_opinion(justification, decision, decided_by)
+      end
+
+      private
+
+      def create_analysis_legal_opinion(justification, decision, decided_by)
+        LegalRiskAnalysis::Analyses::AnalysisLegalOpinion.new(
+          justification: justification,
+          decision: decision,
+          decided_at: DateTime.now,
+          decided_by: decided_by
+        )
+      end
+
+      def rejectable?
+        @analysis_structuring.all_onuses.count > 0
+      end
+
+      def approvable?
+        @analysis_structuring.all_to_be_requested_requirements.count == 0
+      end
+
+      def check_pending_items
+        pending_onuses = @analysis_structuring.all_onuses.map(&:id) - @analysis.onus_legal_opinions.map(&:onus_id)
+        not_reviewed_requirements = @analysis_structuring.all_not_reviewed_requirements
+
+        (pending_onuses.count > 0) || (not_reviewed_requirements.count > 0)
+      end
+    end
+  end
+end

@@ -1,0 +1,24 @@
+require 'dry-validation'
+require 'dry-types'
+require 'validations/validation_schema'
+require 'use_case/_base/command'
+
+module UseCase
+  module LegalRiskAnalysis
+    module Analyses
+      class IssueAnalysisLegalOpinionCmd < Command
+        attribute :analysis_structuring_id, Types::String
+        attribute :
+
+        def self.validate(values = {})
+          ::Dry::Validation.Form(::Validations::ValidationSchema) do
+            required(:analysis_structuring_id).filled(:uuid?)
+            required(:onus_id).filled(:uuid?)
+            required(:brings_risk).filled(:bool?)
+            required(:justification).filled(:str?)
+          end.call(values)
+        end
+      end
+    end
+  end
+end

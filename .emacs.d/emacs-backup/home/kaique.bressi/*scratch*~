@@ -1,4 +1,0 @@
-require 'logger'
-require 'httparty'
-require 'json'
-require 'concurrent'

@@ -1,0 +1,115 @@
+require 'acceptance_helper'
+
+describe Api::LegalRiskAnalysis::Analyses::V1 do
+  before do
+    header 'Accept-Version', 'v1'
+    header 'Content-Type', 'application/vnd.api+json'
+  end
+
+  context 'POST /for-analysis-structuring-id/:id/analysis-legal-opinions' do
+    it 'issues the analysis legal opinion with its decision' do
+      authenticate_consultant_user
+      analysis_structuring = FactoryBot.create(:persisted_analysis_structuring)
+      params = { analysis_structuring_id: analysis_structuring.id }
+
+      post '/legal-risk-analysis/analyses/analysis-legal-opinions', JSON.dump(post_params(params))
+
+      response = Api::JsonApiParser.call(last_response.body)
+
+      expect(last_response).to have_http_status(201)
+      expect(response['justification']).to_not be_nil
+      expect(response['decision']).to_not be_nil
+    end
+  end
+
+  context 'legal-risk-analysis analysis-structuring analysis-legal-opinion' do
+    it 'can be fetched via self link' do
+      analysis_legal_opinion_self_link = create_analysis_legal_opinion_via_api
+
+      get analysis_legal_opinion_self_link
+
+      response = Api::JsonApiParser.call(last_response.body)
+      expect(last_response).to have_http_status(200)
+      expect(response[:id]).to_not be_nil
+    end
+
+    it 'can be fetched via analysis structuring relationship' do
+      analysis_legal_opinion_link, analysis_structuring_id = create_analysis_structuring_via_api.values
+      create_analysis_legal_opinion_via_api(analysis_structuring_id)
+
+      require 'pry-byebug'
+      byebug
+
+      get analysis_legal_opinion_link
+
+      response = Api::JsonApiParser.call(last_response.body)
+      expect(last_response).to have_http_status(200)
+      expect(response[:id]).to_not be_nil
+    end
+  end
+
+  def create_analysis_legal_opinion_via_api(analysis_structuring_id = nil)
+    authenticate_consultant_user
+    analysis_structuring = FactoryBot.create(:persisted_analysis_structuring)
+    params = { analysis_structuring_id: analysis_structuring_id || analysis_structuring.id }
+
+    post '/legal-risk-analysis/analyses/analysis-legal-opinions', JSON.dump(post_params(params))
+
+    response = JSON.parse(last_response.body)
+    response['data']['links']['self']
+  end
+
+  def create_analysis_structuring_via_api
+    authenticate_consultant_user
+    legal_reference = FactoryBot.create(:persisted_legal_reference)
+    params = { legal_reference_id: legal_reference.id }
+
+    post '/legal-risk-analysis/analysis-structurings', JSON.dump(analysis_structuring_post_params(params))
+
+    response = JSON.parse(last_response.body)
+
+    analysis_legal_opinion_link = response.dig('data', 'relationships', 'analysis-legal-opinions', 'links', 'related')
+
+    require 'pry-byebug'
+    byebug
+
+    {
+      analysis_structuring_id: response.dig('data', 'id'),
+      analysis_legal_opinion_link: analysis_legal_opinion_link
+    }
+  end
+
+  def post_params(params = {})
+    {
+      'data' => {
+        'type' => 'legal-risk-analysis analyses analysis-legal-opinion',
+        'attributes' => {
+          'justification' => 'my justification',
+          'decision' => LegalRiskAnalysis::Analyses::DecisionType::APPROVED
+        },
+        'relationships' => {
+          'analysis-structuring' => {
+            'data' => {
+              'type' => 'legal-risk-analysis analysis-structurings',
+              'id' => params[:analysis_structuring_id]
+            }
+          }
+        }
+      }
+    }
+  end
+
+
+  def analysis_structuring_post_params(params)
+    {
+      'data' => {
+        'type' => 'legal-risk-analysis analysis-structurings',
+        'relationships' => {
+          'legal-reference' => {
+            'data' => { 'type' => 'legal-risk-analysis legal-references', 'id' => params[:legal_reference_id] }
+          }
+        }
+      }
+    }
+  end
+end

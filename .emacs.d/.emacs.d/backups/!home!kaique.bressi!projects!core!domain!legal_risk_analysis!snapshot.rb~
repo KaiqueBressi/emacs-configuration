@@ -1,0 +1,17 @@
+module LegalRiskAnalysis
+  class Snapshot
+    def initialize(legal_referece:, analysis_structuring:, analysis:)
+      @legal_reference = legal_reference
+      @analysis_structuring = analysis_structuring
+      @analysis = analysis
+    end
+
+    def to_h
+      snapshot_visitor = SnapshotVisitor.new
+
+      legal_reference&.accept(snapshot_visitor)
+      analysis_structuring&.accept(snapshot_visitor)
+      analysis&.accept(snapshot_visitor)
+    end
+  end
+end

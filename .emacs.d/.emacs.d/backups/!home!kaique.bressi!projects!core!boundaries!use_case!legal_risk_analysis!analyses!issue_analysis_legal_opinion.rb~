@@ -1,0 +1,39 @@
+require 'legal_risk_analysis/analyses/analysis'
+require 'legal_risk_analysis/analyses/analysis_legal_opinion'
+
+module UseCase
+  module LegalRiskAnalysis
+    module Analyses
+      class IssueAnalysisLegalOpinion
+        def initialize(analyses_repository:)
+          @analyses_repository = analyses_repository
+        end
+
+        def execute(cmd)
+          analysis = @analyses_repository.find_last_analysis_by_structuring_id(cmd.analysis_structuring_id) ||
+            ::LegalRiskAnalysis::Analyses::Analysis.new(analysis_structuring_id: cmd.analysis_structuring_id)
+
+          analysis_legal_opinion = create_analysis_legal_opinion(cmd)
+
+          current_analysis = analysis.issue_analysis_legal_opinion(analysis_legal_opinion)
+          require 'byebug'
+          byebug
+          @analyses_repository.update(current_analysis)
+
+          analysis_legal_opinion
+        end
+
+        private
+
+        def create_analysis_legal_opinion(cmd)
+          ::LegalRiskAnalysis::Analyses::AnalysisLegalOpinion.new(
+            decision: cmd.decision,
+            justification: cmd.decision,
+            decided_by: cmd.decided_by,
+            decided_at: DateTime.now
+          )
+        end
+      end
+    end
+  end
+end

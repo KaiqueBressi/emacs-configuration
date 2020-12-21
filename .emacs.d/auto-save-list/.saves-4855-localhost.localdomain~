@@ -1,0 +1,10 @@
+/home/kaiquebressi/projects/origin/financial-services-backend/src/mailer/tests/mail_handlers/test_send_monthly_deposit_notification_email.py
+~/.emacs.d/emacs-save/#!home!kaiquebressi!projects!origin!financial-services-backend!src!mailer!tests!mail_handlers!test_send_monthly_deposit_notification_email.py#
+/home/kaiquebressi/projects/origin/financial-services-backend/src/mailer/tests/factories/domain_factories.py
+~/.emacs.d/emacs-save/#!home!kaiquebressi!projects!origin!financial-services-backend!src!mailer!tests!factories!domain_factories.py#
+/home/kaiquebressi/projects/origin/financial-services-backend/src/mailer/mail_handlers/send_monthly_deposit_notification_email.py
+~/.emacs.d/emacs-save/#!home!kaiquebressi!projects!origin!financial-services-backend!src!mailer!mail_handlers!send_monthly_deposit_notification_email.py#
+/home/kaiquebressi/projects/origin/financial-services-backend/src/mailer/broker/async_mails/monthly_deposit_notification_email.py
+~/.emacs.d/emacs-save/#!home!kaiquebressi!projects!origin!financial-services-backend!src!mailer!broker!async_mails!monthly_deposit_notification_email.py#
+/home/kaiquebressi/projects/origin/financial-services-backend/src/mailer/config.ini
+~/.emacs.d/emacs-save/#!home!kaiquebressi!projects!origin!financial-services-backend!src!mailer!config.ini#

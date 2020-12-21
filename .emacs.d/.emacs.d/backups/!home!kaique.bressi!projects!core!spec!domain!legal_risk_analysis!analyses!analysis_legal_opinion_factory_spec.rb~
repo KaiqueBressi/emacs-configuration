@@ -1,0 +1,111 @@
+require 'legal_risk_analysis/analyses/available_decisions'
+require 'legal_risk_analysis/analyses/decision_type'
+require 'legal_risk_analysis/analysis_structurings/requirement_status'
+
+describe LegalRiskAnalysis::Analyses::AvailableDecisions do
+  context 'when fetching the available decisions for a analysis' do
+    it 'includes approved if all onus from analysis structuring has a onus legal opinion on analysis' do
+      onus = FactoryBot.build(:legal_risk_analysis_structuring_lawsuit)
+      onus_legal_opinion = FactoryBot.build(:legal_risk_analysis_analyses_onus_legal_opinion, onus_id: onus.id)
+      analysis_structuring = FactoryBot.build(:legal_risk_analysis_structuring, :with_onus, onus: onus)
+      analysis = FactoryBot.build(:legal_risk_analysis_analyses_analysis, :with_onus_legal_opinion,
+                                  onus_legal_opinion: onus_legal_opinion, analysis_structuring: analysis_structuring)
+      analysis_structurings_repository = instance_double(
+        Infra::LegalRiskAnalysis::Repositories::AnalysisStructuringsRepository)
+      allow(analysis_structurings_repository).to receive(:find_by_id)
+        .with(analysis.analysis_structuring_id).and_return(analysis_structuring)
+      available_decisions = described_class.new(analysis_structurings_repository)
+
+      fetched_available_decisions = available_decisions.fetch_available_decisions(analysis)
+
+      expect(fetched_available_decisions).to include(LegalRiskAnalysis::Analyses::DecisionType::APPROVED)
+    end
+
+    it 'includes approved with pending items if there is an onus in structuring that does not have a legal opinion' do
+      onus = FactoryBot.build(:legal_risk_analysis_structuring_lawsuit)
+      analysis_structuring = FactoryBot.build(:legal_risk_analysis_structuring, :with_onus, onus: onus)
+      analysis = FactoryBot.build(:legal_risk_analysis_analyses_analysis, analysis_structuring: analysis_structuring)
+      analysis_structurings_repository = instance_double(
+        Infra::LegalRiskAnalysis::Repositories::AnalysisStructuringsRepository)
+      allow(analysis_structurings_repository).to receive(:find_by_id)
+        .with(analysis.analysis_structuring_id).and_return(analysis_structuring)
+      available_decisions = described_class.new(analysis_structurings_repository)
+
+      fetched_available_decisions = available_decisions.fetch_available_decisions(analysis)
+
+      expect(fetched_available_decisions).to include(LegalRiskAnalysis::Analyses::DecisionType::APPROVED_WITH_PENDING_ITEMS)
+    end
+
+    it 'includes approved if all requirements from analysis structuring are not requested or available' do
+      requirement = FactoryBot.build(:legal_risk_analysis_requirement,
+                                     status: LegalRiskAnalysis::AnalysisStructurings::RequirementStatus::REVIEWED)
+      risk = FactoryBot.build(:legal_risk_analysis_structuring_fiscal_risk)
+      risk.add_requirements([requirement])
+      analysis_structuring = FactoryBot.build(:legal_risk_analysis_structuring)
+      analysis_structuring.add_risks(risk)
+      analysis = FactoryBot.build(:legal_risk_analysis_analyses_analysis, analysis_structuring: analysis_structuring)
+      analysis_structurings_repository = instance_double(
+        Infra::LegalRiskAnalysis::Repositories::AnalysisStructuringsRepository)
+      allow(analysis_structurings_repository).to receive(:find_by_id)
+        .with(analysis.analysis_structuring_id).and_return(analysis_structuring)
+      available_decisions = described_class.new(analysis_structurings_repository)
+
+      fetched_available_decisions = available_decisions.fetch_available_decisions(analysis)
+
+      expect(fetched_available_decisions).to include(LegalRiskAnalysis::Analyses::DecisionType::APPROVED)
+    end
+
+    it 'includes approved with pending items if there is a requirement in analysis structruing that are requested or available' do
+      requirement = FactoryBot.build(:legal_risk_analysis_requirement,
+                                     status: LegalRiskAnalysis::AnalysisStructurings::RequirementStatus::REQUESTED)
+      risk = FactoryBot.build(:legal_risk_analysis_structuring_fiscal_risk)
+      risk.add_requirements([requirement])
+      analysis_structuring = FactoryBot.build(:legal_risk_analysis_structuring)
+      analysis_structuring.add_risks(risk)
+      analysis = FactoryBot.build(:legal_risk_analysis_analyses_analysis, analysis_structuring: analysis_structuring)
+      analysis_structurings_repository = instance_double(
+        Infra::LegalRiskAnalysis::Repositories::AnalysisStructuringsRepository)
+      allow(analysis_structurings_repository).to receive(:find_by_id)
+        .with(analysis.analysis_structuring_id).and_return(analysis_structuring)
+      available_decisions = described_class.new(analysis_structurings_repository)
+
+      fetched_available_decisions = available_decisions.fetch_available_decisions(analysis)
+
+      expect(fetched_available_decisions).to include(LegalRiskAnalysis::Analyses::DecisionType::APPROVED_WITH_PENDING_ITEMS)
+    end
+
+    it 'does not include approved/approved with pending items if there is a requirement to be requested' do
+      requirement = FactoryBot.build(:legal_risk_analysis_requirement,
+                                     status: LegalRiskAnalysis::AnalysisStructurings::RequirementStatus::TO_BE_REQUESTED)
+      risk = FactoryBot.build(:legal_risk_analysis_structuring_fiscal_risk)
+      risk.add_requirements([requirement])
+      analysis_structuring = FactoryBot.build(:legal_risk_analysis_structuring)
+      analysis_structuring.add_risks(risk)
+      analysis = FactoryBot.build(:legal_risk_analysis_analyses_analysis, analysis_structuring: analysis_structuring)
+      analysis_structurings_repository = instance_double(
+        Infra::LegalRiskAnalysis::Repositories::AnalysisStructuringsRepository)
+      allow(analysis_structurings_repository).to receive(:find_by_id)
+        .with(analysis.analysis_structuring_id).and_return(analysis_structuring)
+      available_decisions = described_class.new(analysis_structurings_repository)
+
+      fetched_available_decisions = available_decisions.fetch_available_decisions(analysis)
+
+      expect(fetched_available_decisions).to_not include(LegalRiskAnalysis::Analyses::DecisionType::APPROVED)
+      expect(fetched_available_decisions).to_not include(LegalRiskAnalysis::Analyses::DecisionType::APPROVED_WITH_PENDING_ITEMS)
+    end
+
+    it 'does not include reject if there is no onus in the analysis structuring' do
+      analysis_structuring = FactoryBot.build(:legal_risk_analysis_structuring)
+      analysis = FactoryBot.build(:legal_risk_analysis_analyses_analysis, analysis_structuring: analysis_structuring)
+      analysis_structurings_repository = instance_double(
+        Infra::LegalRiskAnalysis::Repositories::AnalysisStructuringsRepository)
+      allow(analysis_structurings_repository).to receive(:find_by_id)
+        .with(analysis.analysis_structuring_id).and_return(analysis_structuring)
+      available_decisions = described_class.new(analysis_structurings_repository)
+
+      fetched_available_decisions = available_decisions.fetch_available_decisions(analysis)
+
+      expect(fetched_available_decisions).to_not include(LegalRiskAnalysis::Analyses::DecisionType::REJECTED)
+    end
+  end
+end
